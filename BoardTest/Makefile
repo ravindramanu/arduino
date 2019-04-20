@@ -63,13 +63,18 @@ frequency_selected=1000000UL
 ################################################################################
 programmertype=arduino
 # avrdudelogfile=$(CURDIR)/avrdudelogfile.log - Need to figure out how to save everything to file
-avrdudesavedhexfilesfolder=saved_hexfiles_$$(date +%Y%m%d_%H%M%S)
+avrdudesavedhexfilesfolder=saved_boards/boardsave_$$(date +%Y%m%d_%H%M%S)
 serialdeviceport=/dev/ttyACM0
-avrdudecompilerflags=-DF_CPU=$(frequency_selected)
 memorytypes=calibration eeprom efuse flash fuse hfuse lfuse lock signature
 
 # Automatically generated files
-softwarepayload=${sourcename}.o
+softwareobject=objects/$(sourcename).o
+softwareobjectelf=elf/$(sourcename).elf
+softwarepayload=payload/$(sourcename).flash.hex
+softwarepayloadEEPROM=payload/$(sourcename).eeprom.hex
+
+# Main source code file1
+sourcecode=source/$(sourcename).c
 
 ################################################################################
 # Compiler specific macros                                                     #
@@ -83,8 +88,11 @@ softwarepayload=${sourcename}.o
 # -Wextra  --> Enable warning information that is otherwise not displayed      #
 ################################################################################
 
-complilerused=gcc-avrdude
-compilerflags=-g -Os -Wall -Werror -Wextra
+complilerused=avr-gcc
+gcccompilerflags=-g -Os -Wall -Werror -Wextra
+avrgcccompilerflags=-mmcu=$(hardwarepartnumber) -DF_CPU=$(frequency_selected)
+avrassemblerflags=-Wa,-ahlmns=$(sourcename).lst
+avrlibpath=-I$(CURDIR)/libraries/
 
 ################################################################################
 # PHONY Targets                                                                #
@@ -93,7 +101,7 @@ compilerflags=-g -Os -Wall -Werror -Wextra
 # They are used solely for maintenance purposes. This is some clever makefile  #
 # technique that is super useful.                                              #
 ################################################################################
-.PHONY: clean saveboard help
+.PHONY: clean saveboard help editsource install build
 
 ################################################################################
 # clean - command section                                                      #
@@ -105,7 +113,9 @@ compilerflags=-g -Os -Wall -Werror -Wextra
 #                                                                              #
 ################################################################################
 clean:
-	@rm -f at*
+	@rm -f *.hex *.o *.lst
+	@rm -f objects/*.o assembly/*.lst elf/*.elf payload/*.hex
+	@rm -f -r temp
 
 ################################################################################
 # help - command section                                                       #
@@ -161,10 +171,50 @@ help:
 # memory on to a hex file. All hex files are saved in a folder.                #
 ################################################################################
 saveboard:
-	# Totally not an elegant solution. But this will do the job.
+# Totally not an elegant solution. But this will do the job.
 	@mkdir -p temp
 	@for memorytype in $(memorytypes) ; do \
 		avrdude -p $(hardwarepartnumber) -c$(programmertype) -P$(serialdeviceport) -v -U $$memorytype:r:./$(hardwarepartnumber).$$memorytype.hex:i; \
 	done
 	@mv *.hex temp
 	@mv temp $(avrdudesavedhexfilesfolder)
+
+editsource:
+# I am using atom for my editor
+	@atom $(sourcename).c
+
+object:
+	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) $(avrassemblerflags) $(avrlibpath) -c -o $(softwareobject) $(sourcecode)
+	@mv $(sourcename).lst assembly/
+
+elf: object
+	$(complilerused) $(gcccompilerflags) $(avrgcccompilerflags) -o $(softwareobjectelf) $(softwareobject)
+	@chmod a-x $(softwareobjectelf) 2>&1
+
+hex: elf
+	@echo '                                                                      '
+# Need to figure out each one of these commands
+	avr-objcopy -j .text -j .data -O ihex $(softwareobjectelf) $(softwarepayload)
+	@echo '                                                                      '
+#	avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 -O ihex $(softwareobjectelf)
+#	@echo '                                                                      '
+#	avr-objcopy -j .fuse -O ihex $(softwareobjectelf) $(sourcename).fuses.hex --change-section-lma .fuse=0
+#	@echo '                                                                      '
+#	srec_cat $(sourcename).fuses.hex -Intel -crop 0x00 0x01 -offset  0x00 -O $(sourcename).lfuse.hex -Intel
+#	srec_cat $(sourcename).fuses.hex -Intel -crop 0x01 0x02 -offset -0x01 -O $(sourcename).hfuse.hex -Intel
+#	srec_cat $(sourcename).fuses.hex -Intel -crop 0x02 0x03 -offset -0x02 -O $(sourcename).efuse.hex -Intel
+
+build: hex
+
+flash:
+	avrdude -p$(hardwarepartnumber) -c$(programmertype) -P$(serialdeviceport) -v -U flash:w:$(softwarepayload)
+
+program: flash
+
+
+install:
+	@echo '                                                                      '
+	@echo 'Creating source and object folders if not present.                    '
+	@mkdir -p source objects libraries assembly saved_boards elf payload
+	@echo 'Please ensure that libraries are copied into the libraries folder.    '
+	@echo '                                                                      '
