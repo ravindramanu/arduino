@@ -101,7 +101,7 @@ avrlibpath=-I$(CURDIR)/libraries/
 # They are used solely for maintenance purposes. This is some clever makefile  #
 # technique that is super useful.                                              #
 ################################################################################
-.PHONY: clean saveboard help editsource install build
+.PHONY: clean saveboard help editsource install build object flash hex program
 
 ################################################################################
 # clean - command section                                                      #
@@ -144,16 +144,9 @@ help:
 	@echo '                                                                      '
 	@echo 'editsource   Edit the main source file with the authors editor.       '
 	@echo '                                                                      '
-	@echo 'forceeeprom  Force program eeprom data from a .elf file. Useful for   '
-	@echo '             reinstating controller eeprom. For example, updating     '
-	@echo '             software calibration data on to eeprom.                  '
-	@echo '                                                                      '
 	@echo 'elf          Create a .elf file of the source as $(sourcename).elf.   '
 	@echo '                                                                      '
 	@echo 'flash        Program $(sourcename).hex to controller flash memory.    '
-	@echo '                                                                      '
-	@echo 'fuses        Extract FUSES data from .elf file and program the device '
-	@echo '             with it. Useful for just setting registers for example.  '
 	@echo '                                                                      '
 	@echo 'hex          Create all hex files for flash, eeprom and fuses.        '
 	@echo '                                                                      '
@@ -193,16 +186,7 @@ elf: object
 
 hex: elf
 	@echo '                                                                      '
-# Need to figure out each one of these commands
 	avr-objcopy -j .text -j .data -O ihex $(softwareobjectelf) $(softwarepayload)
-	@echo '                                                                      '
-#	avr-objcopy -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 -O ihex $(softwareobjectelf)
-#	@echo '                                                                      '
-#	avr-objcopy -j .fuse -O ihex $(softwareobjectelf) $(sourcename).fuses.hex --change-section-lma .fuse=0
-#	@echo '                                                                      '
-#	srec_cat $(sourcename).fuses.hex -Intel -crop 0x00 0x01 -offset  0x00 -O $(sourcename).lfuse.hex -Intel
-#	srec_cat $(sourcename).fuses.hex -Intel -crop 0x01 0x02 -offset -0x01 -O $(sourcename).hfuse.hex -Intel
-#	srec_cat $(sourcename).fuses.hex -Intel -crop 0x02 0x03 -offset -0x02 -O $(sourcename).efuse.hex -Intel
 
 build: hex
 
@@ -210,7 +194,6 @@ flash:
 	avrdude -p$(hardwarepartnumber) -c$(programmertype) -P$(serialdeviceport) -v -U flash:w:$(softwarepayload)
 
 program: flash
-
 
 install:
 	@echo '                                                                      '
