@@ -2,7 +2,7 @@
 Author: Ravindra, Manu
 
 This repository consists of personal projects of the author that were made
-using a text editor and makefiles for a novice the novice developer board
+using a text editor and makefiles for a novice developer board
 arduino uno rev3. The uno uses an atmel processor ATMega328P. Apart from
 having a a few General Purpose IO, this board also supports PWM and UART.
 
