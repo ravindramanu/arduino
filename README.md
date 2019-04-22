@@ -11,10 +11,10 @@ A very cost effective LIDAR sensor specifically made for pet projects. This
 sensor can detect objects effectively in a 12 m range. Good enough for a
 small LIDAR Robot.
 
-To use the any of the project simply the clone the project or copy just
-the makefile. In the directory that you copied the make file, you have several
-commands you that you can use. The first should be "make install" (only if you
-have not cloned the entire project). Other commands are,
+To use any of the projects simply the clone the project or copy just
+the makefile into an empty directory. In the directory that you copied the make file, 
+you have several commands you that you can use. The first should be "make install" 
+(only if you have not cloned the entire project). Other commands are,
 
 make *command*
 
