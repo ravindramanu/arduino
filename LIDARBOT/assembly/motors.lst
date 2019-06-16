@@ -1,0 +1,465 @@
+   1               		.file	"motors.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.stabs	"/home/manu/c/Arduino/LIDARBOT/",100,0,2,.Ltext0
+   8               		.stabs	"source/drivers/motors.c",100,0,2,.Ltext0
+   9               		.text
+  10               	.Ltext0:
+  11               		.stabs	"gcc2_compiled.",60,0,0,0
+  12               		.stabs	"int:t(0,1)=r(0,1);-32768;32767;",128,0,0,0
+  13               		.stabs	"char:t(0,2)=r(0,2);0;127;",128,0,0,0
+  14               		.stabs	"long int:t(0,3)=@s32;r(0,3);020000000000;017777777777;",128,0,0,0
+  15               		.stabs	"unsigned int:t(0,4)=r(0,4);0;0177777;",128,0,0,0
+  16               		.stabs	"long unsigned int:t(0,5)=@s32;r(0,5);0;037777777777;",128,0,0,0
+  17               		.stabs	"__int128:t(0,6)=@s128;r(0,6);02000000000000000000000000000000000000000000;0177777777777777
+  18               		.stabs	"__int128 unsigned:t(0,7)=@s128;r(0,7);0;03777777777777777777777777777777777777777777;",128
+  19               		.stabs	"long long int:t(0,8)=@s64;r(0,8);01000000000000000000000;00777777777777777777777;",128,0,0
+  20               		.stabs	"long long unsigned int:t(0,9)=@s64;r(0,9);0;01777777777777777777777;",128,0,0,0
+  21               		.stabs	"short int:t(0,10)=r(0,10);-32768;32767;",128,0,0,0
+  22               		.stabs	"short unsigned int:t(0,11)=r(0,11);0;0177777;",128,0,0,0
+  23               		.stabs	"signed char:t(0,12)=@s8;r(0,12);-128;127;",128,0,0,0
+  24               		.stabs	"unsigned char:t(0,13)=@s8;r(0,13);0;255;",128,0,0,0
+  25               		.stabs	"float:t(0,14)=r(0,1);4;0;",128,0,0,0
+  26               		.stabs	"double:t(0,15)=r(0,1);4;0;",128,0,0,0
+  27               		.stabs	"long double:t(0,16)=r(0,1);4;0;",128,0,0,0
+  28               		.stabs	"short _Fract:t(0,17)=r(0,1);1;0;",128,0,0,0
+  29               		.stabs	"_Fract:t(0,18)=r(0,1);2;0;",128,0,0,0
+  30               		.stabs	"long _Fract:t(0,19)=r(0,1);4;0;",128,0,0,0
+  31               		.stabs	"long long _Fract:t(0,20)=r(0,1);8;0;",128,0,0,0
+  32               		.stabs	"unsigned short _Fract:t(0,21)=r(0,1);1;0;",128,0,0,0
+  33               		.stabs	"unsigned _Fract:t(0,22)=r(0,1);2;0;",128,0,0,0
+  34               		.stabs	"unsigned long _Fract:t(0,23)=r(0,1);4;0;",128,0,0,0
+  35               		.stabs	"unsigned long long _Fract:t(0,24)=r(0,1);8;0;",128,0,0,0
+  36               		.stabs	"_Sat short _Fract:t(0,25)=r(0,1);1;0;",128,0,0,0
+  37               		.stabs	"_Sat _Fract:t(0,26)=r(0,1);2;0;",128,0,0,0
+  38               		.stabs	"_Sat long _Fract:t(0,27)=r(0,1);4;0;",128,0,0,0
+  39               		.stabs	"_Sat long long _Fract:t(0,28)=r(0,1);8;0;",128,0,0,0
+  40               		.stabs	"_Sat unsigned short _Fract:t(0,29)=r(0,1);1;0;",128,0,0,0
+  41               		.stabs	"_Sat unsigned _Fract:t(0,30)=r(0,1);2;0;",128,0,0,0
+  42               		.stabs	"_Sat unsigned long _Fract:t(0,31)=r(0,1);4;0;",128,0,0,0
+  43               		.stabs	"_Sat unsigned long long _Fract:t(0,32)=r(0,1);8;0;",128,0,0,0
+  44               		.stabs	"short _Accum:t(0,33)=r(0,1);2;0;",128,0,0,0
+  45               		.stabs	"_Accum:t(0,34)=r(0,1);4;0;",128,0,0,0
+  46               		.stabs	"long _Accum:t(0,35)=r(0,1);8;0;",128,0,0,0
+  47               		.stabs	"long long _Accum:t(0,36)=r(0,1);8;0;",128,0,0,0
+  48               		.stabs	"unsigned short _Accum:t(0,37)=r(0,1);2;0;",128,0,0,0
+  49               		.stabs	"unsigned _Accum:t(0,38)=r(0,1);4;0;",128,0,0,0
+  50               		.stabs	"unsigned long _Accum:t(0,39)=r(0,1);8;0;",128,0,0,0
+  51               		.stabs	"unsigned long long _Accum:t(0,40)=r(0,1);8;0;",128,0,0,0
+  52               		.stabs	"_Sat short _Accum:t(0,41)=r(0,1);2;0;",128,0,0,0
+  53               		.stabs	"_Sat _Accum:t(0,42)=r(0,1);4;0;",128,0,0,0
+  54               		.stabs	"_Sat long _Accum:t(0,43)=r(0,1);8;0;",128,0,0,0
+  55               		.stabs	"_Sat long long _Accum:t(0,44)=r(0,1);8;0;",128,0,0,0
+  56               		.stabs	"_Sat unsigned short _Accum:t(0,45)=r(0,1);2;0;",128,0,0,0
+  57               		.stabs	"_Sat unsigned _Accum:t(0,46)=r(0,1);4;0;",128,0,0,0
+  58               		.stabs	"_Sat unsigned long _Accum:t(0,47)=r(0,1);8;0;",128,0,0,0
+  59               		.stabs	"_Sat unsigned long long _Accum:t(0,48)=r(0,1);8;0;",128,0,0,0
+  60               		.stabs	"void:t(0,49)=(0,49)",128,0,0,0
+  61               		.stabs	"source/drivers/motors.h",130,0,0,0
+  62               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/avr/io.h",130,0,0,0
+  63               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/avr/sfr_defs.h",130,0,0,0
+  64               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/inttypes.h",130,0,0,0
+  65               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/stdint.h",130,0,0,0
+  66               		.stabs	"int8_t:t(5,1)=(0,12)",128,0,125,0
+  67               		.stabs	"uint8_t:t(5,2)=(0,13)",128,0,126,0
+  68               		.stabs	"int16_t:t(5,3)=(0,1)",128,0,127,0
+  69               		.stabs	"uint16_t:t(5,4)=(0,4)",128,0,128,0
+  70               		.stabs	"int32_t:t(5,5)=(0,3)",128,0,129,0
+  71               		.stabs	"uint32_t:t(5,6)=(0,5)",128,0,130,0
+  72               		.stabs	"int64_t:t(5,7)=(0,8)",128,0,132,0
+  73               		.stabs	"uint64_t:t(5,8)=(0,9)",128,0,133,0
+  74               		.stabs	"intptr_t:t(5,9)=(5,3)",128,0,146,0
+  75               		.stabs	"uintptr_t:t(5,10)=(5,4)",128,0,151,0
+  76               		.stabs	"int_least8_t:t(5,11)=(5,1)",128,0,163,0
+  77               		.stabs	"uint_least8_t:t(5,12)=(5,2)",128,0,168,0
+  78               		.stabs	"int_least16_t:t(5,13)=(5,3)",128,0,173,0
+  79               		.stabs	"uint_least16_t:t(5,14)=(5,4)",128,0,178,0
+  80               		.stabs	"int_least32_t:t(5,15)=(5,5)",128,0,183,0
+  81               		.stabs	"uint_least32_t:t(5,16)=(5,6)",128,0,188,0
+  82               		.stabs	"int_least64_t:t(5,17)=(5,7)",128,0,196,0
+  83               		.stabs	"uint_least64_t:t(5,18)=(5,8)",128,0,203,0
+  84               		.stabs	"int_fast8_t:t(5,19)=(5,1)",128,0,217,0
+  85               		.stabs	"uint_fast8_t:t(5,20)=(5,2)",128,0,222,0
+  86               		.stabs	"int_fast16_t:t(5,21)=(5,3)",128,0,227,0
+  87               		.stabs	"uint_fast16_t:t(5,22)=(5,4)",128,0,232,0
+  88               		.stabs	"int_fast32_t:t(5,23)=(5,5)",128,0,237,0
+  89               		.stabs	"uint_fast32_t:t(5,24)=(5,6)",128,0,242,0
+  90               		.stabs	"int_fast64_t:t(5,25)=(5,7)",128,0,250,0
+  91               		.stabs	"uint_fast64_t:t(5,26)=(5,8)",128,0,257,0
+  92               		.stabs	"intmax_t:t(5,27)=(5,7)",128,0,277,0
+  93               		.stabs	"uintmax_t:t(5,28)=(5,8)",128,0,282,0
+  94               		.stabn	162,0,0,0
+  95               		.stabs	"int_farptr_t:t(4,1)=(5,5)",128,0,77,0
+  96               		.stabs	"uint_farptr_t:t(4,2)=(5,6)",128,0,81,0
+  97               		.stabn	162,0,0,0
+  98               		.stabn	162,0,0,0
+  99               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/avr/fuse.h",130,0,0,0
+ 100               		.stabs	"__fuse_t:t(6,1)=(6,2)=s3low:(0,13),0,8;high:(0,13),8,8;extended:(0,13),16,8;;",128,0,244,0
+ 101               		.stabn	162,0,0,0
+ 102               		.stabn	162,0,0,0
+ 103               		.stabn	162,0,0,0
+ 104               		.stabs	"stop:F(0,49)",36,0,3,stop
+ 105               	.global	stop
+ 106               		.type	stop, @function
+ 107               	stop:
+ 108               		.stabd	46,0,0
+   1:source/drivers/motors.c **** #include "motors.h"
+   2:source/drivers/motors.c **** 
+   3:source/drivers/motors.c **** void stop(){
+ 109               		.stabn	68,0,3,.LM0-.LFBB1
+ 110               	.LM0:
+ 111               	.LFBB1:
+ 112               	/* prologue: function */
+ 113               	/* frame size = 0 */
+ 114               	/* stack size = 0 */
+ 115               	.L__stack_usage = 0
+   4:source/drivers/motors.c ****   /* STOP both motorbanks by setting in0, in1, in2 and in3 to zero. */
+   5:source/drivers/motors.c ****   // LEFT BANK: STOP
+   6:source/drivers/motors.c ****   PORTB &= ~(1<<PORTB1);
+ 116               		.stabn	68,0,6,.LM1-.LFBB1
+ 117               	.LM1:
+ 118 0000 2998      		cbi 0x5,1
+   7:source/drivers/motors.c ****   PORTB &= ~(1<<PORTB0);
+ 119               		.stabn	68,0,7,.LM2-.LFBB1
+ 120               	.LM2:
+ 121 0002 2898      		cbi 0x5,0
+   8:source/drivers/motors.c **** 
+   9:source/drivers/motors.c ****   // RIGHT BANK: STOP
+  10:source/drivers/motors.c ****   PORTD &= ~(1<<PORTD4);
+ 122               		.stabn	68,0,10,.LM3-.LFBB1
+ 123               	.LM3:
+ 124 0004 5C98      		cbi 0xb,4
+  11:source/drivers/motors.c ****   PORTD &= ~(1<<PORTD2);
+ 125               		.stabn	68,0,11,.LM4-.LFBB1
+ 126               	.LM4:
+ 127 0006 5A98      		cbi 0xb,2
+ 128 0008 0895      		ret
+ 129               		.size	stop, .-stop
+ 130               	.Lscope1:
+ 131               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 132               		.stabd	78,0,0
+ 133               		.stabs	"forward:F(0,49)",36,0,14,forward
+ 134               	.global	forward
+ 135               		.type	forward, @function
+ 136               	forward:
+ 137               		.stabd	46,0,0
+  12:source/drivers/motors.c **** }
+  13:source/drivers/motors.c **** 
+  14:source/drivers/motors.c **** void forward(){
+ 138               		.stabn	68,0,14,.LM5-.LFBB2
+ 139               	.LM5:
+ 140               	.LFBB2:
+ 141               	/* prologue: function */
+ 142               	/* frame size = 0 */
+ 143               	/* stack size = 0 */
+ 144               	.L__stack_usage = 0
+  15:source/drivers/motors.c ****   /* Set the wheels to spin forward */
+  16:source/drivers/motors.c ****   // LEFT BANK: Forward
+  17:source/drivers/motors.c ****   PORTB |=  (1<<PORTB1);
+ 145               		.stabn	68,0,17,.LM6-.LFBB2
+ 146               	.LM6:
+ 147 000a 299A      		sbi 0x5,1
+  18:source/drivers/motors.c ****   PORTB &= ~(1<<PORTB0);
+ 148               		.stabn	68,0,18,.LM7-.LFBB2
+ 149               	.LM7:
+ 150 000c 2898      		cbi 0x5,0
+  19:source/drivers/motors.c **** 
+  20:source/drivers/motors.c ****   // RIGHT BANK: Forward
+  21:source/drivers/motors.c ****   PORTD |=  (1<<PORTD4);
+ 151               		.stabn	68,0,21,.LM8-.LFBB2
+ 152               	.LM8:
+ 153 000e 5C9A      		sbi 0xb,4
+  22:source/drivers/motors.c ****   PORTD &= ~(1<<PORTD2);
+ 154               		.stabn	68,0,22,.LM9-.LFBB2
+ 155               	.LM9:
+ 156 0010 5A98      		cbi 0xb,2
+ 157 0012 0895      		ret
+ 158               		.size	forward, .-forward
+ 159               	.Lscope2:
+ 160               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 161               		.stabd	78,0,0
+ 162               		.stabs	"reverse:F(0,49)",36,0,25,reverse
+ 163               	.global	reverse
+ 164               		.type	reverse, @function
+ 165               	reverse:
+ 166               		.stabd	46,0,0
+  23:source/drivers/motors.c **** }
+  24:source/drivers/motors.c **** 
+  25:source/drivers/motors.c **** void reverse(){
+ 167               		.stabn	68,0,25,.LM10-.LFBB3
+ 168               	.LM10:
+ 169               	.LFBB3:
+ 170               	/* prologue: function */
+ 171               	/* frame size = 0 */
+ 172               	/* stack size = 0 */
+ 173               	.L__stack_usage = 0
+  26:source/drivers/motors.c ****   /* Set the wheels to spin reverse */
+  27:source/drivers/motors.c ****   // LEFT BANK: Reverse
+  28:source/drivers/motors.c ****   PORTB &= ~(1<<PORTB1);
+ 174               		.stabn	68,0,28,.LM11-.LFBB3
+ 175               	.LM11:
+ 176 0014 2998      		cbi 0x5,1
+  29:source/drivers/motors.c ****   PORTB |=  (1<<PORTB0);
+ 177               		.stabn	68,0,29,.LM12-.LFBB3
+ 178               	.LM12:
+ 179 0016 289A      		sbi 0x5,0
+  30:source/drivers/motors.c **** 
+  31:source/drivers/motors.c ****   // RIGHT BANK: Reverse
+  32:source/drivers/motors.c ****   PORTD &= ~(1<<PORTD4);
+ 180               		.stabn	68,0,32,.LM13-.LFBB3
+ 181               	.LM13:
+ 182 0018 5C98      		cbi 0xb,4
+  33:source/drivers/motors.c ****   PORTD |=  (1<<PORTD2);
+ 183               		.stabn	68,0,33,.LM14-.LFBB3
+ 184               	.LM14:
+ 185 001a 5A9A      		sbi 0xb,2
+ 186 001c 0895      		ret
+ 187               		.size	reverse, .-reverse
+ 188               	.Lscope3:
+ 189               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 190               		.stabd	78,0,0
+ 191               		.stabs	"turn:F(0,49)",36,0,36,turn
+ 192               		.stabs	"direction:P(0,13)",64,0,36,24
+ 193               	.global	turn
+ 194               		.type	turn, @function
+ 195               	turn:
+ 196               		.stabd	46,0,0
+  34:source/drivers/motors.c **** }
+  35:source/drivers/motors.c **** 
+  36:source/drivers/motors.c **** void turn(unsigned char direction){
+ 197               		.stabn	68,0,36,.LM15-.LFBB4
+ 198               	.LM15:
+ 199               	.LFBB4:
+ 200               	/* prologue: function */
+ 201               	/* frame size = 0 */
+ 202               	/* stack size = 0 */
+ 203               	.L__stack_usage = 0
+  37:source/drivers/motors.c **** 
+  38:source/drivers/motors.c ****   // Turn switch case
+  39:source/drivers/motors.c ****   switch (direction) {
+ 204               		.stabn	68,0,39,.LM16-.LFBB4
+ 205               	.LM16:
+ 206 001e 8823      		tst r24
+ 207 0020 01F0      		breq .L6
+ 208 0022 8130      		cpi r24,lo8(1)
+ 209 0024 01F4      		brne .L11
+  40:source/drivers/motors.c ****     case 0: {
+  41:source/drivers/motors.c ****       // LEFT BANK: Stop
+  42:source/drivers/motors.c ****       PORTB &= ~(1<<PORTB1);
+  43:source/drivers/motors.c ****       PORTB &= ~(1<<PORTB0);
+  44:source/drivers/motors.c **** 
+  45:source/drivers/motors.c ****       // RIGHT BANK: Forward
+  46:source/drivers/motors.c ****       PORTD |=  (1<<PORTD4);
+  47:source/drivers/motors.c ****       PORTD &= ~(1<<PORTD2);
+  48:source/drivers/motors.c ****       break;
+  49:source/drivers/motors.c ****     }
+  50:source/drivers/motors.c ****     case 1: {
+  51:source/drivers/motors.c ****       // LEFT BANK: Forward
+  52:source/drivers/motors.c ****       PORTB |=  (1<<PORTB1);
+ 210               		.stabn	68,0,52,.LM17-.LFBB4
+ 211               	.LM17:
+ 212 0026 299A      		sbi 0x5,1
+  53:source/drivers/motors.c ****       PORTB &= ~(1<<PORTB0);
+ 213               		.stabn	68,0,53,.LM18-.LFBB4
+ 214               	.LM18:
+ 215 0028 2898      		cbi 0x5,0
+  54:source/drivers/motors.c **** 
+  55:source/drivers/motors.c ****       // RIGHT BANK: Stop
+  56:source/drivers/motors.c ****       PORTD &= ~(1<<PORTD2);
+ 216               		.stabn	68,0,56,.LM19-.LFBB4
+ 217               	.LM19:
+ 218 002a 5A98      		cbi 0xb,2
+  57:source/drivers/motors.c ****       PORTD &= ~(1<<PORTD4);
+ 219               		.stabn	68,0,57,.LM20-.LFBB4
+ 220               	.LM20:
+ 221 002c 5C98      		cbi 0xb,4
+  58:source/drivers/motors.c ****       break;
+ 222               		.stabn	68,0,58,.LM21-.LFBB4
+ 223               	.LM21:
+ 224 002e 0895      		ret
+ 225               	.L6:
+  42:source/drivers/motors.c ****       PORTB &= ~(1<<PORTB0);
+ 226               		.stabn	68,0,42,.LM22-.LFBB4
+ 227               	.LM22:
+ 228 0030 2998      		cbi 0x5,1
+  43:source/drivers/motors.c **** 
+ 229               		.stabn	68,0,43,.LM23-.LFBB4
+ 230               	.LM23:
+ 231 0032 2898      		cbi 0x5,0
+  46:source/drivers/motors.c ****       PORTD &= ~(1<<PORTD2);
+ 232               		.stabn	68,0,46,.LM24-.LFBB4
+ 233               	.LM24:
+ 234 0034 5C9A      		sbi 0xb,4
+  47:source/drivers/motors.c ****       break;
+ 235               		.stabn	68,0,47,.LM25-.LFBB4
+ 236               	.LM25:
+ 237 0036 5A98      		cbi 0xb,2
+  48:source/drivers/motors.c ****     }
+ 238               		.stabn	68,0,48,.LM26-.LFBB4
+ 239               	.LM26:
+ 240 0038 0895      		ret
+ 241               	.L11:
+  59:source/drivers/motors.c ****     }
+  60:source/drivers/motors.c ****     default: {
+  61:source/drivers/motors.c ****       stop();
+ 242               		.stabn	68,0,61,.LM27-.LFBB4
+ 243               	.LM27:
+ 244 003a 0C94 0000 		jmp stop
+ 245               		.size	turn, .-turn
+ 246               	.Lscope4:
+ 247               		.stabs	"",36,0,0,.Lscope4-.LFBB4
+ 248               		.stabd	78,0,0
+ 249               		.stabs	"go:F(0,49)",36,0,67,go
+ 250               		.stabs	"speed:P(0,13)",64,0,67,24
+ 251               	.global	go
+ 252               		.type	go, @function
+ 253               	go:
+ 254               		.stabd	46,0,0
+  62:source/drivers/motors.c ****       break;
+  63:source/drivers/motors.c ****     }
+  64:source/drivers/motors.c ****   }
+  65:source/drivers/motors.c **** }
+  66:source/drivers/motors.c **** 
+  67:source/drivers/motors.c **** void go(unsigned char speed) {
+ 255               		.stabn	68,0,67,.LM28-.LFBB5
+ 256               	.LM28:
+ 257               	.LFBB5:
+ 258               	/* prologue: function */
+ 259               	/* frame size = 0 */
+ 260               	/* stack size = 0 */
+ 261               	.L__stack_usage = 0
+  68:source/drivers/motors.c ****   // Set dutyCycle to pre determined amounts. BOT movements are limited.
+  69:source/drivers/motors.c ****   switch (speed) {
+ 262               		.stabn	68,0,69,.LM29-.LFBB5
+ 263               	.LM29:
+ 264 003e 8130      		cpi r24,lo8(1)
+ 265 0040 01F0      		breq .L14
+ 266 0042 00F0      		brlo .L15
+ 267 0044 8230      		cpi r24,lo8(2)
+ 268 0046 01F4      		brne .L20
+  70:source/drivers/motors.c ****     case 0:{
+  71:source/drivers/motors.c ****       OCR2A = round((60.00/100.00)*250.00);
+  72:source/drivers/motors.c ****       OCR2B = round((60.00/100.00)*250.00);
+  73:source/drivers/motors.c ****       break;
+  74:source/drivers/motors.c ****     }
+  75:source/drivers/motors.c ****     case 1: {
+  76:source/drivers/motors.c ****       OCR2A = round((75.00/100.00)*250.00);
+  77:source/drivers/motors.c ****       OCR2B = round((75.00/100.00)*250.00);
+  78:source/drivers/motors.c ****       break;
+  79:source/drivers/motors.c ****     }
+  80:source/drivers/motors.c ****     case 2: {
+  81:source/drivers/motors.c ****       OCR2A = round((100.00/100.00)*250.00);
+ 269               		.stabn	68,0,81,.LM30-.LFBB5
+ 270               	.LM30:
+ 271 0048 8AEF      		ldi r24,lo8(-6)
+ 272 004a 00C0      		rjmp .L19
+ 273               	.L15:
+  71:source/drivers/motors.c ****       OCR2B = round((60.00/100.00)*250.00);
+ 274               		.stabn	68,0,71,.LM31-.LFBB5
+ 275               	.LM31:
+ 276 004c 86E9      		ldi r24,lo8(-106)
+ 277 004e 00C0      		rjmp .L19
+ 278               	.L14:
+  76:source/drivers/motors.c ****       OCR2B = round((75.00/100.00)*250.00);
+ 279               		.stabn	68,0,76,.LM32-.LFBB5
+ 280               	.LM32:
+ 281 0050 8CEB      		ldi r24,lo8(-68)
+ 282               	.L19:
+ 283               		.stabn	68,0,81,.LM33-.LFBB5
+ 284               	.LM33:
+ 285 0052 8093 B300 		sts 179,r24
+  82:source/drivers/motors.c ****       OCR2B = round((100.00/100.00)*250.00);
+ 286               		.stabn	68,0,82,.LM34-.LFBB5
+ 287               	.LM34:
+ 288 0056 8093 B400 		sts 180,r24
+  83:source/drivers/motors.c ****       break;
+ 289               		.stabn	68,0,83,.LM35-.LFBB5
+ 290               	.LM35:
+ 291 005a 0895      		ret
+ 292               	.L20:
+  84:source/drivers/motors.c ****     }
+  85:source/drivers/motors.c ****     default: {
+  86:source/drivers/motors.c ****       OCR2A = round((0.00/100.00)*250.00);
+ 293               		.stabn	68,0,86,.LM36-.LFBB5
+ 294               	.LM36:
+ 295 005c 1092 B300 		sts 179,__zero_reg__
+  87:source/drivers/motors.c ****       OCR2B = round((0.00/100.00)*250.00);
+ 296               		.stabn	68,0,87,.LM37-.LFBB5
+ 297               	.LM37:
+ 298 0060 1092 B400 		sts 180,__zero_reg__
+ 299 0064 0895      		ret
+ 300               		.size	go, .-go
+ 301               	.Lscope5:
+ 302               		.stabs	"",36,0,0,.Lscope5-.LFBB5
+ 303               		.stabd	78,0,0
+ 304               		.stabs	"motorinit:F(0,49)",36,0,95,motorinit
+ 305               	.global	motorinit
+ 306               		.type	motorinit, @function
+ 307               	motorinit:
+ 308               		.stabd	46,0,0
+  88:source/drivers/motors.c ****       break;
+  89:source/drivers/motors.c ****     }
+  90:source/drivers/motors.c ****   }
+  91:source/drivers/motors.c **** 
+  92:source/drivers/motors.c ****   return;
+  93:source/drivers/motors.c **** }
+  94:source/drivers/motors.c **** 
+  95:source/drivers/motors.c **** void motorinit(void){
+ 309               		.stabn	68,0,95,.LM38-.LFBB6
+ 310               	.LM38:
+ 311               	.LFBB6:
+ 312               	/* prologue: function */
+ 313               	/* frame size = 0 */
+ 314               	/* stack size = 0 */
+ 315               	.L__stack_usage = 0
+  96:source/drivers/motors.c ****   // Configure motorpinout direction for arduino
+  97:source/drivers/motors.c ****   DDRB |= (1<<DDB3) | (1<<DDB1) | (1<<DDB0);
+ 316               		.stabn	68,0,97,.LM39-.LFBB6
+ 317               	.LM39:
+ 318 0066 84B1      		in r24,0x4
+ 319 0068 8B60      		ori r24,lo8(11)
+ 320 006a 84B9      		out 0x4,r24
+  98:source/drivers/motors.c ****   DDRD |= (1<<DDD4) | (1<<DDD3) | (1<<DDD2);
+ 321               		.stabn	68,0,98,.LM40-.LFBB6
+ 322               	.LM40:
+ 323 006c 8AB1      		in r24,0xa
+ 324 006e 8C61      		ori r24,lo8(28)
+ 325 0070 8AB9      		out 0xa,r24
+  99:source/drivers/motors.c **** 
+ 100:source/drivers/motors.c ****   // FREEZE ALL MOTOR FUNCTIONS
+ 101:source/drivers/motors.c ****   stop();
+ 326               		.stabn	68,0,101,.LM41-.LFBB6
+ 327               	.LM41:
+ 328 0072 0E94 0000 		call stop
+ 102:source/drivers/motors.c **** 
+ 103:source/drivers/motors.c ****   // Setup cpu Timer 2 on the arduino to be used for our PWM signal generation
+ 104:source/drivers/motors.c ****   pwmtimer2setup();
+ 329               		.stabn	68,0,104,.LM42-.LFBB6
+ 330               	.LM42:
+ 331 0076 0C94 0000 		jmp pwmtimer2setup
+ 332               		.size	motorinit, .-motorinit
+ 333               	.Lscope6:
+ 334               		.stabs	"",36,0,0,.Lscope6-.LFBB6
+ 335               		.stabd	78,0,0
+ 336               		.stabs	"",100,0,0,.Letext0
+ 337               	.Letext0:
+ 338               		.ident	"GCC: (GNU) 5.4.0"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 motors.c
+     /tmp/ccR2kKv8.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccR2kKv8.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccR2kKv8.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccR2kKv8.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccR2kKv8.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccR2kKv8.s:107    .text:0000000000000000 stop
+     /tmp/ccR2kKv8.s:136    .text:000000000000000a forward
+     /tmp/ccR2kKv8.s:165    .text:0000000000000014 reverse
+     /tmp/ccR2kKv8.s:195    .text:000000000000001e turn
+     /tmp/ccR2kKv8.s:253    .text:000000000000003e go
+     /tmp/ccR2kKv8.s:307    .text:0000000000000066 motorinit
+
+UNDEFINED SYMBOLS
+pwmtimer2setup

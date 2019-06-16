@@ -1,11 +1,9 @@
-/*******************************************************************************
-* main.c                                                                       *
-* ----------                                                                   *
-* RIOS implementation for the project.                                         *
-*                                                                              *
-* Author: Ravindra, Manu                                                       *
-* Date  : 21 May 2019                                                          *
-********************************************************************************/
+#ifndef LIDARBOT_H_
+#define LIDARBOT_H_
+
 #include <avr/io.h>
+#include "os_rios/cpufunctions.h"
+#include "drivers/motors.h"
 #include "drivers/UART_driver.h"
-#include "os_rios/scheduler.h"
+
+#endif

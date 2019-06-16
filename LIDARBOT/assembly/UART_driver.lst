@@ -1,0 +1,515 @@
+   1               		.file	"UART_driver.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.stabs	"/home/manu/c/Arduino/LIDARBOT/",100,0,2,.Ltext0
+   8               		.stabs	"source/drivers/UART_driver.c",100,0,2,.Ltext0
+   9               		.text
+  10               	.Ltext0:
+  11               		.stabs	"gcc2_compiled.",60,0,0,0
+  12               		.stabs	"int:t(0,1)=r(0,1);-32768;32767;",128,0,0,0
+  13               		.stabs	"char:t(0,2)=r(0,2);0;127;",128,0,0,0
+  14               		.stabs	"long int:t(0,3)=@s32;r(0,3);020000000000;017777777777;",128,0,0,0
+  15               		.stabs	"unsigned int:t(0,4)=r(0,4);0;0177777;",128,0,0,0
+  16               		.stabs	"long unsigned int:t(0,5)=@s32;r(0,5);0;037777777777;",128,0,0,0
+  17               		.stabs	"__int128:t(0,6)=@s128;r(0,6);02000000000000000000000000000000000000000000;0177777777777777
+  18               		.stabs	"__int128 unsigned:t(0,7)=@s128;r(0,7);0;03777777777777777777777777777777777777777777;",128
+  19               		.stabs	"long long int:t(0,8)=@s64;r(0,8);01000000000000000000000;00777777777777777777777;",128,0,0
+  20               		.stabs	"long long unsigned int:t(0,9)=@s64;r(0,9);0;01777777777777777777777;",128,0,0,0
+  21               		.stabs	"short int:t(0,10)=r(0,10);-32768;32767;",128,0,0,0
+  22               		.stabs	"short unsigned int:t(0,11)=r(0,11);0;0177777;",128,0,0,0
+  23               		.stabs	"signed char:t(0,12)=@s8;r(0,12);-128;127;",128,0,0,0
+  24               		.stabs	"unsigned char:t(0,13)=@s8;r(0,13);0;255;",128,0,0,0
+  25               		.stabs	"float:t(0,14)=r(0,1);4;0;",128,0,0,0
+  26               		.stabs	"double:t(0,15)=r(0,1);4;0;",128,0,0,0
+  27               		.stabs	"long double:t(0,16)=r(0,1);4;0;",128,0,0,0
+  28               		.stabs	"short _Fract:t(0,17)=r(0,1);1;0;",128,0,0,0
+  29               		.stabs	"_Fract:t(0,18)=r(0,1);2;0;",128,0,0,0
+  30               		.stabs	"long _Fract:t(0,19)=r(0,1);4;0;",128,0,0,0
+  31               		.stabs	"long long _Fract:t(0,20)=r(0,1);8;0;",128,0,0,0
+  32               		.stabs	"unsigned short _Fract:t(0,21)=r(0,1);1;0;",128,0,0,0
+  33               		.stabs	"unsigned _Fract:t(0,22)=r(0,1);2;0;",128,0,0,0
+  34               		.stabs	"unsigned long _Fract:t(0,23)=r(0,1);4;0;",128,0,0,0
+  35               		.stabs	"unsigned long long _Fract:t(0,24)=r(0,1);8;0;",128,0,0,0
+  36               		.stabs	"_Sat short _Fract:t(0,25)=r(0,1);1;0;",128,0,0,0
+  37               		.stabs	"_Sat _Fract:t(0,26)=r(0,1);2;0;",128,0,0,0
+  38               		.stabs	"_Sat long _Fract:t(0,27)=r(0,1);4;0;",128,0,0,0
+  39               		.stabs	"_Sat long long _Fract:t(0,28)=r(0,1);8;0;",128,0,0,0
+  40               		.stabs	"_Sat unsigned short _Fract:t(0,29)=r(0,1);1;0;",128,0,0,0
+  41               		.stabs	"_Sat unsigned _Fract:t(0,30)=r(0,1);2;0;",128,0,0,0
+  42               		.stabs	"_Sat unsigned long _Fract:t(0,31)=r(0,1);4;0;",128,0,0,0
+  43               		.stabs	"_Sat unsigned long long _Fract:t(0,32)=r(0,1);8;0;",128,0,0,0
+  44               		.stabs	"short _Accum:t(0,33)=r(0,1);2;0;",128,0,0,0
+  45               		.stabs	"_Accum:t(0,34)=r(0,1);4;0;",128,0,0,0
+  46               		.stabs	"long _Accum:t(0,35)=r(0,1);8;0;",128,0,0,0
+  47               		.stabs	"long long _Accum:t(0,36)=r(0,1);8;0;",128,0,0,0
+  48               		.stabs	"unsigned short _Accum:t(0,37)=r(0,1);2;0;",128,0,0,0
+  49               		.stabs	"unsigned _Accum:t(0,38)=r(0,1);4;0;",128,0,0,0
+  50               		.stabs	"unsigned long _Accum:t(0,39)=r(0,1);8;0;",128,0,0,0
+  51               		.stabs	"unsigned long long _Accum:t(0,40)=r(0,1);8;0;",128,0,0,0
+  52               		.stabs	"_Sat short _Accum:t(0,41)=r(0,1);2;0;",128,0,0,0
+  53               		.stabs	"_Sat _Accum:t(0,42)=r(0,1);4;0;",128,0,0,0
+  54               		.stabs	"_Sat long _Accum:t(0,43)=r(0,1);8;0;",128,0,0,0
+  55               		.stabs	"_Sat long long _Accum:t(0,44)=r(0,1);8;0;",128,0,0,0
+  56               		.stabs	"_Sat unsigned short _Accum:t(0,45)=r(0,1);2;0;",128,0,0,0
+  57               		.stabs	"_Sat unsigned _Accum:t(0,46)=r(0,1);4;0;",128,0,0,0
+  58               		.stabs	"_Sat unsigned long _Accum:t(0,47)=r(0,1);8;0;",128,0,0,0
+  59               		.stabs	"_Sat unsigned long long _Accum:t(0,48)=r(0,1);8;0;",128,0,0,0
+  60               		.stabs	"void:t(0,49)=(0,49)",128,0,0,0
+  61               		.stabs	"source/drivers/UART_driver.h",130,0,0,0
+  62               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/avr/io.h",130,0,0,0
+  63               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/avr/sfr_defs.h",130,0,0,0
+  64               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/inttypes.h",130,0,0,0
+  65               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/stdint.h",130,0,0,0
+  66               		.stabs	"int8_t:t(5,1)=(0,12)",128,0,125,0
+  67               		.stabs	"uint8_t:t(5,2)=(0,13)",128,0,126,0
+  68               		.stabs	"int16_t:t(5,3)=(0,1)",128,0,127,0
+  69               		.stabs	"uint16_t:t(5,4)=(0,4)",128,0,128,0
+  70               		.stabs	"int32_t:t(5,5)=(0,3)",128,0,129,0
+  71               		.stabs	"uint32_t:t(5,6)=(0,5)",128,0,130,0
+  72               		.stabs	"int64_t:t(5,7)=(0,8)",128,0,132,0
+  73               		.stabs	"uint64_t:t(5,8)=(0,9)",128,0,133,0
+  74               		.stabs	"intptr_t:t(5,9)=(5,3)",128,0,146,0
+  75               		.stabs	"uintptr_t:t(5,10)=(5,4)",128,0,151,0
+  76               		.stabs	"int_least8_t:t(5,11)=(5,1)",128,0,163,0
+  77               		.stabs	"uint_least8_t:t(5,12)=(5,2)",128,0,168,0
+  78               		.stabs	"int_least16_t:t(5,13)=(5,3)",128,0,173,0
+  79               		.stabs	"uint_least16_t:t(5,14)=(5,4)",128,0,178,0
+  80               		.stabs	"int_least32_t:t(5,15)=(5,5)",128,0,183,0
+  81               		.stabs	"uint_least32_t:t(5,16)=(5,6)",128,0,188,0
+  82               		.stabs	"int_least64_t:t(5,17)=(5,7)",128,0,196,0
+  83               		.stabs	"uint_least64_t:t(5,18)=(5,8)",128,0,203,0
+  84               		.stabs	"int_fast8_t:t(5,19)=(5,1)",128,0,217,0
+  85               		.stabs	"uint_fast8_t:t(5,20)=(5,2)",128,0,222,0
+  86               		.stabs	"int_fast16_t:t(5,21)=(5,3)",128,0,227,0
+  87               		.stabs	"uint_fast16_t:t(5,22)=(5,4)",128,0,232,0
+  88               		.stabs	"int_fast32_t:t(5,23)=(5,5)",128,0,237,0
+  89               		.stabs	"uint_fast32_t:t(5,24)=(5,6)",128,0,242,0
+  90               		.stabs	"int_fast64_t:t(5,25)=(5,7)",128,0,250,0
+  91               		.stabs	"uint_fast64_t:t(5,26)=(5,8)",128,0,257,0
+  92               		.stabs	"intmax_t:t(5,27)=(5,7)",128,0,277,0
+  93               		.stabs	"uintmax_t:t(5,28)=(5,8)",128,0,282,0
+  94               		.stabn	162,0,0,0
+  95               		.stabs	"int_farptr_t:t(4,1)=(5,5)",128,0,77,0
+  96               		.stabs	"uint_farptr_t:t(4,2)=(5,6)",128,0,81,0
+  97               		.stabn	162,0,0,0
+  98               		.stabn	162,0,0,0
+  99               		.stabs	"/home/manu/c/Arduino/LIDARBOT/libraries/avr/fuse.h",130,0,0,0
+ 100               		.stabs	"__fuse_t:t(6,1)=(6,2)=s3low:(0,13),0,8;high:(0,13),8,8;extended:(0,13),16,8;;",128,0,244,0
+ 101               		.stabn	162,0,0,0
+ 102               		.stabn	162,0,0,0
+ 103               		.stabn	162,0,0,0
+ 104               		.stabs	"LIDARMODULESTRUCT:T(0,50)=s7distLow:(0,13),0,8;distHigh:(0,13),8,8;strengthLow:(0,13),16,8
+ 105               		.stabs	"LIDAR:t(0,51)=(0,50)",128,0,24,0
+ 106               		.stabs	"LIDARDATASTRUCT:T(0,52)=s3distance:(0,4),0,16;dataIsGood:(0,13),16,8;;",128,0,0,0
+ 107               		.stabs	"LIDAR_DATA:t(0,53)=(0,52)",128,0,31,0
+ 108               		.stabs	"validateChecksum:F(0,1)",36,0,58,validateChecksum
+ 109               	.global	validateChecksum
+ 110               		.type	validateChecksum, @function
+ 111               	validateChecksum:
+ 112               		.stabd	46,0,0
+   1:source/drivers/UART_driver.c **** #include "UART_driver.h"
+   2:source/drivers/UART_driver.c **** 
+   3:source/drivers/UART_driver.c **** // tfmini special command matrix defines
+   4:source/drivers/UART_driver.c **** #define ENTERCONFIG 0
+   5:source/drivers/UART_driver.c **** #define STANDARDDATAFORMAT 1
+   6:source/drivers/UART_driver.c **** #define OUTPUTREPRATE_10MS 2
+   7:source/drivers/UART_driver.c **** #define DISTANCEUNITS_CM 3
+   8:source/drivers/UART_driver.c **** #define DISTANCEMODE_LONG 4
+   9:source/drivers/UART_driver.c **** #define BAUDRATE_9600 5
+  10:source/drivers/UART_driver.c **** #define RESET 6
+  11:source/drivers/UART_driver.c **** 
+  12:source/drivers/UART_driver.c **** // tfmini head byte
+  13:source/drivers/UART_driver.c **** #define HEAD 0x59
+  14:source/drivers/UART_driver.c **** 
+  15:source/drivers/UART_driver.c **** // We only care about the useful info in the dataframe
+  16:source/drivers/UART_driver.c **** typedef struct LIDARMODULESTRUCT {
+  17:source/drivers/UART_driver.c ****   unsigned char distLow;
+  18:source/drivers/UART_driver.c ****   unsigned char distHigh;
+  19:source/drivers/UART_driver.c ****   unsigned char strengthLow;
+  20:source/drivers/UART_driver.c ****   unsigned char strengthHigh;
+  21:source/drivers/UART_driver.c ****   unsigned char mode;
+  22:source/drivers/UART_driver.c ****   unsigned char spare;
+  23:source/drivers/UART_driver.c ****   unsigned char checksum;
+  24:source/drivers/UART_driver.c **** } LIDAR;
+  25:source/drivers/UART_driver.c **** 
+  26:source/drivers/UART_driver.c **** LIDAR tfmini;
+  27:source/drivers/UART_driver.c **** 
+  28:source/drivers/UART_driver.c **** typedef struct LIDARDATASTRUCT {
+  29:source/drivers/UART_driver.c ****   unsigned int distance;
+  30:source/drivers/UART_driver.c ****   unsigned char dataIsGood;
+  31:source/drivers/UART_driver.c **** } LIDAR_DATA;
+  32:source/drivers/UART_driver.c **** 
+  33:source/drivers/UART_driver.c **** LIDAR_DATA objectProximity;
+  34:source/drivers/UART_driver.c **** 
+  35:source/drivers/UART_driver.c **** 
+  36:source/drivers/UART_driver.c **** /* The tfmini has an 8 byte command and 9 byte output as described on the
+  37:source/drivers/UART_driver.c ****  * datasheet. Lets build a command matrix. We will make a 2D array of commands
+  38:source/drivers/UART_driver.c ****  * we need borrowed from the datasheet.
+  39:source/drivers/UART_driver.c ****  */
+  40:source/drivers/UART_driver.c **** 
+  41:source/drivers/UART_driver.c **** unsigned char command[7][9] = {
+  42:source/drivers/UART_driver.c ****   // Configuration mode entry command
+  43:source/drivers/UART_driver.c ****   {0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x01, 0x02},
+  44:source/drivers/UART_driver.c ****   // Output data format command
+  45:source/drivers/UART_driver.c ****   {0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x01, 0x06},
+  46:source/drivers/UART_driver.c ****   // Output rep rate (10 ms)
+  47:source/drivers/UART_driver.c ****   {0x42, 0x57, 0x02, 0x00, 0x0A, 0x00, 0x00, 0x07},
+  48:source/drivers/UART_driver.c ****   // Unit of distance (cm)
+  49:source/drivers/UART_driver.c ****   {0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x01, 0x0A},
+  50:source/drivers/UART_driver.c ****   // Distance mode: Long Distance
+  51:source/drivers/UART_driver.c ****   {0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x07, 0x11},
+  52:source/drivers/UART_driver.c ****   // Set baud rate (9600)
+  53:source/drivers/UART_driver.c ****   {0x42, 0x57, 0x02, 0x00, 0x00, 0x00, 0x00, 0x08},
+  54:source/drivers/UART_driver.c ****   // RESET. DONE MESSED UP.
+  55:source/drivers/UART_driver.c ****   {0x42, 0x57, 0x02, 0x00, 0xFF, 0xFF, 0xFF, 0xFF}
+  56:source/drivers/UART_driver.c **** };
+  57:source/drivers/UART_driver.c **** 
+  58:source/drivers/UART_driver.c **** int validateChecksum(){
+ 113               		.stabn	68,0,58,.LM0-.LFBB1
+ 114               	.LM0:
+ 115               	.LFBB1:
+ 116               	/* prologue: function */
+ 117               	/* frame size = 0 */
+ 118               	/* stack size = 0 */
+ 119               	.L__stack_usage = 0
+ 120 0000 8091 0000 		lds r24,tfmini
+ 121 0004 2091 0000 		lds r18,tfmini+1
+ 122 0008 30E0      		ldi r19,0
+ 123 000a 280F      		add r18,r24
+ 124 000c 311D      		adc r19,__zero_reg__
+ 125 000e 8091 0000 		lds r24,tfmini+2
+ 126 0012 280F      		add r18,r24
+ 127 0014 311D      		adc r19,__zero_reg__
+ 128 0016 8091 0000 		lds r24,tfmini+3
+ 129 001a 280F      		add r18,r24
+ 130 001c 311D      		adc r19,__zero_reg__
+ 131 001e 8091 0000 		lds r24,tfmini+4
+ 132 0022 280F      		add r18,r24
+ 133 0024 311D      		adc r19,__zero_reg__
+ 134 0026 8091 0000 		lds r24,tfmini+5
+ 135 002a 280F      		add r18,r24
+ 136 002c 311D      		adc r19,__zero_reg__
+ 137 002e 4091 0000 		lds r20,tfmini+6
+ 138 0032 50E0      		ldi r21,0
+ 139 0034 81E0      		ldi r24,lo8(1)
+ 140 0036 90E0      		ldi r25,0
+ 141 0038 2417      		cp r18,r20
+ 142 003a 3507      		cpc r19,r21
+ 143 003c 01F0      		breq .L2
+ 144 003e 80E0      		ldi r24,0
+ 145 0040 90E0      		ldi r25,0
+ 146               	.L2:
+  59:source/drivers/UART_driver.c ****   if (tfmini.checksum == (tfmini.distLow + tfmini.distHigh + tfmini.strengthLow + tfmini.strengthHi
+  60:source/drivers/UART_driver.c ****     return 1;
+  61:source/drivers/UART_driver.c ****   }
+  62:source/drivers/UART_driver.c ****   else
+  63:source/drivers/UART_driver.c ****   {
+  64:source/drivers/UART_driver.c ****     return 0;
+  65:source/drivers/UART_driver.c ****   }
+  66:source/drivers/UART_driver.c **** }
+ 147               		.stabn	68,0,66,.LM1-.LFBB1
+ 148               	.LM1:
+ 149 0042 0895      		ret
+ 150               		.size	validateChecksum, .-validateChecksum
+ 151               	.Lscope1:
+ 152               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 153               		.stabd	78,0,0
+ 154               		.stabs	"readLIDAR:F(0,49)",36,0,69,readLIDAR
+ 155               	.global	readLIDAR
+ 156               		.type	readLIDAR, @function
+ 157               	readLIDAR:
+ 158               		.stabd	46,0,0
+  67:source/drivers/UART_driver.c **** 
+  68:source/drivers/UART_driver.c **** 
+  69:source/drivers/UART_driver.c **** void readLIDAR(){
+ 159               		.stabn	68,0,69,.LM2-.LFBB2
+ 160               	.LM2:
+ 161               	.LFBB2:
+ 162               	/* prologue: function */
+ 163               	/* frame size = 0 */
+ 164               	/* stack size = 0 */
+ 165               	.L__stack_usage = 0
+  70:source/drivers/UART_driver.c ****   // Check head and store data
+  71:source/drivers/UART_driver.c ****   if (UART_Receive() == HEAD) {
+ 166               		.stabn	68,0,71,.LM3-.LFBB2
+ 167               	.LM3:
+ 168 0044 0E94 0000 		call UART_Receive
+ 169 0048 8935      		cpi r24,lo8(89)
+ 170 004a 01F0      		breq .+2
+ 171 004c 00C0      		rjmp .L4
+  72:source/drivers/UART_driver.c ****     if (UART_Receive() == HEAD) {
+ 172               		.stabn	68,0,72,.LM4-.LFBB2
+ 173               	.LM4:
+ 174 004e 0E94 0000 		call UART_Receive
+ 175 0052 8935      		cpi r24,lo8(89)
+ 176 0054 01F0      		breq .+2
+ 177 0056 00C0      		rjmp .L4
+  73:source/drivers/UART_driver.c ****       tfmini.distLow = UART_Receive();
+ 178               		.stabn	68,0,73,.LM5-.LFBB2
+ 179               	.LM5:
+ 180 0058 0E94 0000 		call UART_Receive
+ 181 005c 8093 0000 		sts tfmini,r24
+  74:source/drivers/UART_driver.c ****       tfmini.distHigh = UART_Receive();
+ 182               		.stabn	68,0,74,.LM6-.LFBB2
+ 183               	.LM6:
+ 184 0060 0E94 0000 		call UART_Receive
+ 185 0064 8093 0000 		sts tfmini+1,r24
+  75:source/drivers/UART_driver.c ****       tfmini.strengthLow = UART_Receive();
+ 186               		.stabn	68,0,75,.LM7-.LFBB2
+ 187               	.LM7:
+ 188 0068 0E94 0000 		call UART_Receive
+ 189 006c 8093 0000 		sts tfmini+2,r24
+  76:source/drivers/UART_driver.c ****       tfmini.strengthHigh = UART_Receive();
+ 190               		.stabn	68,0,76,.LM8-.LFBB2
+ 191               	.LM8:
+ 192 0070 0E94 0000 		call UART_Receive
+ 193 0074 8093 0000 		sts tfmini+3,r24
+  77:source/drivers/UART_driver.c ****       tfmini.mode = UART_Receive();
+ 194               		.stabn	68,0,77,.LM9-.LFBB2
+ 195               	.LM9:
+ 196 0078 0E94 0000 		call UART_Receive
+ 197 007c 8093 0000 		sts tfmini+4,r24
+  78:source/drivers/UART_driver.c ****       tfmini.spare = UART_Receive();
+ 198               		.stabn	68,0,78,.LM10-.LFBB2
+ 199               	.LM10:
+ 200 0080 0E94 0000 		call UART_Receive
+ 201 0084 8093 0000 		sts tfmini+5,r24
+  79:source/drivers/UART_driver.c ****       tfmini.checksum = UART_Receive();
+ 202               		.stabn	68,0,79,.LM11-.LFBB2
+ 203               	.LM11:
+ 204 0088 0E94 0000 		call UART_Receive
+ 205 008c 8093 0000 		sts tfmini+6,r24
+  80:source/drivers/UART_driver.c ****       if (validateChecksum()) {
+ 206               		.stabn	68,0,80,.LM12-.LFBB2
+ 207               	.LM12:
+ 208 0090 0E94 0000 		call validateChecksum
+ 209 0094 892B      		or r24,r25
+ 210 0096 01F0      		breq .L4
+ 211               	.LBB2:
+  81:source/drivers/UART_driver.c ****         unsigned int distance = (tfmini.distHigh<<8) + tfmini.distLow;
+ 212               		.stabn	68,0,81,.LM13-.LFBB2
+ 213               	.LM13:
+ 214 0098 2091 0000 		lds r18,tfmini+1
+ 215 009c 30E0      		ldi r19,0
+ 216 009e 322F      		mov r19,r18
+ 217 00a0 2227      		clr r18
+ 218 00a2 8091 0000 		lds r24,tfmini
+ 219 00a6 280F      		add r18,r24
+ 220 00a8 311D      		adc r19,__zero_reg__
+  82:source/drivers/UART_driver.c ****         unsigned int strength = (tfmini.strengthHigh<<8) + tfmini.strengthLow;
+ 221               		.stabn	68,0,82,.LM14-.LFBB2
+ 222               	.LM14:
+ 223 00aa 8091 0000 		lds r24,tfmini+3
+ 224 00ae 90E0      		ldi r25,0
+ 225 00b0 982F      		mov r25,r24
+ 226 00b2 8827      		clr r24
+ 227 00b4 4091 0000 		lds r20,tfmini+2
+ 228 00b8 840F      		add r24,r20
+ 229 00ba 911D      		adc r25,__zero_reg__
+  83:source/drivers/UART_driver.c ****         // Data is good, update distance if not FF FF and strong
+  84:source/drivers/UART_driver.c ****         if ((distance == 65535) || strength < 20 || strength > 2000) {
+ 230               		.stabn	68,0,84,.LM15-.LFBB2
+ 231               	.LM15:
+ 232 00bc 2F3F      		cpi r18,-1
+ 233 00be 4FEF      		ldi r20,-1
+ 234 00c0 3407      		cpc r19,r20
+ 235 00c2 01F0      		breq .L8
+ 236               		.stabn	68,0,84,.LM16-.LFBB2
+ 237               	.LM16:
+ 238 00c4 4497      		sbiw r24,20
+ 239 00c6 8D3B      		cpi r24,-67
+ 240 00c8 9740      		sbci r25,7
+ 241 00ca 00F0      		brlo .L9
+ 242               	.L8:
+  85:source/drivers/UART_driver.c ****           objectProximity.dataIsGood = 0;
+ 243               		.stabn	68,0,85,.LM17-.LFBB2
+ 244               	.LM17:
+ 245 00cc 1092 0000 		sts objectProximity+2,__zero_reg__
+  86:source/drivers/UART_driver.c ****           return;
+ 246               		.stabn	68,0,86,.LM18-.LFBB2
+ 247               	.LM18:
+ 248 00d0 0895      		ret
+ 249               	.L9:
+  87:source/drivers/UART_driver.c ****         }
+  88:source/drivers/UART_driver.c ****         objectProximity.distance = distance;
+ 250               		.stabn	68,0,88,.LM19-.LFBB2
+ 251               	.LM19:
+ 252 00d2 3093 0000 		sts objectProximity+1,r19
+ 253 00d6 2093 0000 		sts objectProximity,r18
+  89:source/drivers/UART_driver.c ****         objectProximity.dataIsGood = 1;
+ 254               		.stabn	68,0,89,.LM20-.LFBB2
+ 255               	.LM20:
+ 256 00da 81E0      		ldi r24,lo8(1)
+ 257 00dc 8093 0000 		sts objectProximity+2,r24
+ 258               	.L4:
+ 259 00e0 0895      		ret
+ 260               	.LBE2:
+ 261               		.size	readLIDAR, .-readLIDAR
+ 262               		.stabs	"distance:r(0,4)",64,0,81,18
+ 263               		.stabn	192,0,0,.LBB2-.LFBB2
+ 264               		.stabn	224,0,0,.LBE2-.LFBB2
+ 265               	.Lscope2:
+ 266               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 267               		.stabd	78,0,0
+ 268               		.stabs	"UART_init:F(0,49)",36,0,97,UART_init
+ 269               	.global	UART_init
+ 270               		.type	UART_init, @function
+ 271               	UART_init:
+ 272               		.stabd	46,0,0
+  90:source/drivers/UART_driver.c ****         return;
+  91:source/drivers/UART_driver.c ****       }
+  92:source/drivers/UART_driver.c ****     }
+  93:source/drivers/UART_driver.c ****   }
+  94:source/drivers/UART_driver.c ****   return;
+  95:source/drivers/UART_driver.c **** }
+  96:source/drivers/UART_driver.c **** 
+  97:source/drivers/UART_driver.c **** void UART_init(void){
+ 273               		.stabn	68,0,97,.LM21-.LFBB3
+ 274               	.LM21:
+ 275               	.LFBB3:
+ 276 00e2 CF93      		push r28
+ 277 00e4 DF93      		push r29
+ 278               	/* prologue: function */
+ 279               	/* frame size = 0 */
+ 280               	/* stack size = 2 */
+ 281               	.L__stack_usage = 2
+  98:source/drivers/UART_driver.c ****   // Set up cpu for UART
+  99:source/drivers/UART_driver.c ****   UART_Initialize();
+ 282               		.stabn	68,0,99,.LM22-.LFBB3
+ 283               	.LM22:
+ 284 00e6 0E94 0000 		call UART_Initialize
+ 285 00ea C0E0      		ldi r28,lo8(command+45)
+ 286 00ec D0E0      		ldi r29,hi8(command+45)
+ 287               	.L17:
+ 288               	.LBB3:
+ 100:source/drivers/UART_driver.c **** 
+ 101:source/drivers/UART_driver.c ****   // We shall configure the LIDAR for operation
+ 102:source/drivers/UART_driver.c ****   for (int i = 0; i < 8; i++) { // Set Baud Rate
+ 103:source/drivers/UART_driver.c ****     UART_Transmit(command[BAUDRATE_9600][i]);
+ 289               		.stabn	68,0,103,.LM23-.LFBB3
+ 290               	.LM23:
+ 291 00ee 8991      		ld r24,Y+
+ 292 00f0 0E94 0000 		call UART_Transmit
+ 102:source/drivers/UART_driver.c ****     UART_Transmit(command[BAUDRATE_9600][i]);
+ 293               		.stabn	68,0,102,.LM24-.LFBB3
+ 294               	.LM24:
+ 295 00f4 80E0      		ldi r24,hi8(command+53)
+ 296 00f6 C030      		cpi r28,lo8(command+53)
+ 297 00f8 D807      		cpc r29,r24
+ 298 00fa 01F4      		brne .L17
+ 299               	/* epilogue start */
+ 300               	.LBE3:
+ 104:source/drivers/UART_driver.c ****   }
+ 105:source/drivers/UART_driver.c ****   return;
+ 106:source/drivers/UART_driver.c **** }
+ 301               		.stabn	68,0,106,.LM25-.LFBB3
+ 302               	.LM25:
+ 303 00fc DF91      		pop r29
+ 304 00fe CF91      		pop r28
+ 305 0100 0895      		ret
+ 306               		.size	UART_init, .-UART_init
+ 307               	.Lscope3:
+ 308               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 309               		.stabd	78,0,0
+ 310               	.global	command
+ 311               		.data
+ 312               		.type	command, @object
+ 313               		.size	command, 63
+ 314               	command:
+ 315 0000 42        		.byte	66
+ 316 0001 57        		.byte	87
+ 317 0002 02        		.byte	2
+ 318 0003 00        		.byte	0
+ 319 0004 00        		.byte	0
+ 320 0005 00        		.byte	0
+ 321 0006 01        		.byte	1
+ 322 0007 02        		.byte	2
+ 323 0008 00        		.zero	1
+ 324 0009 42        		.byte	66
+ 325 000a 57        		.byte	87
+ 326 000b 02        		.byte	2
+ 327 000c 00        		.byte	0
+ 328 000d 00        		.byte	0
+ 329 000e 00        		.byte	0
+ 330 000f 01        		.byte	1
+ 331 0010 06        		.byte	6
+ 332 0011 00        		.zero	1
+ 333 0012 42        		.byte	66
+ 334 0013 57        		.byte	87
+ 335 0014 02        		.byte	2
+ 336 0015 00        		.byte	0
+ 337 0016 0A        		.byte	10
+ 338 0017 00        		.byte	0
+ 339 0018 00        		.byte	0
+ 340 0019 07        		.byte	7
+ 341 001a 00        		.zero	1
+ 342 001b 42        		.byte	66
+ 343 001c 57        		.byte	87
+ 344 001d 02        		.byte	2
+ 345 001e 00        		.byte	0
+ 346 001f 00        		.byte	0
+ 347 0020 00        		.byte	0
+ 348 0021 01        		.byte	1
+ 349 0022 0A        		.byte	10
+ 350 0023 00        		.zero	1
+ 351 0024 42        		.byte	66
+ 352 0025 57        		.byte	87
+ 353 0026 02        		.byte	2
+ 354 0027 00        		.byte	0
+ 355 0028 00        		.byte	0
+ 356 0029 00        		.byte	0
+ 357 002a 07        		.byte	7
+ 358 002b 11        		.byte	17
+ 359 002c 00        		.zero	1
+ 360 002d 42        		.byte	66
+ 361 002e 57        		.byte	87
+ 362 002f 02        		.byte	2
+ 363 0030 00        		.byte	0
+ 364 0031 00        		.byte	0
+ 365 0032 00        		.byte	0
+ 366 0033 00        		.byte	0
+ 367 0034 08        		.byte	8
+ 368 0035 00        		.zero	1
+ 369 0036 42        		.byte	66
+ 370 0037 57        		.byte	87
+ 371 0038 02        		.byte	2
+ 372 0039 00        		.byte	0
+ 373 003a FF        		.byte	-1
+ 374 003b FF        		.byte	-1
+ 375 003c FF        		.byte	-1
+ 376 003d FF        		.byte	-1
+ 377 003e 00        		.zero	1
+ 378               		.comm	objectProximity,3,1
+ 379               		.comm	tfmini,7,1
+ 380               		.stabs	"tfmini:G(0,51)",32,0,26,0
+ 381               		.stabs	"objectProximity:G(0,53)",32,0,33,0
+ 382               		.stabs	"command:G(0,54)=ar(0,55)=r(0,55);0;0177777;;0;6;(0,56)=ar(0,55);0;8;(0,13)",32,0,41,0
+ 383               		.text
+ 384               		.stabs	"",100,0,0,.Letext0
+ 385               	.Letext0:
+ 386               		.ident	"GCC: (GNU) 5.4.0"
+ 387               	.global __do_copy_data
+ 388               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 UART_driver.c
+     /tmp/cceaYzzc.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cceaYzzc.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cceaYzzc.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cceaYzzc.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cceaYzzc.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cceaYzzc.s:111    .text:0000000000000000 validateChecksum
+                            *COM*:0000000000000007 tfmini
+     /tmp/cceaYzzc.s:157    .text:0000000000000044 readLIDAR
+                            *COM*:0000000000000003 objectProximity
+     /tmp/cceaYzzc.s:271    .text:00000000000000e2 UART_init
+     /tmp/cceaYzzc.s:314    .data:0000000000000000 command
+
+UNDEFINED SYMBOLS
+UART_Receive
+UART_Initialize
+UART_Transmit
+__do_copy_data
+__do_clear_bss

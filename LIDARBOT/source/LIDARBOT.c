@@ -1,11 +1,21 @@
 #include "LIDARBOT.h"
 
-int main(){
-  //UART_Initialize();
-  DDRB  |= (1<<DDB5);
+void initbot(){
+  // Initialize propulsion motors
+  motorinit();
+  // Initialize LIDAR sensing
+  // UART_init();
+  // Use LED on PIN 13 to show fault.
+  DDRB |= (1<<DDB5);
   PORTB &= ~(1<<PORTB5);
+}
 
-    while (1) {
-      /* code */
-    }
+int main(){
+
+  // Initialize motor functions
+  initbot();
+
+  while (1) {
+
+  }
 }

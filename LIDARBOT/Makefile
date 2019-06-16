@@ -114,6 +114,7 @@ avrlibpath=-I$(CURDIR)/libraries/
 #                                                                              #
 ################################################################################
 clean:
+	@echo 'Cleaning house...                                                     '
 	@rm -f *.hex *.o *.lst
 	@rm -f objects/*.o assembly/*.lst elf/*.elf payload/*.hex
 	@rm -f -r temp
@@ -178,26 +179,47 @@ editsource:
 	@atom .
 
 # Payload object needs drivers, os and main source file
-object:
+object: cpufunctions.o motors.o scheduler.o UART_driver.o
 	@echo '                                                                      '
 	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=$(sourcename).lst -c -o $(softwareobject) $(sourcecode) $(avrlibpath)
 	@mv $(sourcename).lst assembly/
 
+cpufunctions.o:
+		@echo '                                                                      '
+		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=motors.lst -c -o objects/cpufunctions.o source/os_rios/cpufunctions.c $(avrlibpath)
+		@mv motors.lst assembly/
+
+motors.o:
+	@echo '                                                                      '
+	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=motors.lst -c -o objects/motors.o source/drivers/motors.c $(avrlibpath)
+	@mv motors.lst assembly/
+
+scheduler.o:
+	@echo '                                                                      '
+	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=scheduler.lst -c -o objects/scheduler.o source/os_rios/scheduler.c $(avrlibpath)
+	@mv scheduler.lst assembly/
+
+UART_driver.o:
+	@echo '                                                                      '
+	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=UART_driver.lst -c -o objects/UART_driver.o source/drivers/UART_driver.c $(avrlibpath)
+	@mv UART_driver.lst assembly/
+
 elf: object
 	@echo '                                                                      '
-	$(complilerused) $(gcccompilerflags) $(avrgcccompilerflags) -o $(softwareobjectelf) $(softwareobject)
+	$(complilerused) $(gcccompilerflags) $(avrgcccompilerflags) -o $(softwareobjectelf) $(softwareobject) objects/motors.o objects/UART_driver.o objects/scheduler.o objects/cpufunctions.o
 	@chmod a-x $(softwareobjectelf) 2>&1
 
 hex: elf
 	@echo '                                                                      '
 	avr-objcopy -j .text -j .data -O ihex $(softwareobjectelf) $(softwarepayload)
 
-build: hex
+build: clean hex
 
 flash:
+	@echo '                                                                      '
 	avrdude -p$(hardwarepartnumber) -c$(programmertype) -P$(serialdeviceport) -v -U flash:w:$(softwarepayload)
 
-program: flash
+program: build flash
 
 install:
 	@echo '                                                                      '

@@ -86,7 +86,7 @@ Copyright (c) 2012 UC Regents. All rights reserved.
 #define IDLE_TASK 255            // Task prioirity for an idle task
 
 
-// Task data that will change
+/* Task data that will change
 unsigned char currenttaskindex = 0;    // Index of the highest priority task
 unsigned char runningtasks[3] = {255}; // Array of running task priority
 
@@ -109,7 +109,7 @@ typedef struct taskstructure {
 // 1. Propulsion task
 // 2. LIDAR task
 task tasklist[TOTALTASKS];
-
+*/
 // NOTE: Hard real time system task have to end within a certain time or they
 // can cause system failure which can be catastrpohic. Therefore typically the
 // "watchdog" timer is used to keep track of a tasks. If the timer expires, the
