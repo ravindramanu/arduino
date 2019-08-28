@@ -1,6 +1,6 @@
 #include "UART.h"
 
-void USART_Intialize(void){
+void usartinit(void){
   // Initialize the hardware and software USART
   hardwareserialsetup();
   softwareserialsetup();

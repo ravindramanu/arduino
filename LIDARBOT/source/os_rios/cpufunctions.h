@@ -14,6 +14,8 @@
 /* Public Funstions */
 void clocksetup(void);
 void pwmtimer2setup(void);
+void hardwareserialsetup(void);
+void softwareserialsetup(void);
 void LIDARreadtimer0setup(void);
 void faultledsetup(void);
 

@@ -51,7 +51,7 @@ volatile unsigned int buffercount;
  */
 
 enum bufferStatus rxBufferRead(unsigned char * byte);
-void USART_Intialize(void);
+void usartinit(void);
 void softwareserialTransmit(unsigned char byte);
 
 #endif

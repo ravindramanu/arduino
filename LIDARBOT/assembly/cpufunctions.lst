@@ -1,0 +1,480 @@
+   1               		.file	"cpufunctions.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.stabs	"/home/manu/github/arduino/LIDARBOT/",100,0,2,.Ltext0
+   8               		.stabs	"source/os_rios/cpufunctions.c",100,0,2,.Ltext0
+   9               		.text
+  10               	.Ltext0:
+  11               		.stabs	"gcc2_compiled.",60,0,0,0
+  12               		.stabs	"int:t(0,1)=r(0,1);-32768;32767;",128,0,0,0
+  13               		.stabs	"char:t(0,2)=r(0,2);0;127;",128,0,0,0
+  14               		.stabs	"long int:t(0,3)=@s32;r(0,3);020000000000;017777777777;",128,0,0,0
+  15               		.stabs	"unsigned int:t(0,4)=r(0,4);0;0177777;",128,0,0,0
+  16               		.stabs	"long unsigned int:t(0,5)=@s32;r(0,5);0;037777777777;",128,0,0,0
+  17               		.stabs	"__int128:t(0,6)=@s128;r(0,6);02000000000000000000000000000000000000000000;0177777777777777
+  18               		.stabs	"__int128 unsigned:t(0,7)=@s128;r(0,7);0;03777777777777777777777777777777777777777777;",128
+  19               		.stabs	"long long int:t(0,8)=@s64;r(0,8);01000000000000000000000;00777777777777777777777;",128,0,0
+  20               		.stabs	"long long unsigned int:t(0,9)=@s64;r(0,9);0;01777777777777777777777;",128,0,0,0
+  21               		.stabs	"short int:t(0,10)=r(0,10);-32768;32767;",128,0,0,0
+  22               		.stabs	"short unsigned int:t(0,11)=r(0,11);0;0177777;",128,0,0,0
+  23               		.stabs	"signed char:t(0,12)=@s8;r(0,12);-128;127;",128,0,0,0
+  24               		.stabs	"unsigned char:t(0,13)=@s8;r(0,13);0;255;",128,0,0,0
+  25               		.stabs	"float:t(0,14)=r(0,1);4;0;",128,0,0,0
+  26               		.stabs	"double:t(0,15)=r(0,1);4;0;",128,0,0,0
+  27               		.stabs	"long double:t(0,16)=r(0,1);4;0;",128,0,0,0
+  28               		.stabs	"short _Fract:t(0,17)=r(0,1);1;0;",128,0,0,0
+  29               		.stabs	"_Fract:t(0,18)=r(0,1);2;0;",128,0,0,0
+  30               		.stabs	"long _Fract:t(0,19)=r(0,1);4;0;",128,0,0,0
+  31               		.stabs	"long long _Fract:t(0,20)=r(0,1);8;0;",128,0,0,0
+  32               		.stabs	"unsigned short _Fract:t(0,21)=r(0,1);1;0;",128,0,0,0
+  33               		.stabs	"unsigned _Fract:t(0,22)=r(0,1);2;0;",128,0,0,0
+  34               		.stabs	"unsigned long _Fract:t(0,23)=r(0,1);4;0;",128,0,0,0
+  35               		.stabs	"unsigned long long _Fract:t(0,24)=r(0,1);8;0;",128,0,0,0
+  36               		.stabs	"_Sat short _Fract:t(0,25)=r(0,1);1;0;",128,0,0,0
+  37               		.stabs	"_Sat _Fract:t(0,26)=r(0,1);2;0;",128,0,0,0
+  38               		.stabs	"_Sat long _Fract:t(0,27)=r(0,1);4;0;",128,0,0,0
+  39               		.stabs	"_Sat long long _Fract:t(0,28)=r(0,1);8;0;",128,0,0,0
+  40               		.stabs	"_Sat unsigned short _Fract:t(0,29)=r(0,1);1;0;",128,0,0,0
+  41               		.stabs	"_Sat unsigned _Fract:t(0,30)=r(0,1);2;0;",128,0,0,0
+  42               		.stabs	"_Sat unsigned long _Fract:t(0,31)=r(0,1);4;0;",128,0,0,0
+  43               		.stabs	"_Sat unsigned long long _Fract:t(0,32)=r(0,1);8;0;",128,0,0,0
+  44               		.stabs	"short _Accum:t(0,33)=r(0,1);2;0;",128,0,0,0
+  45               		.stabs	"_Accum:t(0,34)=r(0,1);4;0;",128,0,0,0
+  46               		.stabs	"long _Accum:t(0,35)=r(0,1);8;0;",128,0,0,0
+  47               		.stabs	"long long _Accum:t(0,36)=r(0,1);8;0;",128,0,0,0
+  48               		.stabs	"unsigned short _Accum:t(0,37)=r(0,1);2;0;",128,0,0,0
+  49               		.stabs	"unsigned _Accum:t(0,38)=r(0,1);4;0;",128,0,0,0
+  50               		.stabs	"unsigned long _Accum:t(0,39)=r(0,1);8;0;",128,0,0,0
+  51               		.stabs	"unsigned long long _Accum:t(0,40)=r(0,1);8;0;",128,0,0,0
+  52               		.stabs	"_Sat short _Accum:t(0,41)=r(0,1);2;0;",128,0,0,0
+  53               		.stabs	"_Sat _Accum:t(0,42)=r(0,1);4;0;",128,0,0,0
+  54               		.stabs	"_Sat long _Accum:t(0,43)=r(0,1);8;0;",128,0,0,0
+  55               		.stabs	"_Sat long long _Accum:t(0,44)=r(0,1);8;0;",128,0,0,0
+  56               		.stabs	"_Sat unsigned short _Accum:t(0,45)=r(0,1);2;0;",128,0,0,0
+  57               		.stabs	"_Sat unsigned _Accum:t(0,46)=r(0,1);4;0;",128,0,0,0
+  58               		.stabs	"_Sat unsigned long _Accum:t(0,47)=r(0,1);8;0;",128,0,0,0
+  59               		.stabs	"_Sat unsigned long long _Accum:t(0,48)=r(0,1);8;0;",128,0,0,0
+  60               		.stabs	"void:t(0,49)=(0,49)",128,0,0,0
+  61               		.stabs	"source/os_rios/cpufunctions.h",130,0,0,0
+  62               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/avr/io.h",130,0,0,0
+  63               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/avr/sfr_defs.h",130,0,0,0
+  64               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/inttypes.h",130,0,0,0
+  65               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/stdint.h",130,0,0,0
+  66               		.stabs	"int8_t:t(5,1)=(0,12)",128,0,125,0
+  67               		.stabs	"uint8_t:t(5,2)=(0,13)",128,0,126,0
+  68               		.stabs	"int16_t:t(5,3)=(0,1)",128,0,127,0
+  69               		.stabs	"uint16_t:t(5,4)=(0,4)",128,0,128,0
+  70               		.stabs	"int32_t:t(5,5)=(0,3)",128,0,129,0
+  71               		.stabs	"uint32_t:t(5,6)=(0,5)",128,0,130,0
+  72               		.stabs	"int64_t:t(5,7)=(0,8)",128,0,132,0
+  73               		.stabs	"uint64_t:t(5,8)=(0,9)",128,0,133,0
+  74               		.stabs	"intptr_t:t(5,9)=(5,3)",128,0,146,0
+  75               		.stabs	"uintptr_t:t(5,10)=(5,4)",128,0,151,0
+  76               		.stabs	"int_least8_t:t(5,11)=(5,1)",128,0,163,0
+  77               		.stabs	"uint_least8_t:t(5,12)=(5,2)",128,0,168,0
+  78               		.stabs	"int_least16_t:t(5,13)=(5,3)",128,0,173,0
+  79               		.stabs	"uint_least16_t:t(5,14)=(5,4)",128,0,178,0
+  80               		.stabs	"int_least32_t:t(5,15)=(5,5)",128,0,183,0
+  81               		.stabs	"uint_least32_t:t(5,16)=(5,6)",128,0,188,0
+  82               		.stabs	"int_least64_t:t(5,17)=(5,7)",128,0,196,0
+  83               		.stabs	"uint_least64_t:t(5,18)=(5,8)",128,0,203,0
+  84               		.stabs	"int_fast8_t:t(5,19)=(5,1)",128,0,217,0
+  85               		.stabs	"uint_fast8_t:t(5,20)=(5,2)",128,0,222,0
+  86               		.stabs	"int_fast16_t:t(5,21)=(5,3)",128,0,227,0
+  87               		.stabs	"uint_fast16_t:t(5,22)=(5,4)",128,0,232,0
+  88               		.stabs	"int_fast32_t:t(5,23)=(5,5)",128,0,237,0
+  89               		.stabs	"uint_fast32_t:t(5,24)=(5,6)",128,0,242,0
+  90               		.stabs	"int_fast64_t:t(5,25)=(5,7)",128,0,250,0
+  91               		.stabs	"uint_fast64_t:t(5,26)=(5,8)",128,0,257,0
+  92               		.stabs	"intmax_t:t(5,27)=(5,7)",128,0,277,0
+  93               		.stabs	"uintmax_t:t(5,28)=(5,8)",128,0,282,0
+  94               		.stabn	162,0,0,0
+  95               		.stabs	"int_farptr_t:t(4,1)=(5,5)",128,0,77,0
+  96               		.stabs	"uint_farptr_t:t(4,2)=(5,6)",128,0,81,0
+  97               		.stabn	162,0,0,0
+  98               		.stabn	162,0,0,0
+  99               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/avr/fuse.h",130,0,0,0
+ 100               		.stabs	"__fuse_t:t(6,1)=(6,2)=s3low:(0,13),0,8;high:(0,13),8,8;extended:(0,13),16,8;;",128,0,244,0
+ 101               		.stabn	162,0,0,0
+ 102               		.stabn	162,0,0,0
+ 103               		.stabn	162,0,0,0
+ 104               		.stabs	"clocksetup:F(0,49)",36,0,3,clocksetup
+ 105               	.global	clocksetup
+ 106               		.type	clocksetup, @function
+ 107               	clocksetup:
+ 108               		.stabd	46,0,0
+   1:source/os_rios/cpufunctions.c **** #include "cpufunctions.h"
+   2:source/os_rios/cpufunctions.c **** 
+   3:source/os_rios/cpufunctions.c **** void clocksetup(void){
+ 109               		.stabn	68,0,3,.LM0-.LFBB1
+ 110               	.LM0:
+ 111               	.LFBB1:
+ 112               	/* prologue: function */
+ 113               	/* frame size = 0 */
+ 114               	/* stack size = 0 */
+ 115               	.L__stack_usage = 0
+   4:source/os_rios/cpufunctions.c ****   /* CPU Clock setup
+   5:source/os_rios/cpufunctions.c ****    * ---------------
+   6:source/os_rios/cpufunctions.c ****    *
+   7:source/os_rios/cpufunctions.c ****    * The clock source for the board is the on-board 16Mhz crystal that is
+   8:source/os_rios/cpufunctions.c ****    * shipped with the Arduino Uno board. The system clock will be used for
+   9:source/os_rios/cpufunctions.c ****    * PWM motor control and UART. So a clock pre-scalar has to be chosen such
+  10:source/os_rios/cpufunctions.c ****    * that motor control and UART communication can occur smoothly. A 8 MHzclock
+  11:source/os_rios/cpufunctions.c ****    * clock should yeild a minimal error UART communication and a motor PWM
+  12:source/os_rios/cpufunctions.c ****    * that would work at 500 Hz. Therefore to get 4 Mhz, the clock needs to be
+  13:source/os_rios/cpufunctions.c ****    * divided by a pre-scalar of 4. Hence we can set CLKPS1 a.k.a CKDIV4.
+  14:source/os_rios/cpufunctions.c ****    */
+  15:source/os_rios/cpufunctions.c **** 
+  16:source/os_rios/cpufunctions.c ****   // CLKPCE lock needs to be written first to actually change the pre-scalar
+  17:source/os_rios/cpufunctions.c ****   CLKPR = (1<<CLKPCE);
+ 116               		.stabn	68,0,17,.LM1-.LFBB1
+ 117               	.LM1:
+ 118 0000 E1E6      		ldi r30,lo8(97)
+ 119 0002 F0E0      		ldi r31,0
+ 120 0004 80E8      		ldi r24,lo8(-128)
+ 121 0006 8083      		st Z,r24
+  18:source/os_rios/cpufunctions.c ****   CLKPR = (1<<CLKPS1);
+ 122               		.stabn	68,0,18,.LM2-.LFBB1
+ 123               	.LM2:
+ 124 0008 82E0      		ldi r24,lo8(2)
+ 125 000a 8083      		st Z,r24
+ 126 000c 0895      		ret
+ 127               		.size	clocksetup, .-clocksetup
+ 128               	.Lscope1:
+ 129               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 130               		.stabd	78,0,0
+ 131               		.stabs	"pwmtimer2setup:F(0,49)",36,0,21,pwmtimer2setup
+ 132               	.global	pwmtimer2setup
+ 133               		.type	pwmtimer2setup, @function
+ 134               	pwmtimer2setup:
+ 135               		.stabd	46,0,0
+  19:source/os_rios/cpufunctions.c **** }
+  20:source/os_rios/cpufunctions.c **** 
+  21:source/os_rios/cpufunctions.c **** void pwmtimer2setup(void){
+ 136               		.stabn	68,0,21,.LM3-.LFBB2
+ 137               	.LM3:
+ 138               	.LFBB2:
+ 139               	/* prologue: function */
+ 140               	/* frame size = 0 */
+ 141               	/* stack size = 0 */
+ 142               	.L__stack_usage = 0
+  22:source/os_rios/cpufunctions.c ****   /* TIMER2 setup for PWM Motor Control
+  23:source/os_rios/cpufunctions.c ****    * ----------------------------------
+  24:source/os_rios/cpufunctions.c ****    *
+  25:source/os_rios/cpufunctions.c ****    * From the datasheet:
+  26:source/os_rios/cpufunctions.c ****    *
+  27:source/os_rios/cpufunctions.c ****    * PWM_FREQUENCY = CPU_CLOCK_FREQUENCY/(N*256)
+  28:source/os_rios/cpufunctions.c ****    *
+  29:source/os_rios/cpufunctions.c ****    * where N is the clock pre-scalar to give us our required PWM frequency
+  30:source/os_rios/cpufunctions.c ****    * The datasheet gives us select choices for this prescalar out of which the
+  31:source/os_rios/cpufunctions.c ****    * value of N=32 would the most favourable for us (also standard). If we set
+  32:source/os_rios/cpufunctions.c ****    * it to 32 we get:
+  33:source/os_rios/cpufunctions.c ****    *
+  34:source/os_rios/cpufunctions.c ****    * PWM_FREQUENCY = (4000000)/(32*256) ~ 488 HZ. (~ 2.04 ms)
+  35:source/os_rios/cpufunctions.c ****    *
+  36:source/os_rios/cpufunctions.c ****    * This frequncy should help the motor operate smoothly throughout the Duty
+  37:source/os_rios/cpufunctions.c ****    * Cycle range controlled by OCR2A and OCR2B for the two motor banks.
+  38:source/os_rios/cpufunctions.c ****    *
+  39:source/os_rios/cpufunctions.c ****    */
+  40:source/os_rios/cpufunctions.c **** 
+  41:source/os_rios/cpufunctions.c ****   /* Set compare output mode to clear OCR2A and OCR2B on compare match */
+  42:source/os_rios/cpufunctions.c ****   TCCR2A |=  (1<<COM2A1) | (1<<COM2B1);
+ 143               		.stabn	68,0,42,.LM4-.LFBB2
+ 144               	.LM4:
+ 145 000e E0EB      		ldi r30,lo8(-80)
+ 146 0010 F0E0      		ldi r31,0
+ 147 0012 8081      		ld r24,Z
+ 148 0014 806A      		ori r24,lo8(-96)
+ 149 0016 8083      		st Z,r24
+  43:source/os_rios/cpufunctions.c **** 
+  44:source/os_rios/cpufunctions.c ****   /* Waveform Generation Mode: WGM02 = 1, WGM01 = 1, WGM00 = 1 */
+  45:source/os_rios/cpufunctions.c ****   TCCR2A |= (1<<WGM22) | (1<<WGM21) | (1<<WGM20);
+ 150               		.stabn	68,0,45,.LM5-.LFBB2
+ 151               	.LM5:
+ 152 0018 8081      		ld r24,Z
+ 153 001a 8B60      		ori r24,lo8(11)
+ 154 001c 8083      		st Z,r24
+  46:source/os_rios/cpufunctions.c **** 
+  47:source/os_rios/cpufunctions.c ****   /* We will initialize PWM Duty Cycle to zero */
+  48:source/os_rios/cpufunctions.c ****   OCR2A = 0;
+ 155               		.stabn	68,0,48,.LM6-.LFBB2
+ 156               	.LM6:
+ 157 001e 1092 B300 		sts 179,__zero_reg__
+  49:source/os_rios/cpufunctions.c ****   OCR2B = 0;
+ 158               		.stabn	68,0,49,.LM7-.LFBB2
+ 159               	.LM7:
+ 160 0022 1092 B400 		sts 180,__zero_reg__
+  50:source/os_rios/cpufunctions.c **** 
+  51:source/os_rios/cpufunctions.c ****   // Timer pre-scalar for ~488 Hz is 32. We want this to be the last step since
+  52:source/os_rios/cpufunctions.c ****   // this will actually start the timer counter.
+  53:source/os_rios/cpufunctions.c ****   TCCR2B |=  (1<<CS21) | (1<<CS20);
+ 161               		.stabn	68,0,53,.LM8-.LFBB2
+ 162               	.LM8:
+ 163 0026 E1EB      		ldi r30,lo8(-79)
+ 164 0028 F0E0      		ldi r31,0
+ 165 002a 8081      		ld r24,Z
+ 166 002c 8360      		ori r24,lo8(3)
+ 167 002e 8083      		st Z,r24
+ 168 0030 0895      		ret
+ 169               		.size	pwmtimer2setup, .-pwmtimer2setup
+ 170               	.Lscope2:
+ 171               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 172               		.stabd	78,0,0
+ 173               		.stabs	"LIDARreadtimer0setup:F(0,49)",36,0,56,LIDARreadtimer0setup
+ 174               	.global	LIDARreadtimer0setup
+ 175               		.type	LIDARreadtimer0setup, @function
+ 176               	LIDARreadtimer0setup:
+ 177               		.stabd	46,0,0
+  54:source/os_rios/cpufunctions.c **** }
+  55:source/os_rios/cpufunctions.c **** 
+  56:source/os_rios/cpufunctions.c **** void LIDARreadtimer0setup(void){
+ 178               		.stabn	68,0,56,.LM9-.LFBB3
+ 179               	.LM9:
+ 180               	.LFBB3:
+ 181               	/* prologue: function */
+ 182               	/* frame size = 0 */
+ 183               	/* stack size = 0 */
+ 184               	.L__stack_usage = 0
+  57:source/os_rios/cpufunctions.c ****   /* TIMER0 setup for USART receive buffer read
+  58:source/os_rios/cpufunctions.c ****    * ------------------------------------------
+  59:source/os_rios/cpufunctions.c ****    * If we set up the timer in Clear Timer on Compare or simply CTC mode, the
+  60:source/os_rios/cpufunctions.c ****    * frequency at which the timer will be cleared is described in the datasheet
+  61:source/os_rios/cpufunctions.c ****    * as follows:
+  62:source/os_rios/cpufunctions.c ****    *
+  63:source/os_rios/cpufunctions.c ****    * OUTPUT FREQUENCY = CPU_CLOCK_FREQUENCY/(2*N*(1+OCR0A))
+  64:source/os_rios/cpufunctions.c ****    *
+  65:source/os_rios/cpufunctions.c ****    * where N is the clock pre-scalar to give us our required output frequency
+  66:source/os_rios/cpufunctions.c ****    * The datasheet gives us select choices for this prescalar out of which the
+  67:source/os_rios/cpufunctions.c ****    * value of N=64 would the most favourable for us (also standard). If we set
+  68:source/os_rios/cpufunctions.c ****    * it to 64 and the OCR0A value to 20 we get:
+  69:source/os_rios/cpufunctions.c ****    *
+  70:source/os_rios/cpufunctions.c ****    * PWM_FREQUENCY = (4000000)/(2*64*(20+1)) ~ 1488 HZ. (672 us)
+  71:source/os_rios/cpufunctions.c ****    *
+  72:source/os_rios/cpufunctions.c ****    * That gives us a "task rate" of 670 us.
+  73:source/os_rios/cpufunctions.c ****    */
+  74:source/os_rios/cpufunctions.c **** 
+  75:source/os_rios/cpufunctions.c ****   /* Set compare output mode to clear OCR2A and OCR2B on compare match */
+  76:source/os_rios/cpufunctions.c ****   TCCR0A |=  (1<<COM0A1);
+ 185               		.stabn	68,0,76,.LM10-.LFBB3
+ 186               	.LM10:
+ 187 0032 84B5      		in r24,0x24
+ 188 0034 8068      		ori r24,lo8(-128)
+ 189 0036 84BD      		out 0x24,r24
+  77:source/os_rios/cpufunctions.c **** 
+  78:source/os_rios/cpufunctions.c ****   /* Waveform Generation Mode: WGM02 = 0, WGM01 = 1, WGM00 = 0 -> CTC */
+  79:source/os_rios/cpufunctions.c ****   TCCR0A |= (1<<WGM01);
+ 190               		.stabn	68,0,79,.LM11-.LFBB3
+ 191               	.LM11:
+ 192 0038 84B5      		in r24,0x24
+ 193 003a 8260      		ori r24,lo8(2)
+ 194 003c 84BD      		out 0x24,r24
+  80:source/os_rios/cpufunctions.c **** 
+  81:source/os_rios/cpufunctions.c ****   /* We will initialize OCR0A to  the value we have chosen */
+  82:source/os_rios/cpufunctions.c ****   OCR0A = 20;
+ 195               		.stabn	68,0,82,.LM12-.LFBB3
+ 196               	.LM12:
+ 197 003e 84E1      		ldi r24,lo8(20)
+ 198 0040 87BD      		out 0x27,r24
+  83:source/os_rios/cpufunctions.c **** 
+  84:source/os_rios/cpufunctions.c ****   /* Let us choose the timer pre-scalar of 64 (will start the timer) */
+  85:source/os_rios/cpufunctions.c ****   TCCR0B |= (1<<CS01) | (1<<CS00);
+ 199               		.stabn	68,0,85,.LM13-.LFBB3
+ 200               	.LM13:
+ 201 0042 85B5      		in r24,0x25
+ 202 0044 8360      		ori r24,lo8(3)
+ 203 0046 85BD      		out 0x25,r24
+  86:source/os_rios/cpufunctions.c **** 
+  87:source/os_rios/cpufunctions.c ****   /* Finally lets enable the Timer 0 compare interrupt */
+  88:source/os_rios/cpufunctions.c ****   TIMSK0 |= (1<<OCIE0A);
+ 204               		.stabn	68,0,88,.LM14-.LFBB3
+ 205               	.LM14:
+ 206 0048 EEE6      		ldi r30,lo8(110)
+ 207 004a F0E0      		ldi r31,0
+ 208 004c 8081      		ld r24,Z
+ 209 004e 8260      		ori r24,lo8(2)
+ 210 0050 8083      		st Z,r24
+ 211 0052 0895      		ret
+ 212               		.size	LIDARreadtimer0setup, .-LIDARreadtimer0setup
+ 213               	.Lscope3:
+ 214               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 215               		.stabd	78,0,0
+ 216               		.stabs	"hardwareserialsetup:F(0,49)",36,0,91,hardwareserialsetup
+ 217               	.global	hardwareserialsetup
+ 218               		.type	hardwareserialsetup, @function
+ 219               	hardwareserialsetup:
+ 220               		.stabd	46,0,0
+  89:source/os_rios/cpufunctions.c **** }
+  90:source/os_rios/cpufunctions.c **** 
+  91:source/os_rios/cpufunctions.c **** void hardwareserialsetup(void){
+ 221               		.stabn	68,0,91,.LM15-.LFBB4
+ 222               	.LM15:
+ 223               	.LFBB4:
+ 224               	/* prologue: function */
+ 225               	/* frame size = 0 */
+ 226               	/* stack size = 0 */
+ 227               	.L__stack_usage = 0
+  92:source/os_rios/cpufunctions.c ****   /* Hardware UART Control Registers setup
+  93:source/os_rios/cpufunctions.c ****    * -------------------------------------
+  94:source/os_rios/cpufunctions.c ****    *
+  95:source/os_rios/cpufunctions.c ****    * Registers needed to be configured from the datasheet:
+  96:source/os_rios/cpufunctions.c ****    *
+  97:source/os_rios/cpufunctions.c ****    * UCSRnc - USART Control and Status Register C
+  98:source/os_rios/cpufunctions.c ****    *          -> UMSELn bit controls USART mode
+  99:source/os_rios/cpufunctions.c ****    * UCSRnA - USART Control and Status Register A
+ 100:source/os_rios/cpufunctions.c ****    *          -> U2Xn bit controls doublespeed
+ 101:source/os_rios/cpufunctions.c ****    * UBRRn  - USART Baud Rate Register
+ 102:source/os_rios/cpufunctions.c ****    *
+ 103:source/os_rios/cpufunctions.c ****    * Recommended baud rate settings from the datasheet:
+ 104:source/os_rios/cpufunctions.c ****    *
+ 105:source/os_rios/cpufunctions.c ****    * 9600 kbps - U2Xn = 1, UBRRn = 12 with fosc = 1 Mhz. (0.2 % error)
+ 106:source/os_rios/cpufunctions.c ****    * Selection criterion: Minimal error in data receiving using available clock.
+ 107:source/os_rios/cpufunctions.c ****    *
+ 108:source/os_rios/cpufunctions.c ****    * Our Baud caculation: UBRRn = (fosc/8*BAUD) - 1
+ 109:source/os_rios/cpufunctions.c ****    *                            = (1000000/8*9600) - 1
+ 110:source/os_rios/cpufunctions.c ****    *                            ~ 12
+ 111:source/os_rios/cpufunctions.c ****    *
+ 112:source/os_rios/cpufunctions.c ****    * Required settings for the TFmini LIDAR Sensor:
+ 113:source/os_rios/cpufunctions.c ****    *
+ 114:source/os_rios/cpufunctions.c ****    * Data bits - 8, Stop bits - 1, Parity Check - None
+ 115:source/os_rios/cpufunctions.c ****    */
+ 116:source/os_rios/cpufunctions.c **** 
+ 117:source/os_rios/cpufunctions.c ****   // Set 8 bit data
+ 118:source/os_rios/cpufunctions.c ****   UCSR0C = UCSR0C | ((1<<UCSZ01) | (1<<UCSZ00));
+ 228               		.stabn	68,0,118,.LM16-.LFBB4
+ 229               	.LM16:
+ 230 0054 E2EC      		ldi r30,lo8(-62)
+ 231 0056 F0E0      		ldi r31,0
+ 232 0058 8081      		ld r24,Z
+ 233 005a 8660      		ori r24,lo8(6)
+ 234 005c 8083      		st Z,r24
+ 119:source/os_rios/cpufunctions.c **** 
+ 120:source/os_rios/cpufunctions.c ****   // Set baud rate High and Low byte in UBBR
+ 121:source/os_rios/cpufunctions.c ****   UBRR0H = (CALCULATEDUBBR>>8);
+ 235               		.stabn	68,0,121,.LM17-.LFBB4
+ 236               	.LM17:
+ 237 005e 1092 C500 		sts 197,__zero_reg__
+ 122:source/os_rios/cpufunctions.c ****   UBRR0L =  CALCULATEDUBBR;
+ 238               		.stabn	68,0,122,.LM18-.LFBB4
+ 239               	.LM18:
+ 240 0062 89E1      		ldi r24,lo8(25)
+ 241 0064 8093 C400 		sts 196,r24
+ 123:source/os_rios/cpufunctions.c **** 
+ 124:source/os_rios/cpufunctions.c ****   // Enable USART transmit and receive
+ 125:source/os_rios/cpufunctions.c ****   UCSR0B = (1<<TXEN0) | (1<<RXEN0) | (1<<RXCIE0);
+ 242               		.stabn	68,0,125,.LM19-.LFBB4
+ 243               	.LM19:
+ 244 0068 88E9      		ldi r24,lo8(-104)
+ 245 006a 8093 C100 		sts 193,r24
+ 246 006e 0895      		ret
+ 247               		.size	hardwareserialsetup, .-hardwareserialsetup
+ 248               	.Lscope4:
+ 249               		.stabs	"",36,0,0,.Lscope4-.LFBB4
+ 250               		.stabd	78,0,0
+ 251               		.stabs	"softwareserialsetup:F(0,49)",36,0,128,softwareserialsetup
+ 252               	.global	softwareserialsetup
+ 253               		.type	softwareserialsetup, @function
+ 254               	softwareserialsetup:
+ 255               		.stabd	46,0,0
+ 126:source/os_rios/cpufunctions.c **** }
+ 127:source/os_rios/cpufunctions.c **** 
+ 128:source/os_rios/cpufunctions.c **** void softwareserialsetup(void){
+ 256               		.stabn	68,0,128,.LM20-.LFBB5
+ 257               	.LM20:
+ 258               	.LFBB5:
+ 259               	/* prologue: function */
+ 260               	/* frame size = 0 */
+ 261               	/* stack size = 0 */
+ 262               	.L__stack_usage = 0
+ 129:source/os_rios/cpufunctions.c ****   /* Software Serial Communication UASRT setup
+ 130:source/os_rios/cpufunctions.c ****    * -----------------------------------------
+ 131:source/os_rios/cpufunctions.c ****    *
+ 132:source/os_rios/cpufunctions.c ****    * The Arduino UNO has only one hardware UART. We will need another one for
+ 133:source/os_rios/cpufunctions.c ****    * debugging. Therefore we will need to emulate it and build a quick drver
+ 134:source/os_rios/cpufunctions.c ****    * that will allow us to transmit data while the RX pin is receiving. We can
+ 135:source/os_rios/cpufunctions.c ****    * use PORTB4 PIN 12 as software serial pin. Lets set that to high (IDLE).
+ 136:source/os_rios/cpufunctions.c ****    * Here is how a UART data frame with data 0xAA, a start, a stop bit and
+ 137:source/os_rios/cpufunctions.c ****    * no parity would look like for the Arduino:
+ 138:source/os_rios/cpufunctions.c ****    *
+ 139:source/os_rios/cpufunctions.c ****    *    IDLE | start bit |          8 data bits          |  stop bit | IDLE
+ 140:source/os_rios/cpufunctions.c ****    *    -------------------------------------------------------------------
+ 141:source/os_rios/cpufunctions.c ****    *
+ 142:source/os_rios/cpufunctions.c ****    *      1                1       1       1       1           1        1
+ 143:source/os_rios/cpufunctions.c ****    *    -----|           |---|   |---|   |---|   |---|   |-----------|-----
+ 144:source/os_rios/cpufunctions.c ****    *         |           |   |   |   |   |   |   |   |   |
+ 145:source/os_rios/cpufunctions.c ****    *         |           |   |   |   |   |   |   |   |   |
+ 146:source/os_rios/cpufunctions.c ****    *         |-----------|   |---|   |---|   |---|   |---|
+ 147:source/os_rios/cpufunctions.c ****    *               0           0       0       0       0
+ 148:source/os_rios/cpufunctions.c ****    *
+ 149:source/os_rios/cpufunctions.c ****    * The BUAD rate we want is 9600. That means we have 9600 bits per second.
+ 150:source/os_rios/cpufunctions.c ****    * That means 1 bit is transferred every (1 second/ 9600 bits) ~104 us.
+ 151:source/os_rios/cpufunctions.c ****    * We are clocked at 4000000 Hz. Each "tick" is 0.25 us. So this should be not
+ 152:source/os_rios/cpufunctions.c ****    * be a big deal to do with a regular pin if we just turn it ON and OFF to
+ 153:source/os_rios/cpufunctions.c ****    * simulate serial data. We will be using PORTB4 to do this which means
+ 154:source/os_rios/cpufunctions.c ****    * PIN 12 on the Arduino UNO board and a TTL USB driver on an external bread
+ 155:source/os_rios/cpufunctions.c ****    * board connected to a laptop to see the output.
+ 156:source/os_rios/cpufunctions.c ****    */
+ 157:source/os_rios/cpufunctions.c **** 
+ 158:source/os_rios/cpufunctions.c ****   /* Set the direction of PORTB4 to OUTPUT and hold it HIGH (IDLE) */
+ 159:source/os_rios/cpufunctions.c ****   DDRB  |= (1<<DDB4);
+ 263               		.stabn	68,0,159,.LM21-.LFBB5
+ 264               	.LM21:
+ 265 0070 249A      		sbi 0x4,4
+ 160:source/os_rios/cpufunctions.c ****   PORTB |= (1<<PORTB4);
+ 266               		.stabn	68,0,160,.LM22-.LFBB5
+ 267               	.LM22:
+ 268 0072 2C9A      		sbi 0x5,4
+ 269 0074 0895      		ret
+ 270               		.size	softwareserialsetup, .-softwareserialsetup
+ 271               	.Lscope5:
+ 272               		.stabs	"",36,0,0,.Lscope5-.LFBB5
+ 273               		.stabd	78,0,0
+ 274               		.stabs	"faultledsetup:F(0,49)",36,0,163,faultledsetup
+ 275               	.global	faultledsetup
+ 276               		.type	faultledsetup, @function
+ 277               	faultledsetup:
+ 278               		.stabd	46,0,0
+ 161:source/os_rios/cpufunctions.c **** }
+ 162:source/os_rios/cpufunctions.c **** 
+ 163:source/os_rios/cpufunctions.c **** void faultledsetup(void){
+ 279               		.stabn	68,0,163,.LM23-.LFBB6
+ 280               	.LM23:
+ 281               	.LFBB6:
+ 282               	/* prologue: function */
+ 283               	/* frame size = 0 */
+ 284               	/* stack size = 0 */
+ 285               	.L__stack_usage = 0
+ 164:source/os_rios/cpufunctions.c ****   /* let us set up the built-in LED to light up when there is a fault */
+ 165:source/os_rios/cpufunctions.c ****   DDRB |= (1<<DDB5);     // Make the pin direction out
+ 286               		.stabn	68,0,165,.LM24-.LFBB6
+ 287               	.LM24:
+ 288 0076 259A      		sbi 0x4,5
+ 166:source/os_rios/cpufunctions.c ****   PORTB &= ~(1<<PORTB5); // Turn it off so that it can be turned on when faulted
+ 289               		.stabn	68,0,166,.LM25-.LFBB6
+ 290               	.LM25:
+ 291 0078 2D98      		cbi 0x5,5
+ 292 007a 0895      		ret
+ 293               		.size	faultledsetup, .-faultledsetup
+ 294               	.Lscope6:
+ 295               		.stabs	"",36,0,0,.Lscope6-.LFBB6
+ 296               		.stabd	78,0,0
+ 297               		.stabs	"",100,0,0,.Letext0
+ 298               	.Letext0:
+ 299               		.ident	"GCC: (GNU) 5.4.0"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 cpufunctions.c
+     /tmp/ccrqpCqi.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccrqpCqi.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccrqpCqi.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccrqpCqi.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccrqpCqi.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccrqpCqi.s:107    .text:0000000000000000 clocksetup
+     /tmp/ccrqpCqi.s:134    .text:000000000000000e pwmtimer2setup
+     /tmp/ccrqpCqi.s:176    .text:0000000000000032 LIDARreadtimer0setup
+     /tmp/ccrqpCqi.s:219    .text:0000000000000054 hardwareserialsetup
+     /tmp/ccrqpCqi.s:254    .text:0000000000000070 softwareserialsetup
+     /tmp/ccrqpCqi.s:277    .text:0000000000000076 faultledsetup
+
+NO UNDEFINED SYMBOLS

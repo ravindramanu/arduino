@@ -75,7 +75,7 @@ softwareobjectelf=elf/$(sourcename).elf
 softwarepayload=payload/$(sourcename).flash.hex
 
 # Main source code file1
-sourcecode=source/$(sourcename).c
+sourcecode=source/application/$(sourcename).c
 
 ################################################################################
 # Compiler specific macros                                                     #
