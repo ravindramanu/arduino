@@ -18,7 +18,6 @@
 ********************************************************************************/
 
 #include <avr/io.h>
-#include <util/delay.h>
 
 int main(void) {
 
@@ -28,6 +27,8 @@ int main(void) {
    // Now to toggle the output in a while loop
    while(1){
      PORTB ^= (1<<PORTB5);
-     _delay_ms(10000); // 10 board seconds
+     for (int i = 0; i < 10; i++) {
+       /* code */
+     }
    }
 }

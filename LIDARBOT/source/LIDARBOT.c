@@ -1,21 +1,26 @@
 #include "LIDARBOT.h"
 
 void initbot(){
-  // Initialize propulsion motors
-  motorinit();
-  // Initialize LIDAR sensing
-  // UART_init();
-  // Use LED on PIN 13 to show fault.
-  DDRB |= (1<<DDB5);
-  PORTB &= ~(1<<PORTB5);
+  /* Initialize all robot functions */
+  clocksetup();  // Master clock setup
+  usartinit();   // Communication setup
+  lidarinit();   // LIDAR read setup
+  motorinit();   // Propulsion setup
+  sei();         // Enable global interrupts
 }
 
 int main(){
-
-  // Initialize motor functions
+  // Initialize BOT
   initbot();
+  _delay_ms(2000);
 
   while (1) {
-
+    if ((obstacle.valid == VALID) && (obstacle.proximity < 45) && (botmoving == 1)) {
+      stop();
+      steer(RIGHT, QUICK);
+    }
+    else if (botmoving == 0) {
+      drive(FORWARD,SLOW);
+    }
   }
 }

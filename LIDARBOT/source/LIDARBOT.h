@@ -2,8 +2,11 @@
 #define LIDARBOT_H_
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include "os_rios/cpufunctions.h"
-#include "drivers/motors.h"
-#include "drivers/UART_driver.h"
+#include "os_rios/UART.h"
+#include "os_rios/scheduler.h"
+#include "drivers/motor_driver.h"
+#include "drivers/LIDAR_driver.h"
 
 #endif

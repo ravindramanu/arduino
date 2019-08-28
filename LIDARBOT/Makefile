@@ -28,10 +28,10 @@
 # Naming convention for the entire project
 sourcename=LIDARBOT
 subsourcefile1=UART_driver
-subsourcefile2=
+
 # Board specific macros
 hardwarepartnumber=atmega328p
-frequency_selected=1000000UL
+frequency_selected=4000000UL
 # baudrate=9600 # use PC default
 
 ################################################################################
@@ -73,7 +73,6 @@ softwareobject=objects/$(sourcename).o
 
 softwareobjectelf=elf/$(sourcename).elf
 softwarepayload=payload/$(sourcename).flash.hex
-softwarepayloadEEPROM=payload/$(sourcename).eeprom.hex
 
 # Main source code file1
 sourcecode=source/$(sourcename).c
@@ -103,21 +102,6 @@ avrlibpath=-I$(CURDIR)/libraries/
 # technique that is super useful.                                              #
 ################################################################################
 .PHONY: clean saveboard help editsource install build object flash hex program
-
-################################################################################
-# clean - command section                                                      #
-# -----------------------                                                      #
-# Basically clean up things lying around in the folder. Run this command or    #
-# phony target to reset the folder items to a good state when you have failed  #
-# compilations, want to to reset everything to a good working order or just    #
-# hate half completed files in your folder.                                    #
-#                                                                              #
-################################################################################
-clean:
-	@echo 'Cleaning house...                                                     '
-	@rm -f *.hex *.o *.lst
-	@rm -f objects/*.o assembly/*.lst elf/*.elf payload/*.hex
-	@rm -f -r temp
 
 ################################################################################
 # help - command section                                                       #
@@ -160,6 +144,21 @@ help:
 # Reference: https://electronics.stackexchange.com/questions/66145/avr-how-to-program-an-avr-chip-in-linux
 
 ################################################################################
+# clean - command section                                                      #
+# -----------------------                                                      #
+# Basically clean up things lying around in the folder. Run this command or    #
+# phony target to reset the folder items to a good state when you have failed  #
+# compilations, want to to reset everything to a good working order or just    #
+# hate half completed files in your folder.                                    #
+#                                                                              #
+################################################################################
+clean:
+	@echo 'Cleaning house...                                                     '
+	@rm -f *.hex *.o *.lst *.elf *.eeprom
+	@rm -f objects/*.o assembly/*.lst elf/*.elf payload/*.hex
+	@rm -f -r temp
+
+################################################################################
 # saveboard - command section                                                  #
 # ---------------------------                                                  #
 # For every memory type, this command will read the controller and save the    #
@@ -179,39 +178,49 @@ editsource:
 	@atom .
 
 # Payload object needs drivers, os and main source file
-object: cpufunctions.o motors.o scheduler.o UART_driver.o
+object: cpufunctions.o scheduler.o UART.o motor_driver.o LIDAR_driver.o
 	@echo '                                                                      '
 	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=$(sourcename).lst -c -o $(softwareobject) $(sourcecode) $(avrlibpath)
 	@mv $(sourcename).lst assembly/
 
 cpufunctions.o:
 		@echo '                                                                      '
-		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=motors.lst -c -o objects/cpufunctions.o source/os_rios/cpufunctions.c $(avrlibpath)
-		@mv motors.lst assembly/
-
-motors.o:
-	@echo '                                                                      '
-	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=motors.lst -c -o objects/motors.o source/drivers/motors.c $(avrlibpath)
-	@mv motors.lst assembly/
+		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=cpufunctions.lst -c -o objects/cpufunctions.o source/os_rios/cpufunctions.c $(avrlibpath)
+		@mv cpufunctions.lst assembly/
 
 scheduler.o:
-	@echo '                                                                      '
-	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=scheduler.lst -c -o objects/scheduler.o source/os_rios/scheduler.c $(avrlibpath)
-	@mv scheduler.lst assembly/
+		@echo '                                                                      '
+		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=scheduler.lst -c -o objects/scheduler.o source/os_rios/scheduler.c $(avrlibpath)
+		@mv scheduler.lst assembly/
 
-UART_driver.o:
+UART.o:
+		@echo '                                                                      '
+		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=UART.lst -c -o objects/UART.o source/os_rios/UART.c $(avrlibpath)
+		@mv UART.lst assembly/
+
+motor_driver.o:
 	@echo '                                                                      '
-	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=UART_driver.lst -c -o objects/UART_driver.o source/drivers/UART_driver.c $(avrlibpath)
-	@mv UART_driver.lst assembly/
+	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=motor_driver.lst -c -o objects/motor_driver.o source/drivers/motor_driver.c $(avrlibpath)
+	@mv motor_driver.lst assembly/
+
+LIDAR_driver.o:
+	@echo '                                                                      '
+	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=LIDAR_driver.lst -c -o objects/LIDAR_driver.o source/drivers/LIDAR_driver.c $(avrlibpath)
+	@mv LIDAR_driver.lst assembly/
 
 elf: object
 	@echo '                                                                      '
-	$(complilerused) $(gcccompilerflags) $(avrgcccompilerflags) -o $(softwareobjectelf) $(softwareobject) objects/motors.o objects/UART_driver.o objects/scheduler.o objects/cpufunctions.o
+	$(complilerused) $(gcccompilerflags) $(avrgcccompilerflags) -o $(softwareobjectelf) $(softwareobject) objects/cpufunctions.o objects/scheduler.o objects/UART.o objects/motor_driver.o objects/LIDAR_driver.o
 	@chmod a-x $(softwareobjectelf) 2>&1
 
 hex: elf
 	@echo '                                                                      '
 	avr-objcopy -j .text -j .data -O ihex $(softwareobjectelf) $(softwarepayload)
+	@echo '                                                                      '
+
+dumpelf: elf
+	@echo '                                                                      '
+	avr-objdump -s -h $(softwareobjectelf)
 
 build: clean hex
 
@@ -224,6 +233,6 @@ program: build flash
 install:
 	@echo '                                                                      '
 	@echo 'Creating source and object folders if not present.                    '
-	@mkdir -p source objects libraries assembly saved_boards elf payload
+	@mkdir -p source objects libraries assembly saved_boards elf payload EEPROM
 	@echo 'Please ensure that libraries are copied into the libraries folder.    '
 	@echo '                                                                      '
