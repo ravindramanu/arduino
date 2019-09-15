@@ -103,12 +103,12 @@ ISR(TIMER0_COMPA_vect){ /* 320 us SOFTWARE INTERRUPT TASK RATE */
    reading_under_progress = 0;
 }
 
-/* OBJECT DETECTION TASK */
-ISR(TIMER1_COMPA_vect){ /* ~ 4 ms SOFTWARE INTERRUPT TASK RATE */
+/* PROPULSION/NAVIGATION TASK */
+ISR(TIMER1_COMPA_vect){ /* ~ 500 ms SOFTWARE INTERRUPT TASK RATE */
   /* We will have this ISR drive and steer for us. This should be the least
    * important ISR even though it is meant for controlling the robot because
    * the cpu is a lot faster the the vehicle and we can barely see a change. We
-   * will need to give it said low prioirty by using the "dont do anything is
+   * will need to give it said low prioirty by using the "dont do anything when
    * receive is in progress flag. We wil also check if we are readng lidar data.
    */
    if ((reading_under_progress != 1) && (USART_is_receiving != 1)) {
