@@ -1,12 +1,3 @@
-/*******************************************************************************
-*                              LIDAR_DRIVER.C                                  *
-********************************************************************************
-* Functions for LIDAR driver.                                                  *
-*                                                                              *
-* Author: Ravindra, Manu Srivatsa                                              *
-* Date  : 21 Aug 2019                                                          *
-*                                                                              *
-********************************************************************************/
 #include "LIDAR_driver.h"
 
 /* Calculation variables used locally by the functions below */
@@ -128,27 +119,5 @@ void readLIDAR(void){
 
       break;
     }
-  }
-}
-
-/******************************************************************************/
-/*                          INTERRUPT SERVICE ROUTINES                        */
-/******************************************************************************/
-
-/* TIMER 0 COMPARE MATCH ROUTINE TO READ FROM BUFFER */
-ISR(TIMER0_COMPA_vect){
-  /* We want our ISR to do nothing in the middle of a receive since this ISR
-   * interrupts our receive USART ISR because of higher prioirty. Unfortunately
-   * the Arduino does not allow NVIC or prioritizable interrupts since it is a
-   * low spec board using the ATMega328p, so we have to work with what we have.
-   * This means the use of flags and byte count can be one of the ways to tell
-   * that the USART is in the middle of a receive operation and also when the
-   * buffer is ready for a read. Here we wait until there are atleast 50 bytes
-   * or close to 5 frames in the buffer to start reading. This method helps not
-   * readin the buffer when there is no data and alos keeps the interrupt time
-   * short.
-   */
-   if ((USART_is_receiving != 1) && (buffercount>50)) {
-     readLIDAR();
   }
 }

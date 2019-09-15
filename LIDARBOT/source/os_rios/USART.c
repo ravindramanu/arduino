@@ -1,4 +1,4 @@
-#include "UART.h"
+#include "USART.h"
 
 void usartinit(void){
   // Initialize the hardware and software USART
@@ -80,26 +80,4 @@ enum bufferStatus rxBufferWrite(){
   // Increment the index
   rxBuffer.writeindex = insertindex;
   return BUFFER_OK;
-}
-
-/******************************************************************************/
-/*                          INTERRUPT SERVICE ROUTINES                        */
-/******************************************************************************/
-
-/* USART RECEIVE INTERRUPT SERVICE ROUTINE */
-ISR(USART_RX_vect){
-  // Set flag to one
-  USART_is_receiving = 1;
-  /* We want our interrupt service routine to be quick as possible. Which is why
-   * all this routine will do is write to the ring buffer and get out. However,
-   * we need our cpu to be quicker so that elements from that buffer are emptied
-   * faster than this ISR can populate the buffer. This was one of the prime
-   * reasons why the chosen clock was 4 Mhz.*/
-  if((rxBufferWrite() != BUFFER_OK)){
-    readLIDAR();
-    rxBufferWrite();
-  }
-
-  // Set it off when done
-  USART_is_receiving = 0;
 }

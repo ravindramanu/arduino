@@ -241,22 +241,22 @@
   57:source/os_rios/cpufunctions.c ****   /* TIMER0 setup for USART receive buffer read
   58:source/os_rios/cpufunctions.c ****    * ------------------------------------------
   59:source/os_rios/cpufunctions.c ****    * If we set up the timer in Clear Timer on Compare or simply CTC mode, the
-  60:source/os_rios/cpufunctions.c ****    * frequency at which the timer will be cleared is described in the datasheet
-  61:source/os_rios/cpufunctions.c ****    * as follows:
-  62:source/os_rios/cpufunctions.c ****    *
-  63:source/os_rios/cpufunctions.c ****    * OUTPUT FREQUENCY = CPU_CLOCK_FREQUENCY/(2*N*(1+OCR0A))
-  64:source/os_rios/cpufunctions.c ****    *
-  65:source/os_rios/cpufunctions.c ****    * where N is the clock pre-scalar to give us our required output frequency
-  66:source/os_rios/cpufunctions.c ****    * The datasheet gives us select choices for this prescalar out of which the
-  67:source/os_rios/cpufunctions.c ****    * value of N=64 would the most favourable for us (also standard). If we set
-  68:source/os_rios/cpufunctions.c ****    * it to 64 and the OCR0A value to 20 we get:
-  69:source/os_rios/cpufunctions.c ****    *
-  70:source/os_rios/cpufunctions.c ****    * PWM_FREQUENCY = (4000000)/(2*64*(20+1)) ~ 1488 HZ. (672 us)
-  71:source/os_rios/cpufunctions.c ****    *
-  72:source/os_rios/cpufunctions.c ****    * That gives us a "task rate" of 670 us.
+  60:source/os_rios/cpufunctions.c ****    * frequency at which the timer will be cleared is the out task rate. So we
+  61:source/os_rios/cpufunctions.c ****    * know that we read a byte form the UART recieve register every 1040 us
+  62:source/os_rios/cpufunctions.c ****    * roughly. It is not exactly 1040 us always therefore we have an interrupt
+  63:source/os_rios/cpufunctions.c ****    * take care of receiving for us. But we can definitely set up an exact "task
+  64:source/os_rios/cpufunctions.c ****    * rate" for us to read out the data from the buffer that the USART ISR fills.
+  65:source/os_rios/cpufunctions.c ****    * Sampling at half the time would seem enough at first but we have to
+  66:source/os_rios/cpufunctions.c ****    * account for the overhead of managing the buffer and processing each byte.
+  67:source/os_rios/cpufunctions.c ****    * After some tuning an OCR value of 20 and a pre-scalar of 64 seemed to do the
+  68:source/os_rios/cpufunctions.c ****    * trick. But why? Well the resulting time when the interrupt triggers will be
+  69:source/os_rios/cpufunctions.c ****    * 320 us. I.e. our pre-scalar is 64 so the resuting tick of the timer will be
+  70:source/os_rios/cpufunctions.c ****    * 1/(4000000/64) = 16 us. If we count to twenty with these ticks we will be at
+  71:source/os_rios/cpufunctions.c ****    * 320 us, which is 3.25 times the rate at which the USART fills up the buffer.
+  72:source/os_rios/cpufunctions.c ****    * This means we have a task rate of 320 us for processing a buffer byte.
   73:source/os_rios/cpufunctions.c ****    */
   74:source/os_rios/cpufunctions.c **** 
-  75:source/os_rios/cpufunctions.c ****   /* Set compare output mode to clear OCR2A and OCR2B on compare match */
+  75:source/os_rios/cpufunctions.c ****   /* Set compare output mode to clear OCR2A on compare match */
   76:source/os_rios/cpufunctions.c ****   TCCR0A |=  (1<<COM0A1);
  185               		.stabn	68,0,76,.LM10-.LFBB3
  186               	.LM10:
@@ -301,14 +301,14 @@
  213               	.Lscope3:
  214               		.stabs	"",36,0,0,.Lscope3-.LFBB3
  215               		.stabd	78,0,0
- 216               		.stabs	"hardwareserialsetup:F(0,49)",36,0,91,hardwareserialsetup
- 217               	.global	hardwareserialsetup
- 218               		.type	hardwareserialsetup, @function
- 219               	hardwareserialsetup:
+ 216               		.stabs	"propulsiontimer1setup:F(0,49)",36,0,91,propulsiontimer1setup
+ 217               	.global	propulsiontimer1setup
+ 218               		.type	propulsiontimer1setup, @function
+ 219               	propulsiontimer1setup:
  220               		.stabd	46,0,0
   89:source/os_rios/cpufunctions.c **** }
   90:source/os_rios/cpufunctions.c **** 
-  91:source/os_rios/cpufunctions.c **** void hardwareserialsetup(void){
+  91:source/os_rios/cpufunctions.c **** void propulsiontimer1setup(void) {
  221               		.stabn	68,0,91,.LM15-.LFBB4
  222               	.LM15:
  223               	.LFBB4:
@@ -316,165 +316,238 @@
  225               	/* frame size = 0 */
  226               	/* stack size = 0 */
  227               	.L__stack_usage = 0
-  92:source/os_rios/cpufunctions.c ****   /* Hardware UART Control Registers setup
-  93:source/os_rios/cpufunctions.c ****    * -------------------------------------
-  94:source/os_rios/cpufunctions.c ****    *
-  95:source/os_rios/cpufunctions.c ****    * Registers needed to be configured from the datasheet:
-  96:source/os_rios/cpufunctions.c ****    *
-  97:source/os_rios/cpufunctions.c ****    * UCSRnc - USART Control and Status Register C
-  98:source/os_rios/cpufunctions.c ****    *          -> UMSELn bit controls USART mode
-  99:source/os_rios/cpufunctions.c ****    * UCSRnA - USART Control and Status Register A
- 100:source/os_rios/cpufunctions.c ****    *          -> U2Xn bit controls doublespeed
- 101:source/os_rios/cpufunctions.c ****    * UBRRn  - USART Baud Rate Register
- 102:source/os_rios/cpufunctions.c ****    *
- 103:source/os_rios/cpufunctions.c ****    * Recommended baud rate settings from the datasheet:
- 104:source/os_rios/cpufunctions.c ****    *
- 105:source/os_rios/cpufunctions.c ****    * 9600 kbps - U2Xn = 1, UBRRn = 12 with fosc = 1 Mhz. (0.2 % error)
- 106:source/os_rios/cpufunctions.c ****    * Selection criterion: Minimal error in data receiving using available clock.
- 107:source/os_rios/cpufunctions.c ****    *
- 108:source/os_rios/cpufunctions.c ****    * Our Baud caculation: UBRRn = (fosc/8*BAUD) - 1
- 109:source/os_rios/cpufunctions.c ****    *                            = (1000000/8*9600) - 1
- 110:source/os_rios/cpufunctions.c ****    *                            ~ 12
- 111:source/os_rios/cpufunctions.c ****    *
- 112:source/os_rios/cpufunctions.c ****    * Required settings for the TFmini LIDAR Sensor:
- 113:source/os_rios/cpufunctions.c ****    *
- 114:source/os_rios/cpufunctions.c ****    * Data bits - 8, Stop bits - 1, Parity Check - None
- 115:source/os_rios/cpufunctions.c ****    */
- 116:source/os_rios/cpufunctions.c **** 
- 117:source/os_rios/cpufunctions.c ****   // Set 8 bit data
- 118:source/os_rios/cpufunctions.c ****   UCSR0C = UCSR0C | ((1<<UCSZ01) | (1<<UCSZ00));
- 228               		.stabn	68,0,118,.LM16-.LFBB4
+  92:source/os_rios/cpufunctions.c ****   /* Set compare output mode to clear OCR1A on compare match */
+  93:source/os_rios/cpufunctions.c ****   TCCR1A |= (1<<COM1A1);
+ 228               		.stabn	68,0,93,.LM16-.LFBB4
  229               	.LM16:
- 230 0054 E2EC      		ldi r30,lo8(-62)
+ 230 0054 E0E8      		ldi r30,lo8(-128)
  231 0056 F0E0      		ldi r31,0
  232 0058 8081      		ld r24,Z
- 233 005a 8660      		ori r24,lo8(6)
+ 233 005a 8068      		ori r24,lo8(-128)
  234 005c 8083      		st Z,r24
- 119:source/os_rios/cpufunctions.c **** 
- 120:source/os_rios/cpufunctions.c ****   // Set baud rate High and Low byte in UBBR
- 121:source/os_rios/cpufunctions.c ****   UBRR0H = (CALCULATEDUBBR>>8);
- 235               		.stabn	68,0,121,.LM17-.LFBB4
+  94:source/os_rios/cpufunctions.c **** 
+  95:source/os_rios/cpufunctions.c ****   /* Waveform Generation Mode: WGM12 = 0, WGM11 = 0, WGM10 = 0 -> CTC */
+  96:source/os_rios/cpufunctions.c ****   TCCR1B |= (1<<WGM12);
+ 235               		.stabn	68,0,96,.LM17-.LFBB4
  236               	.LM17:
- 237 005e 1092 C500 		sts 197,__zero_reg__
- 122:source/os_rios/cpufunctions.c ****   UBRR0L =  CALCULATEDUBBR;
- 238               		.stabn	68,0,122,.LM18-.LFBB4
- 239               	.LM18:
- 240 0062 89E1      		ldi r24,lo8(25)
- 241 0064 8093 C400 		sts 196,r24
- 123:source/os_rios/cpufunctions.c **** 
- 124:source/os_rios/cpufunctions.c ****   // Enable USART transmit and receive
- 125:source/os_rios/cpufunctions.c ****   UCSR0B = (1<<TXEN0) | (1<<RXEN0) | (1<<RXCIE0);
- 242               		.stabn	68,0,125,.LM19-.LFBB4
- 243               	.LM19:
- 244 0068 88E9      		ldi r24,lo8(-104)
- 245 006a 8093 C100 		sts 193,r24
- 246 006e 0895      		ret
- 247               		.size	hardwareserialsetup, .-hardwareserialsetup
- 248               	.Lscope4:
- 249               		.stabs	"",36,0,0,.Lscope4-.LFBB4
- 250               		.stabd	78,0,0
- 251               		.stabs	"softwareserialsetup:F(0,49)",36,0,128,softwareserialsetup
- 252               	.global	softwareserialsetup
- 253               		.type	softwareserialsetup, @function
- 254               	softwareserialsetup:
- 255               		.stabd	46,0,0
- 126:source/os_rios/cpufunctions.c **** }
- 127:source/os_rios/cpufunctions.c **** 
- 128:source/os_rios/cpufunctions.c **** void softwareserialsetup(void){
- 256               		.stabn	68,0,128,.LM20-.LFBB5
- 257               	.LM20:
- 258               	.LFBB5:
- 259               	/* prologue: function */
- 260               	/* frame size = 0 */
- 261               	/* stack size = 0 */
- 262               	.L__stack_usage = 0
- 129:source/os_rios/cpufunctions.c ****   /* Software Serial Communication UASRT setup
- 130:source/os_rios/cpufunctions.c ****    * -----------------------------------------
- 131:source/os_rios/cpufunctions.c ****    *
- 132:source/os_rios/cpufunctions.c ****    * The Arduino UNO has only one hardware UART. We will need another one for
- 133:source/os_rios/cpufunctions.c ****    * debugging. Therefore we will need to emulate it and build a quick drver
- 134:source/os_rios/cpufunctions.c ****    * that will allow us to transmit data while the RX pin is receiving. We can
- 135:source/os_rios/cpufunctions.c ****    * use PORTB4 PIN 12 as software serial pin. Lets set that to high (IDLE).
- 136:source/os_rios/cpufunctions.c ****    * Here is how a UART data frame with data 0xAA, a start, a stop bit and
- 137:source/os_rios/cpufunctions.c ****    * no parity would look like for the Arduino:
- 138:source/os_rios/cpufunctions.c ****    *
- 139:source/os_rios/cpufunctions.c ****    *    IDLE | start bit |          8 data bits          |  stop bit | IDLE
- 140:source/os_rios/cpufunctions.c ****    *    -------------------------------------------------------------------
- 141:source/os_rios/cpufunctions.c ****    *
- 142:source/os_rios/cpufunctions.c ****    *      1                1       1       1       1           1        1
- 143:source/os_rios/cpufunctions.c ****    *    -----|           |---|   |---|   |---|   |---|   |-----------|-----
- 144:source/os_rios/cpufunctions.c ****    *         |           |   |   |   |   |   |   |   |   |
- 145:source/os_rios/cpufunctions.c ****    *         |           |   |   |   |   |   |   |   |   |
- 146:source/os_rios/cpufunctions.c ****    *         |-----------|   |---|   |---|   |---|   |---|
- 147:source/os_rios/cpufunctions.c ****    *               0           0       0       0       0
+ 237 005e E1E8      		ldi r30,lo8(-127)
+ 238 0060 F0E0      		ldi r31,0
+ 239 0062 8081      		ld r24,Z
+ 240 0064 8860      		ori r24,lo8(8)
+ 241 0066 8083      		st Z,r24
+  97:source/os_rios/cpufunctions.c **** 
+  98:source/os_rios/cpufunctions.c ****   /* OCRA1 low and high needs to be set to give us ~ 4 ms*/
+  99:source/os_rios/cpufunctions.c ****   OCR1A |= 1953;
+ 242               		.stabn	68,0,99,.LM18-.LFBB4
+ 243               	.LM18:
+ 244 0068 A8E8      		ldi r26,lo8(-120)
+ 245 006a B0E0      		ldi r27,0
+ 246 006c 8D91      		ld r24,X+
+ 247 006e 9C91      		ld r25,X
+ 248 0070 1197      		sbiw r26,1
+ 249 0072 816A      		ori r24,161
+ 250 0074 9760      		ori r25,7
+ 251 0076 1196      		adiw r26,1
+ 252 0078 9C93      		st X,r25
+ 253 007a 8E93      		st -X,r24
+ 100:source/os_rios/cpufunctions.c **** 
+ 101:source/os_rios/cpufunctions.c ****   /* Set up the pre-scalar for timer 1*/
+ 102:source/os_rios/cpufunctions.c ****   TCCR1B |= (1<<CS12) | (1<<CS10);
+ 254               		.stabn	68,0,102,.LM19-.LFBB4
+ 255               	.LM19:
+ 256 007c 8081      		ld r24,Z
+ 257 007e 8560      		ori r24,lo8(5)
+ 258 0080 8083      		st Z,r24
+ 103:source/os_rios/cpufunctions.c **** 
+ 104:source/os_rios/cpufunctions.c ****   /* Finally lets enable the Timer 1 compare interrupt */
+ 105:source/os_rios/cpufunctions.c ****   TIMSK1 |= (1<<OCIE1A);
+ 259               		.stabn	68,0,105,.LM20-.LFBB4
+ 260               	.LM20:
+ 261 0082 EFE6      		ldi r30,lo8(111)
+ 262 0084 F0E0      		ldi r31,0
+ 263 0086 8081      		ld r24,Z
+ 264 0088 8260      		ori r24,lo8(2)
+ 265 008a 8083      		st Z,r24
+ 266 008c 0895      		ret
+ 267               		.size	propulsiontimer1setup, .-propulsiontimer1setup
+ 268               	.Lscope4:
+ 269               		.stabs	"",36,0,0,.Lscope4-.LFBB4
+ 270               		.stabd	78,0,0
+ 271               		.stabs	"hardwareserialsetup:F(0,49)",36,0,108,hardwareserialsetup
+ 272               	.global	hardwareserialsetup
+ 273               		.type	hardwareserialsetup, @function
+ 274               	hardwareserialsetup:
+ 275               		.stabd	46,0,0
+ 106:source/os_rios/cpufunctions.c **** }
+ 107:source/os_rios/cpufunctions.c **** 
+ 108:source/os_rios/cpufunctions.c **** void hardwareserialsetup(void){
+ 276               		.stabn	68,0,108,.LM21-.LFBB5
+ 277               	.LM21:
+ 278               	.LFBB5:
+ 279               	/* prologue: function */
+ 280               	/* frame size = 0 */
+ 281               	/* stack size = 0 */
+ 282               	.L__stack_usage = 0
+ 109:source/os_rios/cpufunctions.c ****   /* Hardware UART Control Registers setup
+ 110:source/os_rios/cpufunctions.c ****    * -------------------------------------
+ 111:source/os_rios/cpufunctions.c ****    *
+ 112:source/os_rios/cpufunctions.c ****    * Registers needed to be configured from the datasheet:
+ 113:source/os_rios/cpufunctions.c ****    *
+ 114:source/os_rios/cpufunctions.c ****    * UCSRnc - USART Control and Status Register C
+ 115:source/os_rios/cpufunctions.c ****    *          -> UMSELn bit controls USART mode
+ 116:source/os_rios/cpufunctions.c ****    * UCSRnA - USART Control and Status Register A
+ 117:source/os_rios/cpufunctions.c ****    *          -> U2Xn bit controls doublespeed
+ 118:source/os_rios/cpufunctions.c ****    * UBRRn  - USART Baud Rate Register
+ 119:source/os_rios/cpufunctions.c ****    *
+ 120:source/os_rios/cpufunctions.c ****    * Recommended baud rate settings from the datasheet:
+ 121:source/os_rios/cpufunctions.c ****    *
+ 122:source/os_rios/cpufunctions.c ****    * 9600 kbps - U2Xn = 1, UBRRn = 12 with fosc = 1 Mhz. (0.2 % error)
+ 123:source/os_rios/cpufunctions.c ****    * Selection criterion: Minimal error in data receiving using available clock.
+ 124:source/os_rios/cpufunctions.c ****    *
+ 125:source/os_rios/cpufunctions.c ****    * Our Baud caculation: UBRRn = (fosc/8*BAUD) - 1
+ 126:source/os_rios/cpufunctions.c ****    *                            = (1000000/8*9600) - 1
+ 127:source/os_rios/cpufunctions.c ****    *                            ~ 12
+ 128:source/os_rios/cpufunctions.c ****    *
+ 129:source/os_rios/cpufunctions.c ****    * Required settings for the TFmini LIDAR Sensor:
+ 130:source/os_rios/cpufunctions.c ****    *
+ 131:source/os_rios/cpufunctions.c ****    * Data bits - 8, Stop bits - 1, Parity Check - None
+ 132:source/os_rios/cpufunctions.c ****    */
+ 133:source/os_rios/cpufunctions.c **** 
+ 134:source/os_rios/cpufunctions.c ****   // Set 8 bit data
+ 135:source/os_rios/cpufunctions.c ****   UCSR0C = UCSR0C | ((1<<UCSZ01) | (1<<UCSZ00));
+ 283               		.stabn	68,0,135,.LM22-.LFBB5
+ 284               	.LM22:
+ 285 008e E2EC      		ldi r30,lo8(-62)
+ 286 0090 F0E0      		ldi r31,0
+ 287 0092 8081      		ld r24,Z
+ 288 0094 8660      		ori r24,lo8(6)
+ 289 0096 8083      		st Z,r24
+ 136:source/os_rios/cpufunctions.c **** 
+ 137:source/os_rios/cpufunctions.c ****   // Set baud rate High and Low byte in UBBR
+ 138:source/os_rios/cpufunctions.c ****   UBRR0H = (CALCULATEDUBBR>>8);
+ 290               		.stabn	68,0,138,.LM23-.LFBB5
+ 291               	.LM23:
+ 292 0098 1092 C500 		sts 197,__zero_reg__
+ 139:source/os_rios/cpufunctions.c ****   UBRR0L =  CALCULATEDUBBR;
+ 293               		.stabn	68,0,139,.LM24-.LFBB5
+ 294               	.LM24:
+ 295 009c 89E1      		ldi r24,lo8(25)
+ 296 009e 8093 C400 		sts 196,r24
+ 140:source/os_rios/cpufunctions.c **** 
+ 141:source/os_rios/cpufunctions.c ****   // Enable USART transmit and receive
+ 142:source/os_rios/cpufunctions.c ****   UCSR0B = (1<<TXEN0) | (1<<RXEN0) | (1<<RXCIE0);
+ 297               		.stabn	68,0,142,.LM25-.LFBB5
+ 298               	.LM25:
+ 299 00a2 88E9      		ldi r24,lo8(-104)
+ 300 00a4 8093 C100 		sts 193,r24
+ 301 00a8 0895      		ret
+ 302               		.size	hardwareserialsetup, .-hardwareserialsetup
+ 303               	.Lscope5:
+ 304               		.stabs	"",36,0,0,.Lscope5-.LFBB5
+ 305               		.stabd	78,0,0
+ 306               		.stabs	"softwareserialsetup:F(0,49)",36,0,145,softwareserialsetup
+ 307               	.global	softwareserialsetup
+ 308               		.type	softwareserialsetup, @function
+ 309               	softwareserialsetup:
+ 310               		.stabd	46,0,0
+ 143:source/os_rios/cpufunctions.c **** }
+ 144:source/os_rios/cpufunctions.c **** 
+ 145:source/os_rios/cpufunctions.c **** void softwareserialsetup(void){
+ 311               		.stabn	68,0,145,.LM26-.LFBB6
+ 312               	.LM26:
+ 313               	.LFBB6:
+ 314               	/* prologue: function */
+ 315               	/* frame size = 0 */
+ 316               	/* stack size = 0 */
+ 317               	.L__stack_usage = 0
+ 146:source/os_rios/cpufunctions.c ****   /* Software Serial Communication UASRT setup
+ 147:source/os_rios/cpufunctions.c ****    * -----------------------------------------
  148:source/os_rios/cpufunctions.c ****    *
- 149:source/os_rios/cpufunctions.c ****    * The BUAD rate we want is 9600. That means we have 9600 bits per second.
- 150:source/os_rios/cpufunctions.c ****    * That means 1 bit is transferred every (1 second/ 9600 bits) ~104 us.
- 151:source/os_rios/cpufunctions.c ****    * We are clocked at 4000000 Hz. Each "tick" is 0.25 us. So this should be not
- 152:source/os_rios/cpufunctions.c ****    * be a big deal to do with a regular pin if we just turn it ON and OFF to
- 153:source/os_rios/cpufunctions.c ****    * simulate serial data. We will be using PORTB4 to do this which means
- 154:source/os_rios/cpufunctions.c ****    * PIN 12 on the Arduino UNO board and a TTL USB driver on an external bread
- 155:source/os_rios/cpufunctions.c ****    * board connected to a laptop to see the output.
- 156:source/os_rios/cpufunctions.c ****    */
- 157:source/os_rios/cpufunctions.c **** 
- 158:source/os_rios/cpufunctions.c ****   /* Set the direction of PORTB4 to OUTPUT and hold it HIGH (IDLE) */
- 159:source/os_rios/cpufunctions.c ****   DDRB  |= (1<<DDB4);
- 263               		.stabn	68,0,159,.LM21-.LFBB5
- 264               	.LM21:
- 265 0070 249A      		sbi 0x4,4
- 160:source/os_rios/cpufunctions.c ****   PORTB |= (1<<PORTB4);
- 266               		.stabn	68,0,160,.LM22-.LFBB5
- 267               	.LM22:
- 268 0072 2C9A      		sbi 0x5,4
- 269 0074 0895      		ret
- 270               		.size	softwareserialsetup, .-softwareserialsetup
- 271               	.Lscope5:
- 272               		.stabs	"",36,0,0,.Lscope5-.LFBB5
- 273               		.stabd	78,0,0
- 274               		.stabs	"faultledsetup:F(0,49)",36,0,163,faultledsetup
- 275               	.global	faultledsetup
- 276               		.type	faultledsetup, @function
- 277               	faultledsetup:
- 278               		.stabd	46,0,0
- 161:source/os_rios/cpufunctions.c **** }
- 162:source/os_rios/cpufunctions.c **** 
- 163:source/os_rios/cpufunctions.c **** void faultledsetup(void){
- 279               		.stabn	68,0,163,.LM23-.LFBB6
- 280               	.LM23:
- 281               	.LFBB6:
- 282               	/* prologue: function */
- 283               	/* frame size = 0 */
- 284               	/* stack size = 0 */
- 285               	.L__stack_usage = 0
- 164:source/os_rios/cpufunctions.c ****   /* let us set up the built-in LED to light up when there is a fault */
- 165:source/os_rios/cpufunctions.c ****   DDRB |= (1<<DDB5);     // Make the pin direction out
- 286               		.stabn	68,0,165,.LM24-.LFBB6
- 287               	.LM24:
- 288 0076 259A      		sbi 0x4,5
- 166:source/os_rios/cpufunctions.c ****   PORTB &= ~(1<<PORTB5); // Turn it off so that it can be turned on when faulted
- 289               		.stabn	68,0,166,.LM25-.LFBB6
- 290               	.LM25:
- 291 0078 2D98      		cbi 0x5,5
- 292 007a 0895      		ret
- 293               		.size	faultledsetup, .-faultledsetup
- 294               	.Lscope6:
- 295               		.stabs	"",36,0,0,.Lscope6-.LFBB6
- 296               		.stabd	78,0,0
- 297               		.stabs	"",100,0,0,.Letext0
- 298               	.Letext0:
- 299               		.ident	"GCC: (GNU) 5.4.0"
+ 149:source/os_rios/cpufunctions.c ****    * The Arduino UNO has only one hardware UART. We will need another one for
+ 150:source/os_rios/cpufunctions.c ****    * debugging. Therefore we will need to emulate it and build a quick drver
+ 151:source/os_rios/cpufunctions.c ****    * that will allow us to transmit data while the RX pin is receiving. We can
+ 152:source/os_rios/cpufunctions.c ****    * use PORTB4 PIN 12 as software serial pin. Lets set that to high (IDLE).
+ 153:source/os_rios/cpufunctions.c ****    * Here is how a UART data frame with data 0xAA, a start, a stop bit and
+ 154:source/os_rios/cpufunctions.c ****    * no parity would look like for the Arduino:
+ 155:source/os_rios/cpufunctions.c ****    *
+ 156:source/os_rios/cpufunctions.c ****    *    IDLE | start bit |          8 data bits          |  stop bit | IDLE
+ 157:source/os_rios/cpufunctions.c ****    *    -------------------------------------------------------------------
+ 158:source/os_rios/cpufunctions.c ****    *
+ 159:source/os_rios/cpufunctions.c ****    *      1                1       1       1       1           1        1
+ 160:source/os_rios/cpufunctions.c ****    *    -----|           |---|   |---|   |---|   |---|   |-----------|-----
+ 161:source/os_rios/cpufunctions.c ****    *         |           |   |   |   |   |   |   |   |   |
+ 162:source/os_rios/cpufunctions.c ****    *         |           |   |   |   |   |   |   |   |   |
+ 163:source/os_rios/cpufunctions.c ****    *         |-----------|   |---|   |---|   |---|   |---|
+ 164:source/os_rios/cpufunctions.c ****    *               0           0       0       0       0
+ 165:source/os_rios/cpufunctions.c ****    *
+ 166:source/os_rios/cpufunctions.c ****    * The BUAD rate we want is 9600. That means we have 9600 bits per second.
+ 167:source/os_rios/cpufunctions.c ****    * That means 1 bit is transferred every (1 second/ 9600 bits) ~104 us.
+ 168:source/os_rios/cpufunctions.c ****    * We are clocked at 4000000 Hz. Each "tick" is 0.25 us. So this should be not
+ 169:source/os_rios/cpufunctions.c ****    * be a big deal to do with a regular pin if we just turn it ON and OFF to
+ 170:source/os_rios/cpufunctions.c ****    * simulate serial data. We will be using PORTB4 to do this which means
+ 171:source/os_rios/cpufunctions.c ****    * PIN 12 on the Arduino UNO board and a TTL USB driver on an external bread
+ 172:source/os_rios/cpufunctions.c ****    * board connected to a laptop to see the output.
+ 173:source/os_rios/cpufunctions.c ****    */
+ 174:source/os_rios/cpufunctions.c **** 
+ 175:source/os_rios/cpufunctions.c ****   /* Set the direction of PORTB4 to OUTPUT and hold it HIGH (IDLE) */
+ 176:source/os_rios/cpufunctions.c ****   DDRB  |= (1<<DDB4);
+ 318               		.stabn	68,0,176,.LM27-.LFBB6
+ 319               	.LM27:
+ 320 00aa 249A      		sbi 0x4,4
+ 177:source/os_rios/cpufunctions.c ****   PORTB |= (1<<PORTB4);
+ 321               		.stabn	68,0,177,.LM28-.LFBB6
+ 322               	.LM28:
+ 323 00ac 2C9A      		sbi 0x5,4
+ 324 00ae 0895      		ret
+ 325               		.size	softwareserialsetup, .-softwareserialsetup
+ 326               	.Lscope6:
+ 327               		.stabs	"",36,0,0,.Lscope6-.LFBB6
+ 328               		.stabd	78,0,0
+ 329               		.stabs	"faultledsetup:F(0,49)",36,0,180,faultledsetup
+ 330               	.global	faultledsetup
+ 331               		.type	faultledsetup, @function
+ 332               	faultledsetup:
+ 333               		.stabd	46,0,0
+ 178:source/os_rios/cpufunctions.c **** }
+ 179:source/os_rios/cpufunctions.c **** 
+ 180:source/os_rios/cpufunctions.c **** void faultledsetup(void){
+ 334               		.stabn	68,0,180,.LM29-.LFBB7
+ 335               	.LM29:
+ 336               	.LFBB7:
+ 337               	/* prologue: function */
+ 338               	/* frame size = 0 */
+ 339               	/* stack size = 0 */
+ 340               	.L__stack_usage = 0
+ 181:source/os_rios/cpufunctions.c ****   /* let us set up the built-in LED to light up when there is a fault */
+ 182:source/os_rios/cpufunctions.c ****   DDRB |= (1<<DDB5);     // Make the pin direction out
+ 341               		.stabn	68,0,182,.LM30-.LFBB7
+ 342               	.LM30:
+ 343 00b0 259A      		sbi 0x4,5
+ 183:source/os_rios/cpufunctions.c ****   PORTB &= ~(1<<PORTB5); // Turn it off so that it can be turned on when faulted
+ 344               		.stabn	68,0,183,.LM31-.LFBB7
+ 345               	.LM31:
+ 346 00b2 2D98      		cbi 0x5,5
+ 347 00b4 0895      		ret
+ 348               		.size	faultledsetup, .-faultledsetup
+ 349               	.Lscope7:
+ 350               		.stabs	"",36,0,0,.Lscope7-.LFBB7
+ 351               		.stabd	78,0,0
+ 352               		.stabs	"",100,0,0,.Letext0
+ 353               	.Letext0:
+ 354               		.ident	"GCC: (GNU) 5.4.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 cpufunctions.c
-     /tmp/ccrqpCqi.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccrqpCqi.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccrqpCqi.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccrqpCqi.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccrqpCqi.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccrqpCqi.s:107    .text:0000000000000000 clocksetup
-     /tmp/ccrqpCqi.s:134    .text:000000000000000e pwmtimer2setup
-     /tmp/ccrqpCqi.s:176    .text:0000000000000032 LIDARreadtimer0setup
-     /tmp/ccrqpCqi.s:219    .text:0000000000000054 hardwareserialsetup
-     /tmp/ccrqpCqi.s:254    .text:0000000000000070 softwareserialsetup
-     /tmp/ccrqpCqi.s:277    .text:0000000000000076 faultledsetup
+     /tmp/ccr9LCIT.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccr9LCIT.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccr9LCIT.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccr9LCIT.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccr9LCIT.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccr9LCIT.s:107    .text:0000000000000000 clocksetup
+     /tmp/ccr9LCIT.s:134    .text:000000000000000e pwmtimer2setup
+     /tmp/ccr9LCIT.s:176    .text:0000000000000032 LIDARreadtimer0setup
+     /tmp/ccr9LCIT.s:219    .text:0000000000000054 propulsiontimer1setup
+     /tmp/ccr9LCIT.s:274    .text:000000000000008e hardwareserialsetup
+     /tmp/ccr9LCIT.s:309    .text:00000000000000aa softwareserialsetup
+     /tmp/ccr9LCIT.s:332    .text:00000000000000b0 faultledsetup
 
 NO UNDEFINED SYMBOLS

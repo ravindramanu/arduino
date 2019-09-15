@@ -1,11 +1,11 @@
-   1               		.file	"UART.c"
+   1               		.file	"USART.c"
    2               	__SP_H__ = 0x3e
    3               	__SP_L__ = 0x3d
    4               	__SREG__ = 0x3f
    5               	__tmp_reg__ = 0
    6               	__zero_reg__ = 1
    7               		.stabs	"/home/manu/github/arduino/LIDARBOT/",100,0,2,.Ltext0
-   8               		.stabs	"source/os_rios/UART.c",100,0,2,.Ltext0
+   8               		.stabs	"source/os_rios/USART.c",100,0,2,.Ltext0
    9               		.text
   10               	.Ltext0:
   11               		.stabs	"gcc2_compiled.",60,0,0,0
@@ -58,7 +58,7 @@
   58               		.stabs	"_Sat unsigned long _Accum:t(0,47)=r(0,1);8;0;",128,0,0,0
   59               		.stabs	"_Sat unsigned long long _Accum:t(0,48)=r(0,1);8;0;",128,0,0,0
   60               		.stabs	"void:t(0,49)=(0,49)",128,0,0,0
-  61               		.stabs	"source/os_rios/UART.h",130,0,0,0
+  61               		.stabs	"source/os_rios/USART.h",130,0,0,0
   62               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/avr/io.h",130,0,0,0
   63               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/avr/sfr_defs.h",130,0,0,0
   64               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/inttypes.h",130,0,0,0
@@ -115,9 +115,9 @@
  115               		.type	usartinit, @function
  116               	usartinit:
  117               		.stabd	46,0,0
-   1:source/os_rios/UART.c **** #include "UART.h"
-   2:source/os_rios/UART.c **** 
-   3:source/os_rios/UART.c **** void usartinit(void){
+   1:source/os_rios/USART.c **** #include "USART.h"
+   2:source/os_rios/USART.c **** 
+   3:source/os_rios/USART.c **** void usartinit(void){
  118               		.stabn	68,0,3,.LM0-.LFBB1
  119               	.LM0:
  120               	.LFBB1:
@@ -125,12 +125,12 @@
  122               	/* frame size = 0 */
  123               	/* stack size = 0 */
  124               	.L__stack_usage = 0
-   4:source/os_rios/UART.c ****   // Initialize the hardware and software USART
-   5:source/os_rios/UART.c ****   hardwareserialsetup();
+   4:source/os_rios/USART.c ****   // Initialize the hardware and software USART
+   5:source/os_rios/USART.c ****   hardwareserialsetup();
  125               		.stabn	68,0,5,.LM1-.LFBB1
  126               	.LM1:
  127 0000 0E94 0000 		call hardwareserialsetup
-   6:source/os_rios/UART.c ****   softwareserialsetup();
+   6:source/os_rios/USART.c ****   softwareserialsetup();
  128               		.stabn	68,0,6,.LM2-.LFBB1
  129               	.LM2:
  130 0004 0C94 0000 		jmp softwareserialsetup
@@ -144,9 +144,9 @@
  138               		.type	softwareserialTransmit, @function
  139               	softwareserialTransmit:
  140               		.stabd	46,0,0
-   7:source/os_rios/UART.c **** }
-   8:source/os_rios/UART.c **** 
-   9:source/os_rios/UART.c **** void softwareserialTransmit(unsigned char byte){
+   7:source/os_rios/USART.c **** }
+   8:source/os_rios/USART.c **** 
+   9:source/os_rios/USART.c **** void softwareserialTransmit(unsigned char byte){
  141               		.stabn	68,0,9,.LM3-.LFBB2
  142               	.LM3:
  143               	.LFBB2:
@@ -154,14 +154,14 @@
  145               	/* frame size = 0 */
  146               	/* stack size = 0 */
  147               	.L__stack_usage = 0
-  10:source/os_rios/UART.c ****   /* The software serial transmit function is for debug only.
-  11:source/os_rios/UART.c ****    * This function will send out any data that is passed into it on to a
-  12:source/os_rios/UART.c ****    * software emulated UART on pin 12 of the Arduino.
-  13:source/os_rios/UART.c ****    */
-  14:source/os_rios/UART.c ****   unsigned char bitmask=0x01;
-  15:source/os_rios/UART.c **** 
-  16:source/os_rios/UART.c ****   // Send out start bit by turning PORTB4 OFF and wait ~104 ms (since baud is 9600)
-  17:source/os_rios/UART.c ****   PORTB &= ~(1<<PORTB4);
+  10:source/os_rios/USART.c ****   /* The software serial transmit function is for debug only.
+  11:source/os_rios/USART.c ****    * This function will send out any data that is passed into it on to a
+  12:source/os_rios/USART.c ****    * software emulated UART on pin 12 of the Arduino.
+  13:source/os_rios/USART.c ****    */
+  14:source/os_rios/USART.c ****   unsigned char bitmask=0x01;
+  15:source/os_rios/USART.c **** 
+  16:source/os_rios/USART.c ****   // Send out start bit by turning PORTB4 OFF and wait ~104 ms (since baud is 9600)
+  17:source/os_rios/USART.c ****   PORTB &= ~(1<<PORTB4);
  148               		.stabn	68,0,17,.LM4-.LFBB2
  149               	.LM4:
  150 0008 2C98      		cbi 0x5,4
@@ -447,402 +447,306 @@
  276:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
  155               		.stabn	68,0,276,.LM5-.LFBB2
  156               	.LM5:
- 157 000a 4AE8      		ldi r20,lo8(-118)
+ 157 000a 44E8      		ldi r20,lo8(-124)
  158 000c 4A95      	1:	dec r20
  159 000e 01F4      		brne 1b
- 160 0010 00C0      		rjmp .
- 161 0012 28E0      		ldi r18,lo8(8)
- 162 0014 30E0      		ldi r19,0
- 163               	.LBE11:
- 164               	.LBE10:
- 165               		.stabs	"source/os_rios/UART.c",132,0,0,.Ltext2
- 166               	.Ltext2:
-  14:source/os_rios/UART.c **** 
- 167               		.stabn	68,0,14,.LM6-.LFBB2
- 168               	.LM6:
- 169 0016 91E0      		ldi r25,lo8(1)
- 170               	.L5:
-  18:source/os_rios/UART.c ****   _delay_us(EMULATED_UARTDELAY_MICROSEC);
-  19:source/os_rios/UART.c **** 
-  20:source/os_rios/UART.c ****   // Toggle PORTB4 according to data bits in the reverse order LSB --> MSB
-  21:source/os_rios/UART.c ****   while (bitmask) {
-  22:source/os_rios/UART.c ****     if (byte & bitmask) {
- 171               		.stabn	68,0,22,.LM7-.LFBB2
- 172               	.LM7:
- 173 0018 482F      		mov r20,r24
- 174 001a 4923      		and r20,r25
- 175 001c 01F0      		breq .L3
-  23:source/os_rios/UART.c ****       PORTB |= (1<<PORTB4);
- 176               		.stabn	68,0,23,.LM8-.LFBB2
- 177               	.LM8:
- 178 001e 2C9A      		sbi 0x5,4
- 179 0020 00C0      		rjmp .L7
- 180               	.L3:
-  24:source/os_rios/UART.c ****       _delay_us(EMULATED_UARTDELAY_MICROSEC);
-  25:source/os_rios/UART.c ****     }
-  26:source/os_rios/UART.c ****     else {
-  27:source/os_rios/UART.c ****       PORTB &= ~(1<<PORTB4);
- 181               		.stabn	68,0,27,.LM9-.LFBB2
- 182               	.LM9:
- 183 0022 2C98      		cbi 0x5,4
- 184               	.L7:
- 185               	.LBB12:
- 186               	.LBB13:
- 187               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext3
- 188               	.Ltext3:
- 189               		.stabn	68,0,276,.LM10-.LFBB2
- 190               	.LM10:
- 191 0024 4AE8      		ldi r20,lo8(-118)
- 192 0026 4A95      	1:	dec r20
- 193 0028 01F4      		brne 1b
- 194 002a 00C0      		rjmp .
- 195               	.LBE13:
- 196               	.LBE12:
- 197               		.stabs	"source/os_rios/UART.c",132,0,0,.Ltext4
- 198               	.Ltext4:
-  28:source/os_rios/UART.c ****       _delay_us(EMULATED_UARTDELAY_MICROSEC);
-  29:source/os_rios/UART.c ****     }
-  30:source/os_rios/UART.c ****     bitmask=bitmask<<1;
- 199               		.stabn	68,0,30,.LM11-.LFBB2
- 200               	.LM11:
- 201 002c 990F      		lsl r25
- 202 002e 2150      		subi r18,1
- 203 0030 3109      		sbc r19,__zero_reg__
-  21:source/os_rios/UART.c ****     if (byte & bitmask) {
- 204               		.stabn	68,0,21,.LM12-.LFBB2
- 205               	.LM12:
- 206 0032 01F4      		brne .L5
-  31:source/os_rios/UART.c ****   }
-  32:source/os_rios/UART.c **** 
-  33:source/os_rios/UART.c ****   // Send out stop bit by turning PORTB4 ON and wait ~104 ms (since baud is 9600).
-  34:source/os_rios/UART.c ****   // The line can stay ON since that would be IDLE.
-  35:source/os_rios/UART.c ****   PORTB |= (1<<PORTB4);
- 207               		.stabn	68,0,35,.LM13-.LFBB2
- 208               	.LM13:
- 209 0034 2C9A      		sbi 0x5,4
- 210               	.LBB14:
- 211               	.LBB15:
- 212               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext5
- 213               	.Ltext5:
- 214               		.stabn	68,0,276,.LM14-.LFBB2
- 215               	.LM14:
- 216 0036 8AE8      		ldi r24,lo8(-118)
- 217 0038 8A95      	1:	dec r24
- 218 003a 01F4      		brne 1b
- 219 003c 00C0      		rjmp .
- 220 003e 0895      		ret
- 221               	.LBE15:
- 222               	.LBE14:
- 223               		.size	softwareserialTransmit, .-softwareserialTransmit
- 224               		.stabs	"bitmask:r(0,13)",64,0,14,25
- 225               		.stabn	192,0,0,.LFBB2-.LFBB2
- 226               		.stabn	224,0,0,.Lscope2-.LFBB2
- 227               	.Lscope2:
- 228               		.stabs	"",36,0,0,.Lscope2-.LFBB2
- 229               		.stabd	78,0,0
- 230               		.stabs	"rxBufferRead:F(1,1)",36,0,39,rxBufferRead
- 231               		.stabs	"byte:P(0,50)=*(0,13)",64,0,39,24
- 232               	.global	rxBufferRead
- 233               		.type	rxBufferRead, @function
- 234               	rxBufferRead:
- 235               		.stabd	46,0,0
- 236               		.stabs	"source/os_rios/UART.c",132,0,0,.Ltext6
- 237               	.Ltext6:
-  36:source/os_rios/UART.c ****   _delay_us(EMULATED_UARTDELAY_MICROSEC);
-  37:source/os_rios/UART.c **** }
-  38:source/os_rios/UART.c **** 
-  39:source/os_rios/UART.c **** enum bufferStatus rxBufferRead(unsigned char * byte){
- 238               		.stabn	68,0,39,.LM15-.LFBB3
- 239               	.LM15:
- 240               	.LFBB3:
- 241               	/* prologue: function */
- 242               	/* frame size = 0 */
- 243               	/* stack size = 0 */
- 244               	.L__stack_usage = 0
-  40:source/os_rios/UART.c ****   // Check first before reading the buffer
-  41:source/os_rios/UART.c ****   if ((rxBuffer.readindex) == (rxBuffer.writeindex)) {
- 245               		.stabn	68,0,41,.LM16-.LFBB3
- 246               	.LM16:
- 247 0040 3091 0000 		lds r19,rxBuffer+1024
- 248 0044 2091 0000 		lds r18,rxBuffer+1025
- 249 0048 3213      		cpse r19,r18
- 250 004a 00C0      		rjmp .L10
-  42:source/os_rios/UART.c ****     /* This would mean the buffer is empty. */
-  43:source/os_rios/UART.c ****     softwareserialTransmit(0xAA);
- 251               		.stabn	68,0,43,.LM17-.LFBB3
- 252               	.LM17:
- 253 004c 8AEA      		ldi r24,lo8(-86)
- 254 004e 0E94 0000 		call softwareserialTransmit
-  44:source/os_rios/UART.c ****     return BUFFER_EMPTY;
- 255               		.stabn	68,0,44,.LM18-.LFBB3
- 256               	.LM18:
- 257 0052 81E0      		ldi r24,lo8(1)
- 258 0054 90E0      		ldi r25,0
- 259 0056 0895      		ret
- 260               	.L10:
-  45:source/os_rios/UART.c ****   }
-  46:source/os_rios/UART.c ****   // Read the variable from buffer
-  47:source/os_rios/UART.c ****   *byte=rxBuffer.data[rxBuffer.readindex];
- 261               		.stabn	68,0,47,.LM19-.LFBB3
- 262               	.LM19:
- 263 0058 E091 0000 		lds r30,rxBuffer+1024
- 264 005c F0E0      		ldi r31,0
- 265 005e E050      		subi r30,lo8(-(rxBuffer))
- 266 0060 F040      		sbci r31,hi8(-(rxBuffer))
- 267 0062 2081      		ld r18,Z
- 268 0064 FC01      		movw r30,r24
- 269 0066 2083      		st Z,r18
-  48:source/os_rios/UART.c ****   buffercount = buffercount - 1;
- 270               		.stabn	68,0,48,.LM20-.LFBB3
- 271               	.LM20:
- 272 0068 8091 0000 		lds r24,buffercount
- 273 006c 9091 0000 		lds r25,buffercount+1
- 274 0070 0197      		sbiw r24,1
- 275 0072 9093 0000 		sts buffercount+1,r25
- 276 0076 8093 0000 		sts buffercount,r24
-  49:source/os_rios/UART.c **** 
-  50:source/os_rios/UART.c ****   /* Here is another hack to reset the value of index when we hit BUFFERSIZE
-  51:source/os_rios/UART.c ****   * Using modulus operator gives us the remainder of a divison. Our BUFFERSIZE
-  52:source/os_rios/UART.c ****   * is the maximum value of the size, so for every value that is less than
-  53:source/os_rios/UART.c ****   * BUFFERSIZE the value fo the index from the below expression is itself.
-  54:source/os_rios/UART.c ****   * When we reach BUFFERSIZE, the value will be zero.
-  55:source/os_rios/UART.c ****   */
-  56:source/os_rios/UART.c ****   rxBuffer.readindex = ((rxBuffer.readindex)+1) % BUFFERSIZE;
- 277               		.stabn	68,0,56,.LM21-.LFBB3
- 278               	.LM21:
- 279 007a 8091 0000 		lds r24,rxBuffer+1024
- 280 007e 90E0      		ldi r25,0
- 281 0080 0196      		adiw r24,1
- 282 0082 8093 0000 		sts rxBuffer+1024,r24
-  57:source/os_rios/UART.c ****   return BUFFER_OK;
- 283               		.stabn	68,0,57,.LM22-.LFBB3
- 284               	.LM22:
- 285 0086 80E0      		ldi r24,0
- 286 0088 90E0      		ldi r25,0
-  58:source/os_rios/UART.c **** }
- 287               		.stabn	68,0,58,.LM23-.LFBB3
- 288               	.LM23:
- 289 008a 0895      		ret
- 290               		.size	rxBufferRead, .-rxBufferRead
- 291               	.Lscope3:
- 292               		.stabs	"",36,0,0,.Lscope3-.LFBB3
- 293               		.stabd	78,0,0
- 294               		.stabs	"rxBufferWrite:F(1,1)",36,0,61,rxBufferWrite
- 295               	.global	rxBufferWrite
- 296               		.type	rxBufferWrite, @function
- 297               	rxBufferWrite:
- 298               		.stabd	46,0,0
-  59:source/os_rios/UART.c **** 
-  60:source/os_rios/UART.c **** 
-  61:source/os_rios/UART.c **** enum bufferStatus rxBufferWrite(){
- 299               		.stabn	68,0,61,.LM24-.LFBB4
- 300               	.LM24:
- 301               	.LFBB4:
- 302               	/* prologue: function */
- 303               	/* frame size = 0 */
- 304               	/* stack size = 0 */
- 305               	.L__stack_usage = 0
-  62:source/os_rios/UART.c ****   // That modulus thing again, although  we will write it out for readablity
-  63:source/os_rios/UART.c ****   unsigned char insertindex = ((rxBuffer.writeindex)+1) % BUFFERSIZE;
- 306               		.stabn	68,0,63,.LM25-.LFBB4
- 307               	.LM25:
- 308 008c 8091 0000 		lds r24,rxBuffer+1025
- 309 0090 90E0      		ldi r25,0
- 310 0092 0196      		adiw r24,1
-  64:source/os_rios/UART.c **** 
-  65:source/os_rios/UART.c ****   // Check if the next element if someting that needs to be read out. If it is
-  66:source/os_rios/UART.c ****   // the buffer is definitely full.
-  67:source/os_rios/UART.c ****   if (insertindex == (rxBuffer.readindex)) {
- 311               		.stabn	68,0,67,.LM26-.LFBB4
- 312               	.LM26:
- 313 0094 2091 0000 		lds r18,rxBuffer+1024
- 314 0098 2813      		cpse r18,r24
- 315 009a 00C0      		rjmp .L13
-  68:source/os_rios/UART.c ****     /* This would mean the buffer is full. But what shoudl we do if the buffer
-  69:source/os_rios/UART.c ****      * is full. Why just return. UDR0 itself is hardware buffered. So are very
-  70:source/os_rios/UART.c ****      * less likely to lose any data. But in case we reach that point we just
-  71:source/os_rios/UART.c ****      * wait until something is read.
-  72:source/os_rios/UART.c ****      */
-  73:source/os_rios/UART.c ****     softwareserialTransmit(0xFF);
- 316               		.stabn	68,0,73,.LM27-.LFBB4
- 317               	.LM27:
- 318 009c 8FEF      		ldi r24,lo8(-1)
- 319 009e 0E94 0000 		call softwareserialTransmit
-  74:source/os_rios/UART.c ****     return BUFFER_FULL;
- 320               		.stabn	68,0,74,.LM28-.LFBB4
- 321               	.LM28:
- 322 00a2 82E0      		ldi r24,lo8(2)
- 323 00a4 90E0      		ldi r25,0
- 324 00a6 0895      		ret
- 325               	.L13:
-  75:source/os_rios/UART.c ****   }
-  76:source/os_rios/UART.c ****   // Read the variable from UDR0 into the buffer
-  77:source/os_rios/UART.c ****   rxBuffer.data[rxBuffer.writeindex] = UDR0;
- 326               		.stabn	68,0,77,.LM29-.LFBB4
- 327               	.LM29:
- 328 00a8 E091 0000 		lds r30,rxBuffer+1025
- 329 00ac F0E0      		ldi r31,0
- 330 00ae 9091 C600 		lds r25,198
- 331 00b2 E050      		subi r30,lo8(-(rxBuffer))
- 332 00b4 F040      		sbci r31,hi8(-(rxBuffer))
- 333 00b6 9083      		st Z,r25
-  78:source/os_rios/UART.c ****   buffercount = (buffercount+1) % BUFFERSIZE;
- 334               		.stabn	68,0,78,.LM30-.LFBB4
- 335               	.LM30:
- 336 00b8 2091 0000 		lds r18,buffercount
- 337 00bc 3091 0000 		lds r19,buffercount+1
- 338 00c0 2F5F      		subi r18,-1
- 339 00c2 3F4F      		sbci r19,-1
- 340 00c4 3370      		andi r19,3
- 341 00c6 3093 0000 		sts buffercount+1,r19
- 342 00ca 2093 0000 		sts buffercount,r18
-  79:source/os_rios/UART.c **** 
-  80:source/os_rios/UART.c ****   // Increment the index
-  81:source/os_rios/UART.c ****   rxBuffer.writeindex = insertindex;
- 343               		.stabn	68,0,81,.LM31-.LFBB4
- 344               	.LM31:
- 345 00ce 8093 0000 		sts rxBuffer+1025,r24
-  82:source/os_rios/UART.c ****   return BUFFER_OK;
- 346               		.stabn	68,0,82,.LM32-.LFBB4
- 347               	.LM32:
- 348 00d2 80E0      		ldi r24,0
- 349 00d4 90E0      		ldi r25,0
-  83:source/os_rios/UART.c **** }
- 350               		.stabn	68,0,83,.LM33-.LFBB4
- 351               	.LM33:
- 352 00d6 0895      		ret
- 353               		.size	rxBufferWrite, .-rxBufferWrite
- 354               	.Lscope4:
- 355               		.stabs	"",36,0,0,.Lscope4-.LFBB4
- 356               		.stabd	78,0,0
- 357               		.stabs	"__vector_18:F(0,49)",36,0,90,__vector_18
- 358               	.global	__vector_18
- 359               		.type	__vector_18, @function
- 360               	__vector_18:
- 361               		.stabd	46,0,0
-  84:source/os_rios/UART.c **** 
-  85:source/os_rios/UART.c **** /******************************************************************************/
-  86:source/os_rios/UART.c **** /*                          INTERRUPT SERVICE ROUTINES                        */
-  87:source/os_rios/UART.c **** /******************************************************************************/
-  88:source/os_rios/UART.c **** 
-  89:source/os_rios/UART.c **** /* USART RECEIVE INTERRUPT SERVICE ROUTINE */
-  90:source/os_rios/UART.c **** ISR(USART_RX_vect){
- 362               		.stabn	68,0,90,.LM34-.LFBB5
- 363               	.LM34:
- 364               	.LFBB5:
- 365 00d8 1F92      		push r1
- 366 00da 0F92      		push r0
- 367 00dc 0FB6      		in r0,__SREG__
- 368 00de 0F92      		push r0
- 369 00e0 1124      		clr __zero_reg__
- 370 00e2 2F93      		push r18
- 371 00e4 3F93      		push r19
- 372 00e6 4F93      		push r20
- 373 00e8 5F93      		push r21
- 374 00ea 6F93      		push r22
- 375 00ec 7F93      		push r23
- 376 00ee 8F93      		push r24
- 377 00f0 9F93      		push r25
- 378 00f2 AF93      		push r26
- 379 00f4 BF93      		push r27
- 380 00f6 EF93      		push r30
- 381 00f8 FF93      		push r31
- 382               	/* prologue: Signal */
- 383               	/* frame size = 0 */
- 384               	/* stack size = 15 */
- 385               	.L__stack_usage = 15
-  91:source/os_rios/UART.c ****   // Set flag to one
-  92:source/os_rios/UART.c ****   USART_is_receiving = 1;
- 386               		.stabn	68,0,92,.LM35-.LFBB5
- 387               	.LM35:
- 388 00fa 81E0      		ldi r24,lo8(1)
- 389 00fc 8093 0000 		sts USART_is_receiving,r24
-  93:source/os_rios/UART.c ****   /* We want our interrupt service routine to be quick as possible. Which is why
-  94:source/os_rios/UART.c ****    * all this routine will do is write to the ring buffer and get out. However,
-  95:source/os_rios/UART.c ****    * we need our cpu to be quicker so that elements from that buffer are emptied
-  96:source/os_rios/UART.c ****    * faster than this ISR can populate the buffer. This was one of the prime
-  97:source/os_rios/UART.c ****    * reasons why the chosen clock was 4 Mhz.*/
-  98:source/os_rios/UART.c ****   if((rxBufferWrite() != BUFFER_OK)){
- 390               		.stabn	68,0,98,.LM36-.LFBB5
- 391               	.LM36:
- 392 0100 0E94 0000 		call rxBufferWrite
- 393 0104 892B      		or r24,r25
- 394 0106 01F0      		breq .L16
-  99:source/os_rios/UART.c ****     readLIDAR();
- 395               		.stabn	68,0,99,.LM37-.LFBB5
- 396               	.LM37:
- 397 0108 0E94 0000 		call readLIDAR
- 100:source/os_rios/UART.c ****     rxBufferWrite();
- 398               		.stabn	68,0,100,.LM38-.LFBB5
- 399               	.LM38:
- 400 010c 0E94 0000 		call rxBufferWrite
- 401               	.L16:
- 101:source/os_rios/UART.c ****   }
- 102:source/os_rios/UART.c **** 
- 103:source/os_rios/UART.c ****   // Set it off when done
- 104:source/os_rios/UART.c ****   USART_is_receiving = 0;
- 402               		.stabn	68,0,104,.LM39-.LFBB5
- 403               	.LM39:
- 404 0110 1092 0000 		sts USART_is_receiving,__zero_reg__
- 405               	/* epilogue start */
- 105:source/os_rios/UART.c **** }
- 406               		.stabn	68,0,105,.LM40-.LFBB5
- 407               	.LM40:
- 408 0114 FF91      		pop r31
- 409 0116 EF91      		pop r30
- 410 0118 BF91      		pop r27
- 411 011a AF91      		pop r26
- 412 011c 9F91      		pop r25
- 413 011e 8F91      		pop r24
- 414 0120 7F91      		pop r23
- 415 0122 6F91      		pop r22
- 416 0124 5F91      		pop r21
- 417 0126 4F91      		pop r20
- 418 0128 3F91      		pop r19
- 419 012a 2F91      		pop r18
- 420 012c 0F90      		pop r0
- 421 012e 0FBE      		out __SREG__,r0
- 422 0130 0F90      		pop r0
- 423 0132 1F90      		pop r1
- 424 0134 1895      		reti
- 425               		.size	__vector_18, .-__vector_18
- 426               	.Lscope5:
- 427               		.stabs	"",36,0,0,.Lscope5-.LFBB5
- 428               		.stabd	78,0,0
- 429               		.comm	buffercount,2,1
- 430               		.comm	USART_is_receiving,1,1
- 431               		.comm	rxBuffer,1026,1
- 432               		.comm	obstacle,3,1
- 433               		.comm	tfmini,9,1
- 434               		.stabs	"tfmini:G(0,51)=B(7,2)",32,0,58,0
- 435               		.stabs	"obstacle:G(0,52)=B(7,4)",32,0,66,0
- 436               		.stabs	"rxBuffer:G(0,53)=B(1,5)",32,0,37,0
- 437               		.stabs	"USART_is_receiving:G(0,54)=B(0,13)",32,0,38,0
- 438               		.stabs	"buffercount:G(0,55)=B(0,4)",32,0,39,0
- 439               		.stabs	"",100,0,0,.Letext0
- 440               	.Letext0:
- 441               		.ident	"GCC: (GNU) 5.4.0"
- 442               	.global __do_clear_bss
+ 160 0010 28E0      		ldi r18,lo8(8)
+ 161 0012 30E0      		ldi r19,0
+ 162               	.LBE11:
+ 163               	.LBE10:
+ 164               		.stabs	"source/os_rios/USART.c",132,0,0,.Ltext2
+ 165               	.Ltext2:
+  14:source/os_rios/USART.c **** 
+ 166               		.stabn	68,0,14,.LM6-.LFBB2
+ 167               	.LM6:
+ 168 0014 91E0      		ldi r25,lo8(1)
+ 169               	.L5:
+  18:source/os_rios/USART.c ****   _delay_us(EMULATED_UARTDELAY_MICROSEC);
+  19:source/os_rios/USART.c **** 
+  20:source/os_rios/USART.c ****   // Toggle PORTB4 according to data bits in the reverse order LSB --> MSB
+  21:source/os_rios/USART.c ****   while (bitmask) {
+  22:source/os_rios/USART.c ****     if (byte & bitmask) {
+ 170               		.stabn	68,0,22,.LM7-.LFBB2
+ 171               	.LM7:
+ 172 0016 482F      		mov r20,r24
+ 173 0018 4923      		and r20,r25
+ 174 001a 01F0      		breq .L3
+  23:source/os_rios/USART.c ****       PORTB |= (1<<PORTB4);
+ 175               		.stabn	68,0,23,.LM8-.LFBB2
+ 176               	.LM8:
+ 177 001c 2C9A      		sbi 0x5,4
+ 178 001e 00C0      		rjmp .L7
+ 179               	.L3:
+  24:source/os_rios/USART.c ****       _delay_us(EMULATED_UARTDELAY_MICROSEC);
+  25:source/os_rios/USART.c ****     }
+  26:source/os_rios/USART.c ****     else {
+  27:source/os_rios/USART.c ****       PORTB &= ~(1<<PORTB4);
+ 180               		.stabn	68,0,27,.LM9-.LFBB2
+ 181               	.LM9:
+ 182 0020 2C98      		cbi 0x5,4
+ 183               	.L7:
+ 184               	.LBB12:
+ 185               	.LBB13:
+ 186               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext3
+ 187               	.Ltext3:
+ 188               		.stabn	68,0,276,.LM10-.LFBB2
+ 189               	.LM10:
+ 190 0022 44E8      		ldi r20,lo8(-124)
+ 191 0024 4A95      	1:	dec r20
+ 192 0026 01F4      		brne 1b
+ 193               	.LBE13:
+ 194               	.LBE12:
+ 195               		.stabs	"source/os_rios/USART.c",132,0,0,.Ltext4
+ 196               	.Ltext4:
+  28:source/os_rios/USART.c ****       _delay_us(EMULATED_UARTDELAY_MICROSEC);
+  29:source/os_rios/USART.c ****     }
+  30:source/os_rios/USART.c ****     bitmask=bitmask<<1;
+ 197               		.stabn	68,0,30,.LM11-.LFBB2
+ 198               	.LM11:
+ 199 0028 990F      		lsl r25
+ 200 002a 2150      		subi r18,1
+ 201 002c 3109      		sbc r19,__zero_reg__
+  21:source/os_rios/USART.c ****     if (byte & bitmask) {
+ 202               		.stabn	68,0,21,.LM12-.LFBB2
+ 203               	.LM12:
+ 204 002e 01F4      		brne .L5
+  31:source/os_rios/USART.c ****   }
+  32:source/os_rios/USART.c **** 
+  33:source/os_rios/USART.c ****   // Send out stop bit by turning PORTB4 ON and wait ~104 ms (since baud is 9600).
+  34:source/os_rios/USART.c ****   // The line can stay ON since that would be IDLE.
+  35:source/os_rios/USART.c ****   PORTB |= (1<<PORTB4);
+ 205               		.stabn	68,0,35,.LM13-.LFBB2
+ 206               	.LM13:
+ 207 0030 2C9A      		sbi 0x5,4
+ 208               	.LBB14:
+ 209               	.LBB15:
+ 210               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext5
+ 211               	.Ltext5:
+ 212               		.stabn	68,0,276,.LM14-.LFBB2
+ 213               	.LM14:
+ 214 0032 84E8      		ldi r24,lo8(-124)
+ 215 0034 8A95      	1:	dec r24
+ 216 0036 01F4      		brne 1b
+ 217 0038 0895      		ret
+ 218               	.LBE15:
+ 219               	.LBE14:
+ 220               		.size	softwareserialTransmit, .-softwareserialTransmit
+ 221               		.stabs	"bitmask:r(0,13)",64,0,14,25
+ 222               		.stabn	192,0,0,.LFBB2-.LFBB2
+ 223               		.stabn	224,0,0,.Lscope2-.LFBB2
+ 224               	.Lscope2:
+ 225               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 226               		.stabd	78,0,0
+ 227               		.stabs	"rxBufferRead:F(1,1)",36,0,39,rxBufferRead
+ 228               		.stabs	"byte:P(0,50)=*(0,13)",64,0,39,24
+ 229               	.global	rxBufferRead
+ 230               		.type	rxBufferRead, @function
+ 231               	rxBufferRead:
+ 232               		.stabd	46,0,0
+ 233               		.stabs	"source/os_rios/USART.c",132,0,0,.Ltext6
+ 234               	.Ltext6:
+  36:source/os_rios/USART.c ****   _delay_us(EMULATED_UARTDELAY_MICROSEC);
+  37:source/os_rios/USART.c **** }
+  38:source/os_rios/USART.c **** 
+  39:source/os_rios/USART.c **** enum bufferStatus rxBufferRead(unsigned char * byte){
+ 235               		.stabn	68,0,39,.LM15-.LFBB3
+ 236               	.LM15:
+ 237               	.LFBB3:
+ 238               	/* prologue: function */
+ 239               	/* frame size = 0 */
+ 240               	/* stack size = 0 */
+ 241               	.L__stack_usage = 0
+  40:source/os_rios/USART.c ****   // Check first before reading the buffer
+  41:source/os_rios/USART.c ****   if ((rxBuffer.readindex) == (rxBuffer.writeindex)) {
+ 242               		.stabn	68,0,41,.LM16-.LFBB3
+ 243               	.LM16:
+ 244 003a 3091 0000 		lds r19,rxBuffer+1024
+ 245 003e 2091 0000 		lds r18,rxBuffer+1025
+ 246 0042 3213      		cpse r19,r18
+ 247 0044 00C0      		rjmp .L10
+  42:source/os_rios/USART.c ****     /* This would mean the buffer is empty. */
+  43:source/os_rios/USART.c ****     softwareserialTransmit(0xAA);
+ 248               		.stabn	68,0,43,.LM17-.LFBB3
+ 249               	.LM17:
+ 250 0046 8AEA      		ldi r24,lo8(-86)
+ 251 0048 0E94 0000 		call softwareserialTransmit
+  44:source/os_rios/USART.c ****     return BUFFER_EMPTY;
+ 252               		.stabn	68,0,44,.LM18-.LFBB3
+ 253               	.LM18:
+ 254 004c 81E0      		ldi r24,lo8(1)
+ 255 004e 90E0      		ldi r25,0
+ 256 0050 0895      		ret
+ 257               	.L10:
+  45:source/os_rios/USART.c ****   }
+  46:source/os_rios/USART.c ****   // Read the variable from buffer
+  47:source/os_rios/USART.c ****   *byte=rxBuffer.data[rxBuffer.readindex];
+ 258               		.stabn	68,0,47,.LM19-.LFBB3
+ 259               	.LM19:
+ 260 0052 E091 0000 		lds r30,rxBuffer+1024
+ 261 0056 F0E0      		ldi r31,0
+ 262 0058 E050      		subi r30,lo8(-(rxBuffer))
+ 263 005a F040      		sbci r31,hi8(-(rxBuffer))
+ 264 005c 2081      		ld r18,Z
+ 265 005e FC01      		movw r30,r24
+ 266 0060 2083      		st Z,r18
+  48:source/os_rios/USART.c ****   buffercount = buffercount - 1;
+ 267               		.stabn	68,0,48,.LM20-.LFBB3
+ 268               	.LM20:
+ 269 0062 8091 0000 		lds r24,buffercount
+ 270 0066 9091 0000 		lds r25,buffercount+1
+ 271 006a 0197      		sbiw r24,1
+ 272 006c 9093 0000 		sts buffercount+1,r25
+ 273 0070 8093 0000 		sts buffercount,r24
+  49:source/os_rios/USART.c **** 
+  50:source/os_rios/USART.c ****   /* Here is another hack to reset the value of index when we hit BUFFERSIZE
+  51:source/os_rios/USART.c ****   * Using modulus operator gives us the remainder of a divison. Our BUFFERSIZE
+  52:source/os_rios/USART.c ****   * is the maximum value of the size, so for every value that is less than
+  53:source/os_rios/USART.c ****   * BUFFERSIZE the value fo the index from the below expression is itself.
+  54:source/os_rios/USART.c ****   * When we reach BUFFERSIZE, the value will be zero.
+  55:source/os_rios/USART.c ****   */
+  56:source/os_rios/USART.c ****   rxBuffer.readindex = ((rxBuffer.readindex)+1) % BUFFERSIZE;
+ 274               		.stabn	68,0,56,.LM21-.LFBB3
+ 275               	.LM21:
+ 276 0074 8091 0000 		lds r24,rxBuffer+1024
+ 277 0078 90E0      		ldi r25,0
+ 278 007a 0196      		adiw r24,1
+ 279 007c 8093 0000 		sts rxBuffer+1024,r24
+  57:source/os_rios/USART.c ****   return BUFFER_OK;
+ 280               		.stabn	68,0,57,.LM22-.LFBB3
+ 281               	.LM22:
+ 282 0080 80E0      		ldi r24,0
+ 283 0082 90E0      		ldi r25,0
+  58:source/os_rios/USART.c **** }
+ 284               		.stabn	68,0,58,.LM23-.LFBB3
+ 285               	.LM23:
+ 286 0084 0895      		ret
+ 287               		.size	rxBufferRead, .-rxBufferRead
+ 288               	.Lscope3:
+ 289               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 290               		.stabd	78,0,0
+ 291               		.stabs	"rxBufferWrite:F(1,1)",36,0,61,rxBufferWrite
+ 292               	.global	rxBufferWrite
+ 293               		.type	rxBufferWrite, @function
+ 294               	rxBufferWrite:
+ 295               		.stabd	46,0,0
+  59:source/os_rios/USART.c **** 
+  60:source/os_rios/USART.c **** 
+  61:source/os_rios/USART.c **** enum bufferStatus rxBufferWrite(){
+ 296               		.stabn	68,0,61,.LM24-.LFBB4
+ 297               	.LM24:
+ 298               	.LFBB4:
+ 299               	/* prologue: function */
+ 300               	/* frame size = 0 */
+ 301               	/* stack size = 0 */
+ 302               	.L__stack_usage = 0
+  62:source/os_rios/USART.c ****   // That modulus thing again, although  we will write it out for readablity
+  63:source/os_rios/USART.c ****   unsigned char insertindex = ((rxBuffer.writeindex)+1) % BUFFERSIZE;
+ 303               		.stabn	68,0,63,.LM25-.LFBB4
+ 304               	.LM25:
+ 305 0086 8091 0000 		lds r24,rxBuffer+1025
+ 306 008a 90E0      		ldi r25,0
+ 307 008c 0196      		adiw r24,1
+  64:source/os_rios/USART.c **** 
+  65:source/os_rios/USART.c ****   // Check if the next element if someting that needs to be read out. If it is
+  66:source/os_rios/USART.c ****   // the buffer is definitely full.
+  67:source/os_rios/USART.c ****   if (insertindex == (rxBuffer.readindex)) {
+ 308               		.stabn	68,0,67,.LM26-.LFBB4
+ 309               	.LM26:
+ 310 008e 2091 0000 		lds r18,rxBuffer+1024
+ 311 0092 2813      		cpse r18,r24
+ 312 0094 00C0      		rjmp .L13
+  68:source/os_rios/USART.c ****     /* This would mean the buffer is full. But what shoudl we do if the buffer
+  69:source/os_rios/USART.c ****      * is full. Why just return. UDR0 itself is hardware buffered. So are very
+  70:source/os_rios/USART.c ****      * less likely to lose any data. But in case we reach that point we just
+  71:source/os_rios/USART.c ****      * wait until something is read.
+  72:source/os_rios/USART.c ****      */
+  73:source/os_rios/USART.c ****     softwareserialTransmit(0xFF);
+ 313               		.stabn	68,0,73,.LM27-.LFBB4
+ 314               	.LM27:
+ 315 0096 8FEF      		ldi r24,lo8(-1)
+ 316 0098 0E94 0000 		call softwareserialTransmit
+  74:source/os_rios/USART.c ****     return BUFFER_FULL;
+ 317               		.stabn	68,0,74,.LM28-.LFBB4
+ 318               	.LM28:
+ 319 009c 82E0      		ldi r24,lo8(2)
+ 320 009e 90E0      		ldi r25,0
+ 321 00a0 0895      		ret
+ 322               	.L13:
+  75:source/os_rios/USART.c ****   }
+  76:source/os_rios/USART.c ****   // Read the variable from UDR0 into the buffer
+  77:source/os_rios/USART.c ****   rxBuffer.data[rxBuffer.writeindex] = UDR0;
+ 323               		.stabn	68,0,77,.LM29-.LFBB4
+ 324               	.LM29:
+ 325 00a2 E091 0000 		lds r30,rxBuffer+1025
+ 326 00a6 F0E0      		ldi r31,0
+ 327 00a8 9091 C600 		lds r25,198
+ 328 00ac E050      		subi r30,lo8(-(rxBuffer))
+ 329 00ae F040      		sbci r31,hi8(-(rxBuffer))
+ 330 00b0 9083      		st Z,r25
+  78:source/os_rios/USART.c ****   buffercount = (buffercount+1) % BUFFERSIZE;
+ 331               		.stabn	68,0,78,.LM30-.LFBB4
+ 332               	.LM30:
+ 333 00b2 2091 0000 		lds r18,buffercount
+ 334 00b6 3091 0000 		lds r19,buffercount+1
+ 335 00ba 2F5F      		subi r18,-1
+ 336 00bc 3F4F      		sbci r19,-1
+ 337 00be 3370      		andi r19,3
+ 338 00c0 3093 0000 		sts buffercount+1,r19
+ 339 00c4 2093 0000 		sts buffercount,r18
+  79:source/os_rios/USART.c **** 
+  80:source/os_rios/USART.c ****   // Increment the index
+  81:source/os_rios/USART.c ****   rxBuffer.writeindex = insertindex;
+ 340               		.stabn	68,0,81,.LM31-.LFBB4
+ 341               	.LM31:
+ 342 00c8 8093 0000 		sts rxBuffer+1025,r24
+  82:source/os_rios/USART.c ****   return BUFFER_OK;
+ 343               		.stabn	68,0,82,.LM32-.LFBB4
+ 344               	.LM32:
+ 345 00cc 80E0      		ldi r24,0
+ 346 00ce 90E0      		ldi r25,0
+  83:source/os_rios/USART.c **** }
+ 347               		.stabn	68,0,83,.LM33-.LFBB4
+ 348               	.LM33:
+ 349 00d0 0895      		ret
+ 350               		.size	rxBufferWrite, .-rxBufferWrite
+ 351               	.Lscope4:
+ 352               		.stabs	"",36,0,0,.Lscope4-.LFBB4
+ 353               		.stabd	78,0,0
+ 354               		.comm	buffercount,2,1
+ 355               		.comm	USART_is_receiving,1,1
+ 356               		.comm	rxBuffer,1026,1
+ 357               		.comm	reading_under_progress,1,1
+ 358               		.comm	obstacle,3,1
+ 359               		.comm	tfmini,9,1
+ 360               		.stabs	"tfmini:G(0,51)=B(7,2)",32,0,58,0
+ 361               		.stabs	"obstacle:G(0,52)=B(7,4)",32,0,66,0
+ 362               		.stabs	"reading_under_progress:G(0,13)",32,0,67,0
+ 363               		.stabs	"rxBuffer:G(0,53)=B(1,5)",32,0,37,0
+ 364               		.stabs	"USART_is_receiving:G(0,54)=B(0,13)",32,0,38,0
+ 365               		.stabs	"buffercount:G(0,55)=B(0,4)",32,0,39,0
+ 366               		.stabs	"",100,0,0,.Letext0
+ 367               	.Letext0:
+ 368               		.ident	"GCC: (GNU) 5.4.0"
+ 369               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:0000000000000000 UART.c
-     /tmp/ccJvMAip.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccJvMAip.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccJvMAip.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccJvMAip.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccJvMAip.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccJvMAip.s:116    .text:0000000000000000 usartinit
-     /tmp/ccJvMAip.s:139    .text:0000000000000008 softwareserialTransmit
-     /tmp/ccJvMAip.s:234    .text:0000000000000040 rxBufferRead
+                            *ABS*:0000000000000000 USART.c
+     /tmp/cceEaNLW.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cceEaNLW.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cceEaNLW.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cceEaNLW.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cceEaNLW.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cceEaNLW.s:116    .text:0000000000000000 usartinit
+     /tmp/cceEaNLW.s:139    .text:0000000000000008 softwareserialTransmit
+     /tmp/cceEaNLW.s:231    .text:000000000000003a rxBufferRead
                             *COM*:0000000000000402 rxBuffer
                             *COM*:0000000000000002 buffercount
-     /tmp/ccJvMAip.s:297    .text:000000000000008c rxBufferWrite
-     /tmp/ccJvMAip.s:360    .text:00000000000000d8 __vector_18
+     /tmp/cceEaNLW.s:294    .text:0000000000000086 rxBufferWrite
                             *COM*:0000000000000001 USART_is_receiving
+                            *COM*:0000000000000001 reading_under_progress
                             *COM*:0000000000000003 obstacle
                             *COM*:0000000000000009 tfmini
 
 UNDEFINED SYMBOLS
 hardwareserialsetup
 softwareserialsetup
-readLIDAR
 __do_clear_bss

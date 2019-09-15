@@ -7,7 +7,7 @@ void clocksetup(void){
    * The clock source for the board is the on-board 16Mhz crystal that is
    * shipped with the Arduino Uno board. The system clock will be used for
    * PWM motor control and UART. So a clock pre-scalar has to be chosen such
-   * that motor control and UART communication can occur smoothly. A 8 MHzclock
+   * that motor control and UART communication can occur smoothly. A 4 MHz clock
    * clock should yeild a minimal error UART communication and a motor PWM
    * that would work at 500 Hz. Therefore to get 4 Mhz, the clock needs to be
    * divided by a pre-scalar of 4. Hence we can set CLKPS1 a.k.a CKDIV4.
@@ -41,7 +41,7 @@ void pwmtimer2setup(void){
   /* Set compare output mode to clear OCR2A and OCR2B on compare match */
   TCCR2A |=  (1<<COM2A1) | (1<<COM2B1);
 
-  /* Waveform Generation Mode: WGM02 = 1, WGM01 = 1, WGM00 = 1 */
+  /* Waveform Generation Mode: WGM02 = 1, WGM01 = 1, WGM00 = 1. FAST PWM */
   TCCR2A |= (1<<WGM22) | (1<<WGM21) | (1<<WGM20);
 
   /* We will initialize PWM Duty Cycle to zero */
@@ -49,7 +49,7 @@ void pwmtimer2setup(void){
   OCR2B = 0;
 
   // Timer pre-scalar for ~488 Hz is 32. We want this to be the last step since
-  // this will actually start the timer counter.
+  // this will actually start the timer counter according to datasheet.
   TCCR2B |=  (1<<CS21) | (1<<CS20);
 }
 
@@ -57,22 +57,21 @@ void LIDARreadtimer0setup(void){
   /* TIMER0 setup for USART receive buffer read
    * ------------------------------------------
    * If we set up the timer in Clear Timer on Compare or simply CTC mode, the
-   * frequency at which the timer will be cleared is described in the datasheet
-   * as follows:
-   *
-   * OUTPUT FREQUENCY = CPU_CLOCK_FREQUENCY/(2*N*(1+OCR0A))
-   *
-   * where N is the clock pre-scalar to give us our required output frequency
-   * The datasheet gives us select choices for this prescalar out of which the
-   * value of N=64 would the most favourable for us (also standard). If we set
-   * it to 64 and the OCR0A value to 20 we get:
-   *
-   * PWM_FREQUENCY = (4000000)/(2*64*(20+1)) ~ 1488 HZ. (672 us)
-   *
-   * That gives us a "task rate" of 670 us.
+   * frequency at which the timer will be cleared is the our task rate. So we
+   * know that we read a byte form the UART recieve register every 1040 us
+   * roughly. We can set up a "task rate" for us to read out the data from the
+   * buffer that the USART ISR fills. Sampling at half the time would seem
+   * enough at first but we have to account for the overhead of managing the
+   * buffer and processing each byte. After some tuning an OCR value of 20
+   * and a pre-scalar of 64 seemed to do the trick. But why? Well the resulting
+   * time when the interrupt triggers will be 320 us, i.e. our pre-scalar is 64
+   * so the resuting tick of the timer will be 1/(4000000/64) = 16 us. If we
+   * count to twenty with these ticks we will be at 320 us, which is 3.25 times
+   * the rate at which the USART fills up the buffer. This means we have a task
+   * rate of 320 us for processing a buffer byte.
    */
 
-  /* Set compare output mode to clear OCR2A and OCR2B on compare match */
+  /* Set compare output mode to clear OCR2A on compare match */
   TCCR0A |=  (1<<COM0A1);
 
   /* Waveform Generation Mode: WGM02 = 0, WGM01 = 1, WGM00 = 0 -> CTC */
@@ -86,6 +85,37 @@ void LIDARreadtimer0setup(void){
 
   /* Finally lets enable the Timer 0 compare interrupt */
   TIMSK0 |= (1<<OCIE0A);
+}
+
+void propulsiontimer1setup(void) {
+  /* Timer1 setup for Propulsion and Navigation Task
+   * -----------------------------------------------
+   * We also need the board to time us to for a Propulsion/Navigation task.
+   * While this is an important task, other cpu tasks are a lot faster and the
+   * physical bot takes time to respons. 500 ms or half a second is a reasonable
+   * time to look ahead for obstacles. So we will use timer1 for giving us the
+   * propulsion/navigation task rate. We will clear timer on compare and set up
+   * our OCR to give us ~500 ms. To do this we will use a pre-scalar of 1024 on
+   * the main clock of 4 Mhz. This will be giving us a single tick value of
+   * 1/(4000000/1024) = 256 us. An OCR value of 1953 will ensure ~500 ms. The
+   * granularity of control was on of the reasons why timer1 was chosen for this
+   * task.
+   */
+
+  /* Set compare output mode to clear OCR1A on compare match */
+  TCCR1A |= (1<<COM1A1);
+
+  /* Waveform Generation Mode: WGM12 = 0, WGM11 = 0, WGM10 = 0 -> CTC */
+  TCCR1B |= (1<<WGM12);
+
+  /* OCR1A value needs to be written*/
+  OCR1A |= 1953;
+
+  /* Let us choose the pre-scalar for timer 1 (will start the timer)*/
+  TCCR1B |= (1<<CS12) | (1<<CS10);
+
+  /* Finally lets enable the Timer 1 compare interrupt */
+  TIMSK1 |= (1<<OCIE1A);
 }
 
 void hardwareserialsetup(void){

@@ -28,7 +28,7 @@ unsigned char botmoving;
 
 void motorinit(void);
 void stop(void);
-void steer(unsigned char direction, unsigned char magnitude);
+void steer(unsigned char direction);
 void drive(unsigned char direction, double speed);
 
 #endif

@@ -101,7 +101,7 @@
  101               		.stabn	162,0,0,0
  102               		.stabn	162,0,0,0
  103               		.stabs	"source/drivers/LIDAR_driver.h",130,0,0,0
- 104               		.stabs	"source/drivers/../os_rios/UART.h",130,0,0,0
+ 104               		.stabs	"source/drivers/../os_rios/USART.h",130,0,0,0
  105               		.stabs	"bufferStatus:T(8,1)=eBUFFER_OK:0,BUFFER_EMPTY:1,BUFFER_FULL:2,;",128,0,0,0
  106               		.stabs	"Buffer:T(8,2)=s1026data:(8,3)=ar(8,4)=r(8,4);0;0177777;;0;1023;(0,13),0,8192;readindex:(0,
  107               		.stabs	"Buffer:t(8,5)=(8,2)",128,0,34,0
@@ -127,665 +127,369 @@
  124               	/* frame size = 0 */
  125               	/* stack size = 0 */
  126               	.L__stack_usage = 0
-   4:source/drivers/motor_driver.c ****   botmoving=0;
- 127               		.stabn	68,0,4,.LM1-.LFBB1
+   4:source/drivers/motor_driver.c **** 
+   5:source/drivers/motor_driver.c ****   botmoving=0;
+ 127               		.stabn	68,0,5,.LM1-.LFBB1
  128               	.LM1:
  129 0000 1092 0000 		sts botmoving,__zero_reg__
-   5:source/drivers/motor_driver.c **** 
-   6:source/drivers/motor_driver.c ****   /* STOP both motorbanks by setting in0, in1, in2 and in3 to zero. */
-   7:source/drivers/motor_driver.c ****   // LEFT BANK: STOP
-   8:source/drivers/motor_driver.c ****   PORTB &= ~(1<<PORTB1);
- 130               		.stabn	68,0,8,.LM2-.LFBB1
+   6:source/drivers/motor_driver.c **** 
+   7:source/drivers/motor_driver.c ****   /* STOP both motorbanks by setting in0, in1, in2 and in3 to zero. */
+   8:source/drivers/motor_driver.c ****   // RIGHT BANK: STOP
+   9:source/drivers/motor_driver.c ****   PORTB &= ~(1<<PORTB2);
+ 130               		.stabn	68,0,9,.LM2-.LFBB1
  131               	.LM2:
- 132 0004 2998      		cbi 0x5,1
-   9:source/drivers/motor_driver.c ****   PORTB &= ~(1<<PORTB0);
- 133               		.stabn	68,0,9,.LM3-.LFBB1
+ 132 0004 2A98      		cbi 0x5,2
+  10:source/drivers/motor_driver.c ****   PORTB &= ~(1<<PORTB0);
+ 133               		.stabn	68,0,10,.LM3-.LFBB1
  134               	.LM3:
  135 0006 2898      		cbi 0x5,0
-  10:source/drivers/motor_driver.c **** 
-  11:source/drivers/motor_driver.c ****   // RIGHT BANK: STOP
-  12:source/drivers/motor_driver.c ****   PORTD &= ~(1<<PORTD4);
- 136               		.stabn	68,0,12,.LM4-.LFBB1
+  11:source/drivers/motor_driver.c **** 
+  12:source/drivers/motor_driver.c ****   // LEFT BANK: STOP
+  13:source/drivers/motor_driver.c ****   PORTD &= ~(1<<PORTD4);
+ 136               		.stabn	68,0,13,.LM4-.LFBB1
  137               	.LM4:
  138 0008 5C98      		cbi 0xb,4
-  13:source/drivers/motor_driver.c ****   PORTD &= ~(1<<PORTD2);
- 139               		.stabn	68,0,13,.LM5-.LFBB1
+  14:source/drivers/motor_driver.c ****   PORTD &= ~(1<<PORTD2);
+ 139               		.stabn	68,0,14,.LM5-.LFBB1
  140               	.LM5:
  141 000a 5A98      		cbi 0xb,2
- 142               	.LBB10:
- 143               	.LBB11:
- 144               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext1
- 145               	.Ltext1:
-   1:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
-   2:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
-   3:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
-   4:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    All rights reserved.
-   5:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-   6:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Redistribution and use in source and binary forms, with or without
-   7:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    modification, are permitted provided that the following conditions are met:
-   8:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-   9:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    * Redistributions of source code must retain the above copyright
-  10:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****      notice, this list of conditions and the following disclaimer.
-  11:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  12:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
-  13:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****      notice, this list of conditions and the following disclaimer in
-  14:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****      the documentation and/or other materials provided with the
-  15:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****      distribution.
-  16:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  17:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    * Neither the name of the copyright holders nor the names of
-  18:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****      contributors may be used to endorse or promote products derived
-  19:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****      from this software without specific prior written permission.
-  20:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  21:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  22:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  23:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-  24:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-  25:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-  26:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-  27:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-  28:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-  29:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-  30:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-  31:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
-  32:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  33:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /* $Id$ */
-  34:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  35:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #ifndef _UTIL_DELAY_H_
-  36:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #define _UTIL_DELAY_H_ 1
-  37:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  38:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #ifndef __DOXYGEN__
-  39:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #  ifndef __HAS_DELAY_CYCLES
-  40:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #    define __HAS_DELAY_CYCLES 1
-  41:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #  endif
-  42:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #endif  /* __DOXYGEN__ */
-  43:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  44:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #include <inttypes.h>
-  45:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #include <util/delay_basic.h>
-  46:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #include <math.h>
-  47:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  48:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /** \file */
-  49:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
-  50:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     \code
-  51:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
-  52:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     //#define F_CPU 14.7456E6
-  53:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     #include <util/delay.h>
-  54:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     \endcode
-  55:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  56:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     \note As an alternative method, it is possible to pass the
-  57:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
-  58:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
-  59:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     used.
-  60:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  61:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     The functions in this header file are wrappers around the basic
-  62:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
-  63:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     convenience functions where actual time values can be specified
-  64:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
-  65:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     that compile-time constant expressions will be eliminated by
-  66:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     compiler optimization so floating-point expressions can be used
-  67:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
-  68:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     frequency passed by the macro F_CPU.
-  69:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  70:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     \note In order for these functions to work as intended, compiler
-  71:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
-  72:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     <em>must</em> be an expression that is a known constant at
-  73:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
-  74:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     delay will be much longer (and basically unpredictable), and
-  75:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     applications that otherwise do not use floating-point calculations
-  76:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     will experience severe code bloat by the floating-point library
-  77:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     routines linked into the application.
-  78:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  79:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     The functions available allow the specification of microsecond, and
-  80:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     millisecond delays directly, using the application-supplied macro
-  81:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
-  82:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  83:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** */
-  84:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  85:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #if !defined(__DOXYGEN__)
-  86:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** static __inline__ void _delay_us(double __us) __attribute__((__always_inline__));
-  87:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** static __inline__ void _delay_ms(double __ms) __attribute__((__always_inline__));
-  88:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #endif
-  89:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  90:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #ifndef F_CPU
-  91:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /* prevent compiler error by supplying a default */
-  92:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
-  93:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /** \ingroup util_delay
-  94:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     \def F_CPU
-  95:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     \brief CPU frequency in Hz
-  96:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
-  97:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     The macro F_CPU specifies the CPU frequency to be considered by
-  98:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     the delay macros.  This macro is normally supplied by the
-  99:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     environment (e.g. from within a project header, or the project's
- 100:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     Makefile).  The value 1 MHz here is only provided as a "vanilla"
- 101:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     fallback if no such user-provided definition could be found.
- 102:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 103:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     In terms of the delay functions, the CPU frequency can be given as
- 104:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     a floating-point constant (e.g. 3.6864E6 for 3.6864 MHz).
- 105:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     However, the macros in <util/setbaud.h> require it to be an
- 106:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****     integer value.
- 107:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****  */
- 108:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** # define F_CPU 1000000UL
- 109:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #endif
- 110:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 111:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #ifndef __OPTIMIZE__
- 112:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
- 113:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #endif
- 114:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 115:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
- 116:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
- 117:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   __STDC_HOSTED__
- 118:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #  include <math.h>
- 119:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #endif
- 120:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 121:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /**
- 122:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    \ingroup util_delay
- 123:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 124:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
- 125:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 126:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    The macro F_CPU is supposed to be defined to a
- 127:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
- 128:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 129:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
- 130:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 131:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    When the user request delay which exceed the maximum possible one,
- 132:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
- 133:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
- 134:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
- 135:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    user will not be informed about decreased resolution.
- 136:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 137:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles()
- 138:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
- 139:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    values greater than the maximal possible delay, overflows results in
- 140:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    no delay i.e., 0ms.
- 141:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 142:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Conversion of \c __ms into clock cycles may not always result in
- 143:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    integer.  By default, the clock cycles rounded up to next
- 144:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    integer. This ensures that the user gets at least \c __ms
- 145:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    microseconds of delay.
- 146:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 147:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Alternatively, by defining the macro \c __DELAY_ROUND_DOWN__, or
- 148:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    \c __DELAY_ROUND_CLOSEST__, before including this header file, the
- 149:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    algorithm can be made to round down, or round to closest integer,
- 150:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    respectively.
- 151:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 152:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    \note
- 153:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 154:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    The implementation of _delay_ms() based on
- 155:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    __builtin_avr_delay_cycles() is not backward compatible with older
- 156:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    implementations.  In order to get functionality backward compatible
- 157:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    with previous versions, the macro \c "__DELAY_BACKWARD_COMPATIBLE__"
- 158:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    must be defined before including this header file. Also, the
- 159:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    backward compatible algorithm will be chosen if the code is
- 160:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    compiled in a <em>freestanding environment</em> (GCC option
- 161:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    \c -ffreestanding), as the math functions required for rounding are
- 162:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    not available to the compiler then.
- 163:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 164:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****  */
- 165:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** void
- 166:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** _delay_ms(double __ms)
- 167:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** {
- 168:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	double __tmp ;
- 169:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && \
- 170:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   !defined(__DELAY_BACKWARD_COMPATIBLE__) &&	   \
- 171:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****   __STDC_HOSTED__
- 172:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	uint32_t __ticks_dc;
- 173:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
- 174:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
- 175:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 176:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
- 177:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
- 178:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 179:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
- 180:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
- 181:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 182:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	#else
- 183:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 		//round up by default
- 184:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
- 185:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	#endif
- 186:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
- 187:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
- 146               		.stabn	68,0,187,.LM6-.LFBB1
- 147               	.LM6:
- 148 000c 2FE7      		ldi r18,lo8(399999)
- 149 000e 8AE1      		ldi r24,hi8(399999)
- 150 0010 96E0      		ldi r25,hlo8(399999)
- 151 0012 2150      	1:	subi r18,1
- 152 0014 8040      		sbci r24,0
- 153 0016 9040      		sbci r25,0
- 154 0018 01F4      		brne 1b
- 155 001a 00C0      		rjmp .
- 156 001c 0000      		nop
- 157 001e 0895      		ret
- 158               	.LBE11:
- 159               	.LBE10:
- 160               		.size	stop, .-stop
- 161               	.Lscope1:
- 162               		.stabs	"",36,0,0,.Lscope1-.LFBB1
- 163               		.stabd	78,0,0
- 164               	.global	__divsf3
- 165               	.global	__mulsf3
- 166               	.global	__fixunssfsi
- 167               		.stabs	"setspeed:F(0,49)",36,0,17,setspeed
- 168               		.stabs	"setspeed:P(0,14)",64,0,17,22
- 169               	.global	setspeed
- 170               		.type	setspeed, @function
- 171               	setspeed:
- 172               		.stabd	46,0,0
- 173               		.stabs	"source/drivers/motor_driver.c",132,0,0,.Ltext2
- 174               	.Ltext2:
-  14:source/drivers/motor_driver.c ****   _delay_ms(500);
+ 142 000c 0895      		ret
+ 143               		.size	stop, .-stop
+ 144               	.Lscope1:
+ 145               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 146               		.stabd	78,0,0
+ 147               	.global	__divsf3
+ 148               	.global	__mulsf3
+ 149               	.global	__fixunssfsi
+ 150               		.stabs	"setspeed:F(0,49)",36,0,17,setspeed
+ 151               		.stabs	"setspeed:P(0,14)",64,0,17,22
+ 152               	.global	setspeed
+ 153               		.type	setspeed, @function
+ 154               	setspeed:
+ 155               		.stabd	46,0,0
   15:source/drivers/motor_driver.c **** }
   16:source/drivers/motor_driver.c **** 
   17:source/drivers/motor_driver.c **** void setspeed(float setspeed){
- 175               		.stabn	68,0,17,.LM7-.LFBB2
- 176               	.LM7:
- 177               	.LFBB2:
- 178               	/* prologue: function */
- 179               	/* frame size = 0 */
- 180               	/* stack size = 0 */
- 181               	.L__stack_usage = 0
+ 156               		.stabn	68,0,17,.LM6-.LFBB2
+ 157               	.LM6:
+ 158               	.LFBB2:
+ 159               	/* prologue: function */
+ 160               	/* frame size = 0 */
+ 161               	/* stack size = 0 */
+ 162               	.L__stack_usage = 0
   18:source/drivers/motor_driver.c ****   // Set speed.
   19:source/drivers/motor_driver.c ****   OCR2A = round((setspeed/100.00)*250.00);
- 182               		.stabn	68,0,19,.LM8-.LFBB2
- 183               	.LM8:
- 184 0020 20E0      		ldi r18,0
- 185 0022 30E0      		ldi r19,0
- 186 0024 48EC      		ldi r20,lo8(-56)
- 187 0026 52E4      		ldi r21,lo8(66)
- 188 0028 0E94 0000 		call __divsf3
- 189 002c 20E0      		ldi r18,0
- 190 002e 30E0      		ldi r19,0
- 191 0030 4AE7      		ldi r20,lo8(122)
- 192 0032 53E4      		ldi r21,lo8(67)
- 193 0034 0E94 0000 		call __mulsf3
- 194 0038 0E94 0000 		call round
- 195 003c 0E94 0000 		call __fixunssfsi
- 196 0040 6093 B300 		sts 179,r22
+ 163               		.stabn	68,0,19,.LM7-.LFBB2
+ 164               	.LM7:
+ 165 000e 20E0      		ldi r18,0
+ 166 0010 30E0      		ldi r19,0
+ 167 0012 48EC      		ldi r20,lo8(-56)
+ 168 0014 52E4      		ldi r21,lo8(66)
+ 169 0016 0E94 0000 		call __divsf3
+ 170 001a 20E0      		ldi r18,0
+ 171 001c 30E0      		ldi r19,0
+ 172 001e 4AE7      		ldi r20,lo8(122)
+ 173 0020 53E4      		ldi r21,lo8(67)
+ 174 0022 0E94 0000 		call __mulsf3
+ 175 0026 0E94 0000 		call round
+ 176 002a 0E94 0000 		call __fixunssfsi
+ 177 002e 6093 B300 		sts 179,r22
   20:source/drivers/motor_driver.c ****   OCR2B = round((setspeed/100.00)*250.00);
- 197               		.stabn	68,0,20,.LM9-.LFBB2
- 198               	.LM9:
- 199 0044 6093 B400 		sts 180,r22
- 200 0048 0895      		ret
- 201               		.size	setspeed, .-setspeed
- 202               	.Lscope2:
- 203               		.stabs	"",36,0,0,.Lscope2-.LFBB2
- 204               		.stabd	78,0,0
- 205               		.stabs	"motorinit:F(0,49)",36,0,23,motorinit
- 206               	.global	motorinit
- 207               		.type	motorinit, @function
- 208               	motorinit:
- 209               		.stabd	46,0,0
+ 178               		.stabn	68,0,20,.LM8-.LFBB2
+ 179               	.LM8:
+ 180 0032 6093 B400 		sts 180,r22
+ 181 0036 0895      		ret
+ 182               		.size	setspeed, .-setspeed
+ 183               	.Lscope2:
+ 184               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 185               		.stabd	78,0,0
+ 186               		.stabs	"motorinit:F(0,49)",36,0,23,motorinit
+ 187               	.global	motorinit
+ 188               		.type	motorinit, @function
+ 189               	motorinit:
+ 190               		.stabd	46,0,0
   21:source/drivers/motor_driver.c **** }
   22:source/drivers/motor_driver.c **** 
   23:source/drivers/motor_driver.c **** void motorinit(void){
- 210               		.stabn	68,0,23,.LM10-.LFBB3
- 211               	.LM10:
- 212               	.LFBB3:
- 213               	/* prologue: function */
- 214               	/* frame size = 0 */
- 215               	/* stack size = 0 */
- 216               	.L__stack_usage = 0
-  24:source/drivers/motor_driver.c ****   // Configure motorpinout direction for arduino
-  25:source/drivers/motor_driver.c ****   DDRB |= (1<<DDB3) | (1<<DDB1) | (1<<DDB0);
- 217               		.stabn	68,0,25,.LM11-.LFBB3
- 218               	.LM11:
- 219 004a 84B1      		in r24,0x4
- 220 004c 8B60      		ori r24,lo8(11)
- 221 004e 84B9      		out 0x4,r24
-  26:source/drivers/motor_driver.c ****   DDRD |= (1<<DDD4) | (1<<DDD3) | (1<<DDD2);
- 222               		.stabn	68,0,26,.LM12-.LFBB3
- 223               	.LM12:
- 224 0050 8AB1      		in r24,0xa
- 225 0052 8C61      		ori r24,lo8(28)
- 226 0054 8AB9      		out 0xa,r24
-  27:source/drivers/motor_driver.c **** 
-  28:source/drivers/motor_driver.c ****   // FREEZE ALL MOTOR FUNCTIONS
-  29:source/drivers/motor_driver.c ****   stop();
- 227               		.stabn	68,0,29,.LM13-.LFBB3
- 228               	.LM13:
- 229 0056 0E94 0000 		call stop
+ 191               		.stabn	68,0,23,.LM9-.LFBB3
+ 192               	.LM9:
+ 193               	.LFBB3:
+ 194               	/* prologue: function */
+ 195               	/* frame size = 0 */
+ 196               	/* stack size = 0 */
+ 197               	.L__stack_usage = 0
+  24:source/drivers/motor_driver.c ****   // Propulsion timer 1 needs to be setup
+  25:source/drivers/motor_driver.c ****   propulsiontimer1setup();
+ 198               		.stabn	68,0,25,.LM10-.LFBB3
+ 199               	.LM10:
+ 200 0038 0E94 0000 		call propulsiontimer1setup
+  26:source/drivers/motor_driver.c **** 
+  27:source/drivers/motor_driver.c ****   // Configure motorpinout direction for arduino
+  28:source/drivers/motor_driver.c ****   DDRB |= (1<<DDB3) | (1<<DDB2) | (1<<DDB0);
+ 201               		.stabn	68,0,28,.LM11-.LFBB3
+ 202               	.LM11:
+ 203 003c 84B1      		in r24,0x4
+ 204 003e 8D60      		ori r24,lo8(13)
+ 205 0040 84B9      		out 0x4,r24
+  29:source/drivers/motor_driver.c ****   DDRD |= (1<<DDD4) | (1<<DDD3) | (1<<DDD2);
+ 206               		.stabn	68,0,29,.LM12-.LFBB3
+ 207               	.LM12:
+ 208 0042 8AB1      		in r24,0xa
+ 209 0044 8C61      		ori r24,lo8(28)
+ 210 0046 8AB9      		out 0xa,r24
   30:source/drivers/motor_driver.c **** 
-  31:source/drivers/motor_driver.c ****   // Setup cpu Timer 2 on the arduino to be used for our PWM signal generation
-  32:source/drivers/motor_driver.c ****   pwmtimer2setup();
- 230               		.stabn	68,0,32,.LM14-.LFBB3
- 231               	.LM14:
- 232 005a 0C94 0000 		jmp pwmtimer2setup
- 233               		.size	motorinit, .-motorinit
- 234               	.Lscope3:
- 235               		.stabs	"",36,0,0,.Lscope3-.LFBB3
- 236               		.stabd	78,0,0
- 237               		.stabs	"steer:F(0,49)",36,0,35,steer
- 238               		.stabs	"direction:P(0,13)",64,0,35,24
- 239               		.stabs	"magnitude:P(0,13)",64,0,35,28
- 240               	.global	steer
- 241               		.type	steer, @function
- 242               	steer:
- 243               		.stabd	46,0,0
-  33:source/drivers/motor_driver.c **** }
-  34:source/drivers/motor_driver.c **** 
-  35:source/drivers/motor_driver.c **** void steer(unsigned char direction, unsigned char magnitude){
- 244               		.stabn	68,0,35,.LM15-.LFBB4
- 245               	.LM15:
- 246               	.LFBB4:
- 247 005e CF93      		push r28
- 248               	/* prologue: function */
- 249               	/* frame size = 0 */
- 250               	/* stack size = 1 */
- 251               	.L__stack_usage = 1
- 252 0060 C62F      		mov r28,r22
-  36:source/drivers/motor_driver.c ****   botmoving=1;
- 253               		.stabn	68,0,36,.LM16-.LFBB4
- 254               	.LM16:
- 255 0062 91E0      		ldi r25,lo8(1)
- 256 0064 9093 0000 		sts botmoving,r25
-  37:source/drivers/motor_driver.c ****   if (direction == LEFT) {
- 257               		.stabn	68,0,37,.LM17-.LFBB4
- 258               	.LM17:
- 259 0068 8111      		cpse r24,__zero_reg__
- 260 006a 00C0      		rjmp .L5
-  38:source/drivers/motor_driver.c ****     // LEFT BANK: Stop
-  39:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB1);
- 261               		.stabn	68,0,39,.LM18-.LFBB4
- 262               	.LM18:
- 263 006c 2998      		cbi 0x5,1
-  40:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB0);
- 264               		.stabn	68,0,40,.LM19-.LFBB4
- 265               	.LM19:
- 266 006e 2898      		cbi 0x5,0
-  41:source/drivers/motor_driver.c **** 
-  42:source/drivers/motor_driver.c ****     // RIGHT BANK: Forward
-  43:source/drivers/motor_driver.c ****     PORTD |=  (1<<PORTD4);
- 267               		.stabn	68,0,43,.LM20-.LFBB4
- 268               	.LM20:
- 269 0070 5C9A      		sbi 0xb,4
-  44:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD2);
- 270               		.stabn	68,0,44,.LM21-.LFBB4
- 271               	.LM21:
- 272 0072 5A98      		cbi 0xb,2
- 273 0074 00C0      		rjmp .L6
- 274               	.L5:
-  45:source/drivers/motor_driver.c **** 
-  46:source/drivers/motor_driver.c ****   }
-  47:source/drivers/motor_driver.c ****   else if (direction == RIGHT) {
- 275               		.stabn	68,0,47,.LM22-.LFBB4
- 276               	.LM22:
- 277 0076 8130      		cpi r24,lo8(1)
- 278 0078 01F4      		brne .L7
-  48:source/drivers/motor_driver.c ****     // LEFT BANK: Forward
-  49:source/drivers/motor_driver.c ****     PORTB |=  (1<<PORTB1);
- 279               		.stabn	68,0,49,.LM23-.LFBB4
- 280               	.LM23:
- 281 007a 299A      		sbi 0x5,1
-  50:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB0);
- 282               		.stabn	68,0,50,.LM24-.LFBB4
- 283               	.LM24:
- 284 007c 2898      		cbi 0x5,0
-  51:source/drivers/motor_driver.c **** 
-  52:source/drivers/motor_driver.c ****     // RIGHT BANK: Stop
+  31:source/drivers/motor_driver.c ****   // FREEZE ALL MOTOR FUNCTIONS
+  32:source/drivers/motor_driver.c ****   stop();
+ 211               		.stabn	68,0,32,.LM13-.LFBB3
+ 212               	.LM13:
+ 213 0048 0E94 0000 		call stop
+  33:source/drivers/motor_driver.c **** 
+  34:source/drivers/motor_driver.c ****   // Setup cpu Timer 2 on the arduino to be used for our PWM signal generation
+  35:source/drivers/motor_driver.c ****   pwmtimer2setup();
+ 214               		.stabn	68,0,35,.LM14-.LFBB3
+ 215               	.LM14:
+ 216 004c 0C94 0000 		jmp pwmtimer2setup
+ 217               		.size	motorinit, .-motorinit
+ 218               	.Lscope3:
+ 219               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 220               		.stabd	78,0,0
+ 221               		.stabs	"steer:F(0,49)",36,0,38,steer
+ 222               		.stabs	"direction:P(0,13)",64,0,38,24
+ 223               	.global	steer
+ 224               		.type	steer, @function
+ 225               	steer:
+ 226               		.stabd	46,0,0
+  36:source/drivers/motor_driver.c **** }
+  37:source/drivers/motor_driver.c **** 
+  38:source/drivers/motor_driver.c **** void steer(unsigned char direction){
+ 227               		.stabn	68,0,38,.LM15-.LFBB4
+ 228               	.LM15:
+ 229               	.LFBB4:
+ 230               	/* prologue: function */
+ 231               	/* frame size = 0 */
+ 232               	/* stack size = 0 */
+ 233               	.L__stack_usage = 0
+  39:source/drivers/motor_driver.c **** 
+  40:source/drivers/motor_driver.c ****   if (direction == RIGHT) {
+ 234               		.stabn	68,0,40,.LM16-.LFBB4
+ 235               	.LM16:
+ 236 0050 8130      		cpi r24,lo8(1)
+ 237 0052 01F4      		brne .L5
+  41:source/drivers/motor_driver.c ****     // LEFT BANK: Forward
+  42:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD4);
+ 238               		.stabn	68,0,42,.LM17-.LFBB4
+ 239               	.LM17:
+ 240 0054 5C98      		cbi 0xb,4
+  43:source/drivers/motor_driver.c ****     PORTD |=  (1<<PORTD2);
+ 241               		.stabn	68,0,43,.LM18-.LFBB4
+ 242               	.LM18:
+ 243 0056 5A9A      		sbi 0xb,2
+  44:source/drivers/motor_driver.c **** 
+  45:source/drivers/motor_driver.c ****     // RIGHT BANK: Reverse
+  46:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB2);
+ 244               		.stabn	68,0,46,.LM19-.LFBB4
+ 245               	.LM19:
+ 246 0058 2A98      		cbi 0x5,2
+  47:source/drivers/motor_driver.c ****     PORTB |=  (1<<PORTB0);
+ 247               		.stabn	68,0,47,.LM20-.LFBB4
+ 248               	.LM20:
+ 249 005a 289A      		sbi 0x5,0
+ 250 005c 00C0      		rjmp .L6
+ 251               	.L5:
+  48:source/drivers/motor_driver.c **** 
+  49:source/drivers/motor_driver.c ****   }
+  50:source/drivers/motor_driver.c ****   else if (direction == LEFT) {
+ 252               		.stabn	68,0,50,.LM21-.LFBB4
+ 253               	.LM21:
+ 254 005e 8111      		cpse r24,__zero_reg__
+ 255 0060 00C0      		rjmp .L7
+  51:source/drivers/motor_driver.c ****     // LEFT BANK: Reverse
+  52:source/drivers/motor_driver.c ****     PORTD |=  (1<<PORTD4);
+ 256               		.stabn	68,0,52,.LM22-.LFBB4
+ 257               	.LM22:
+ 258 0062 5C9A      		sbi 0xb,4
   53:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD2);
- 285               		.stabn	68,0,53,.LM25-.LFBB4
- 286               	.LM25:
- 287 007e 5A98      		cbi 0xb,2
-  54:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD4);
- 288               		.stabn	68,0,54,.LM26-.LFBB4
- 289               	.LM26:
- 290 0080 5C98      		cbi 0xb,4
- 291 0082 00C0      		rjmp .L6
- 292               	.L7:
-  55:source/drivers/motor_driver.c ****   }
-  56:source/drivers/motor_driver.c ****   else {
-  57:source/drivers/motor_driver.c ****     stop();
- 293               		.stabn	68,0,57,.LM27-.LFBB4
- 294               	.LM27:
- 295 0084 0E94 0000 		call stop
- 296               	.L6:
+ 259               		.stabn	68,0,53,.LM23-.LFBB4
+ 260               	.LM23:
+ 261 0064 5A98      		cbi 0xb,2
+  54:source/drivers/motor_driver.c **** 
+  55:source/drivers/motor_driver.c ****     // RIGHT BANK: Forward
+  56:source/drivers/motor_driver.c ****     PORTB |=  (1<<PORTB2);
+ 262               		.stabn	68,0,56,.LM24-.LFBB4
+ 263               	.LM24:
+ 264 0066 2A9A      		sbi 0x5,2
+  57:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB0);
+ 265               		.stabn	68,0,57,.LM25-.LFBB4
+ 266               	.LM25:
+ 267 0068 2898      		cbi 0x5,0
+ 268 006a 00C0      		rjmp .L6
+ 269               	.L7:
   58:source/drivers/motor_driver.c ****   }
-  59:source/drivers/motor_driver.c **** 
-  60:source/drivers/motor_driver.c ****   // Set speed SLOW for turn
-  61:source/drivers/motor_driver.c ****   setspeed(COAST);
- 297               		.stabn	68,0,61,.LM28-.LFBB4
- 298               	.LM28:
- 299 0088 60E0      		ldi r22,0
- 300 008a 70E0      		ldi r23,0
- 301 008c 88E4      		ldi r24,lo8(72)
- 302 008e 92E4      		ldi r25,lo8(66)
- 303 0090 0E94 0000 		call setspeed
-  62:source/drivers/motor_driver.c **** 
-  63:source/drivers/motor_driver.c ****   if (magnitude == QUICK) {
- 304               		.stabn	68,0,63,.LM29-.LFBB4
- 305               	.LM29:
- 306 0094 C111      		cpse r28,__zero_reg__
- 307 0096 00C0      		rjmp .L8
- 308               	.LBB12:
- 309               	.LBB13:
- 310               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext3
- 311               	.Ltext3:
- 312               		.stabn	68,0,187,.LM30-.LFBB4
- 313               	.LM30:
- 314 0098 2FE3      		ldi r18,lo8(199999)
- 315 009a 8DE0      		ldi r24,hi8(199999)
- 316 009c 93E0      		ldi r25,hlo8(199999)
- 317 009e 2150      	1:	subi r18,1
- 318 00a0 8040      		sbci r24,0
- 319 00a2 9040      		sbci r25,0
- 320 00a4 01F4      		brne 1b
- 321 00a6 00C0      		rjmp .L11
- 322               	.L8:
- 323               	.LBE13:
- 324               	.LBE12:
- 325               		.stabs	"source/drivers/motor_driver.c",132,0,0,.Ltext4
- 326               	.Ltext4:
-  64:source/drivers/motor_driver.c ****     _delay_ms(250);
-  65:source/drivers/motor_driver.c ****   }
-  66:source/drivers/motor_driver.c ****   else if(magnitude == NORMAL){
- 327               		.stabn	68,0,66,.LM31-.LFBB4
- 328               	.LM31:
- 329 00a8 C130      		cpi r28,lo8(1)
- 330 00aa 01F4      		brne .L10
- 331               	.LBB14:
- 332               	.LBB15:
- 333               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext5
- 334               	.Ltext5:
- 335               		.stabn	68,0,187,.LM32-.LFBB4
- 336               	.LM32:
- 337 00ac 2FE7      		ldi r18,lo8(399999)
- 338 00ae 8AE1      		ldi r24,hi8(399999)
- 339 00b0 96E0      		ldi r25,hlo8(399999)
- 340 00b2 2150      	1:	subi r18,1
- 341 00b4 8040      		sbci r24,0
- 342 00b6 9040      		sbci r25,0
- 343 00b8 01F4      		brne 1b
- 344 00ba 00C0      		rjmp .L11
- 345               	.L10:
- 346               	.LBE15:
- 347               	.LBE14:
- 348               		.stabs	"source/drivers/motor_driver.c",132,0,0,.Ltext6
- 349               	.Ltext6:
-  67:source/drivers/motor_driver.c ****     _delay_ms(500);
-  68:source/drivers/motor_driver.c ****   }
-  69:source/drivers/motor_driver.c ****   else if(magnitude == LONG){
- 350               		.stabn	68,0,69,.LM33-.LFBB4
- 351               	.LM33:
- 352 00bc C230      		cpi r28,lo8(2)
- 353 00be 01F4      		brne .L9
- 354               	.LBB16:
- 355               	.LBB17:
- 356               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext7
- 357               	.Ltext7:
- 358               		.stabn	68,0,187,.LM34-.LFBB4
- 359               	.LM34:
- 360 00c0 2FEF      		ldi r18,lo8(799999)
- 361 00c2 84E3      		ldi r24,hi8(799999)
- 362 00c4 9CE0      		ldi r25,hlo8(799999)
- 363 00c6 2150      	1:	subi r18,1
- 364 00c8 8040      		sbci r24,0
- 365 00ca 9040      		sbci r25,0
- 366 00cc 01F4      		brne 1b
- 367               	.L11:
- 368 00ce 00C0      		rjmp .
- 369 00d0 0000      		nop
- 370               	.L9:
- 371               	/* epilogue start */
- 372               	.LBE17:
- 373               	.LBE16:
- 374               		.stabs	"source/drivers/motor_driver.c",132,0,0,.Ltext8
- 375               	.Ltext8:
-  70:source/drivers/motor_driver.c ****     _delay_ms(1000);
-  71:source/drivers/motor_driver.c ****   }
-  72:source/drivers/motor_driver.c **** 
-  73:source/drivers/motor_driver.c ****   stop();
-  74:source/drivers/motor_driver.c **** }
- 376               		.stabn	68,0,74,.LM35-.LFBB4
- 377               	.LM35:
- 378 00d2 CF91      		pop r28
-  73:source/drivers/motor_driver.c **** }
- 379               		.stabn	68,0,73,.LM36-.LFBB4
- 380               	.LM36:
- 381 00d4 0C94 0000 		jmp stop
- 382               		.size	steer, .-steer
- 383               	.Lscope4:
- 384               		.stabs	"",36,0,0,.Lscope4-.LFBB4
- 385               		.stabd	78,0,0
- 386               		.stabs	"drive:F(0,49)",36,0,76,drive
- 387               		.stabs	"direction:P(0,13)",64,0,76,24
- 388               		.stabs	"speed:P(0,15)",64,0,76,12
- 389               	.global	drive
- 390               		.type	drive, @function
- 391               	drive:
- 392               		.stabd	46,0,0
-  75:source/drivers/motor_driver.c **** 
-  76:source/drivers/motor_driver.c **** void drive(unsigned char direction, double speed) {
- 393               		.stabn	68,0,76,.LM37-.LFBB5
- 394               	.LM37:
- 395               	.LFBB5:
- 396 00d8 CF92      		push r12
- 397 00da DF92      		push r13
- 398 00dc EF92      		push r14
- 399 00de FF92      		push r15
- 400               	/* prologue: function */
- 401               	/* frame size = 0 */
- 402               	/* stack size = 4 */
- 403               	.L__stack_usage = 4
- 404 00e0 6A01      		movw r12,r20
- 405 00e2 7B01      		movw r14,r22
-  77:source/drivers/motor_driver.c ****   botmoving = 1;
- 406               		.stabn	68,0,77,.LM38-.LFBB5
- 407               	.LM38:
- 408 00e4 91E0      		ldi r25,lo8(1)
- 409 00e6 9093 0000 		sts botmoving,r25
-  78:source/drivers/motor_driver.c ****   if(direction == FORWARD){
- 410               		.stabn	68,0,78,.LM39-.LFBB5
- 411               	.LM39:
- 412 00ea 8230      		cpi r24,lo8(2)
- 413 00ec 01F4      		brne .L14
-  79:source/drivers/motor_driver.c ****     /* Set the wheels to spin forward */
-  80:source/drivers/motor_driver.c ****     // LEFT BANK: Forward
-  81:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB1);
- 414               		.stabn	68,0,81,.LM40-.LFBB5
- 415               	.LM40:
- 416 00ee 2998      		cbi 0x5,1
+  59:source/drivers/motor_driver.c ****   else {
+  60:source/drivers/motor_driver.c ****     // Something is not right. Stop the vehicle.
+  61:source/drivers/motor_driver.c ****     stop();
+ 270               		.stabn	68,0,61,.LM26-.LFBB4
+ 271               	.LM26:
+ 272 006c 0E94 0000 		call stop
+ 273               	.L6:
+  62:source/drivers/motor_driver.c ****   }
+  63:source/drivers/motor_driver.c ****   setspeed(SLOW);
+ 274               		.stabn	68,0,63,.LM27-.LFBB4
+ 275               	.LM27:
+ 276 0070 60E0      		ldi r22,0
+ 277 0072 70E0      		ldi r23,0
+ 278 0074 80EF      		ldi r24,lo8(-16)
+ 279 0076 91E4      		ldi r25,lo8(65)
+ 280 0078 0C94 0000 		jmp setspeed
+ 281               		.size	steer, .-steer
+ 282               	.Lscope4:
+ 283               		.stabs	"",36,0,0,.Lscope4-.LFBB4
+ 284               		.stabd	78,0,0
+ 285               		.stabs	"drive:F(0,49)",36,0,66,drive
+ 286               		.stabs	"direction:P(0,13)",64,0,66,24
+ 287               		.stabs	"speed:P(0,15)",64,0,66,12
+ 288               	.global	drive
+ 289               		.type	drive, @function
+ 290               	drive:
+ 291               		.stabd	46,0,0
+  64:source/drivers/motor_driver.c **** }
+  65:source/drivers/motor_driver.c **** 
+  66:source/drivers/motor_driver.c **** void drive(unsigned char direction, double speed) {
+ 292               		.stabn	68,0,66,.LM28-.LFBB5
+ 293               	.LM28:
+ 294               	.LFBB5:
+ 295 007c CF92      		push r12
+ 296 007e DF92      		push r13
+ 297 0080 EF92      		push r14
+ 298 0082 FF92      		push r15
+ 299               	/* prologue: function */
+ 300               	/* frame size = 0 */
+ 301               	/* stack size = 4 */
+ 302               	.L__stack_usage = 4
+ 303 0084 6A01      		movw r12,r20
+ 304 0086 7B01      		movw r14,r22
+  67:source/drivers/motor_driver.c **** 
+  68:source/drivers/motor_driver.c ****   if(direction == FORWARD){
+ 305               		.stabn	68,0,68,.LM29-.LFBB5
+ 306               	.LM29:
+ 307 0088 8230      		cpi r24,lo8(2)
+ 308 008a 01F4      		brne .L10
+  69:source/drivers/motor_driver.c ****     /* Set the wheels to spin forward */
+  70:source/drivers/motor_driver.c ****     // RIGHT BANK: Forward
+  71:source/drivers/motor_driver.c ****     PORTB |=  (1<<PORTB2);
+ 309               		.stabn	68,0,71,.LM30-.LFBB5
+ 310               	.LM30:
+ 311 008c 2A9A      		sbi 0x5,2
+  72:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB0);
+ 312               		.stabn	68,0,72,.LM31-.LFBB5
+ 313               	.LM31:
+ 314 008e 2898      		cbi 0x5,0
+  73:source/drivers/motor_driver.c **** 
+  74:source/drivers/motor_driver.c ****     // LEFT BANK: Forward
+  75:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD4);
+ 315               		.stabn	68,0,75,.LM32-.LFBB5
+ 316               	.LM32:
+ 317 0090 5C98      		cbi 0xb,4
+  76:source/drivers/motor_driver.c ****     PORTD |=  (1<<PORTD2);
+ 318               		.stabn	68,0,76,.LM33-.LFBB5
+ 319               	.LM33:
+ 320 0092 5A9A      		sbi 0xb,2
+ 321 0094 00C0      		rjmp .L11
+ 322               	.L10:
+  77:source/drivers/motor_driver.c ****   }
+  78:source/drivers/motor_driver.c ****   else if (direction == REVERSE) {
+ 323               		.stabn	68,0,78,.LM34-.LFBB5
+ 324               	.LM34:
+ 325 0096 8330      		cpi r24,lo8(3)
+ 326 0098 01F4      		brne .L12
+  79:source/drivers/motor_driver.c ****     /* Set the wheels to spin reverse */
+  80:source/drivers/motor_driver.c ****     // RIGHT BANK: Reverse
+  81:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB2);
+ 327               		.stabn	68,0,81,.LM35-.LFBB5
+ 328               	.LM35:
+ 329 009a 2A98      		cbi 0x5,2
   82:source/drivers/motor_driver.c ****     PORTB |=  (1<<PORTB0);
- 417               		.stabn	68,0,82,.LM41-.LFBB5
- 418               	.LM41:
- 419 00f0 289A      		sbi 0x5,0
+ 330               		.stabn	68,0,82,.LM36-.LFBB5
+ 331               	.LM36:
+ 332 009c 289A      		sbi 0x5,0
   83:source/drivers/motor_driver.c **** 
-  84:source/drivers/motor_driver.c ****     // RIGHT BANK: Forward
-  85:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD4);
- 420               		.stabn	68,0,85,.LM42-.LFBB5
- 421               	.LM42:
- 422 00f2 5C98      		cbi 0xb,4
-  86:source/drivers/motor_driver.c ****     PORTD |=  (1<<PORTD2);
- 423               		.stabn	68,0,86,.LM43-.LFBB5
- 424               	.LM43:
- 425 00f4 5A9A      		sbi 0xb,2
- 426 00f6 00C0      		rjmp .L15
- 427               	.L14:
+  84:source/drivers/motor_driver.c ****     // LEFT BANK: Reverse
+  85:source/drivers/motor_driver.c ****     PORTD |=  (1<<PORTD4);
+ 333               		.stabn	68,0,85,.LM37-.LFBB5
+ 334               	.LM37:
+ 335 009e 5C9A      		sbi 0xb,4
+  86:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD2);
+ 336               		.stabn	68,0,86,.LM38-.LFBB5
+ 337               	.LM38:
+ 338 00a0 5A98      		cbi 0xb,2
+ 339 00a2 00C0      		rjmp .L11
+ 340               	.L12:
   87:source/drivers/motor_driver.c ****   }
-  88:source/drivers/motor_driver.c ****   else if (direction == REVERSE) {
- 428               		.stabn	68,0,88,.LM44-.LFBB5
- 429               	.LM44:
- 430 00f8 8330      		cpi r24,lo8(3)
- 431 00fa 01F4      		brne .L16
-  89:source/drivers/motor_driver.c ****     /* Set the wheels to spin reverse */
-  90:source/drivers/motor_driver.c ****     // LEFT BANK: Reverse
-  91:source/drivers/motor_driver.c ****     PORTB |=  (1<<PORTB1);
- 432               		.stabn	68,0,91,.LM45-.LFBB5
- 433               	.LM45:
- 434 00fc 299A      		sbi 0x5,1
-  92:source/drivers/motor_driver.c ****     PORTB &= ~(1<<PORTB0);
- 435               		.stabn	68,0,92,.LM46-.LFBB5
- 436               	.LM46:
- 437 00fe 2898      		cbi 0x5,0
+  88:source/drivers/motor_driver.c ****   else {
+  89:source/drivers/motor_driver.c ****     // Something is not right. Stop the vehicle.
+  90:source/drivers/motor_driver.c ****     stop();
+ 341               		.stabn	68,0,90,.LM39-.LFBB5
+ 342               	.LM39:
+ 343 00a4 0E94 0000 		call stop
+ 344               	.L11:
+  91:source/drivers/motor_driver.c ****   }
+  92:source/drivers/motor_driver.c ****   setspeed(speed);
+ 345               		.stabn	68,0,92,.LM40-.LFBB5
+ 346               	.LM40:
+ 347 00a8 C701      		movw r24,r14
+ 348 00aa B601      		movw r22,r12
+ 349 00ac 0E94 0000 		call setspeed
   93:source/drivers/motor_driver.c **** 
-  94:source/drivers/motor_driver.c ****     // RIGHT BANK: Reverse
-  95:source/drivers/motor_driver.c ****     PORTD |=  (1<<PORTD4);
- 438               		.stabn	68,0,95,.LM47-.LFBB5
- 439               	.LM47:
- 440 0100 5C9A      		sbi 0xb,4
-  96:source/drivers/motor_driver.c ****     PORTD &= ~(1<<PORTD2);
- 441               		.stabn	68,0,96,.LM48-.LFBB5
- 442               	.LM48:
- 443 0102 5A98      		cbi 0xb,2
- 444 0104 00C0      		rjmp .L15
- 445               	.L16:
-  97:source/drivers/motor_driver.c ****   }
-  98:source/drivers/motor_driver.c ****   else {
-  99:source/drivers/motor_driver.c ****     // Something is not right. Stop the vehicle.
- 100:source/drivers/motor_driver.c ****     stop();
- 446               		.stabn	68,0,100,.LM49-.LFBB5
- 447               	.LM49:
- 448 0106 0E94 0000 		call stop
- 449               	.L15:
- 101:source/drivers/motor_driver.c ****   }
- 102:source/drivers/motor_driver.c ****   setspeed(speed);
- 450               		.stabn	68,0,102,.LM50-.LFBB5
- 451               	.LM50:
- 452 010a C701      		movw r24,r14
- 453 010c B601      		movw r22,r12
- 454               	/* epilogue start */
- 103:source/drivers/motor_driver.c **** }
- 455               		.stabn	68,0,103,.LM51-.LFBB5
- 456               	.LM51:
- 457 010e FF90      		pop r15
- 458 0110 EF90      		pop r14
- 459 0112 DF90      		pop r13
- 460 0114 CF90      		pop r12
- 102:source/drivers/motor_driver.c **** }
- 461               		.stabn	68,0,102,.LM52-.LFBB5
- 462               	.LM52:
- 463 0116 0C94 0000 		jmp setspeed
- 464               		.size	drive, .-drive
- 465               	.Lscope5:
- 466               		.stabs	"",36,0,0,.Lscope5-.LFBB5
- 467               		.stabd	78,0,0
- 468               		.comm	botmoving,1,1
- 469               		.comm	obstacle,3,1
- 470               		.comm	tfmini,9,1
- 471               		.comm	buffercount,2,1
- 472               		.comm	USART_is_receiving,1,1
- 473               		.comm	rxBuffer,1026,1
- 474               		.stabs	"rxBuffer:G(0,50)=B(8,5)",32,0,37,0
- 475               		.stabs	"USART_is_receiving:G(0,51)=B(0,13)",32,0,38,0
- 476               		.stabs	"buffercount:G(0,52)=B(0,4)",32,0,39,0
- 477               		.stabs	"tfmini:G(0,53)=B(7,2)",32,0,58,0
- 478               		.stabs	"obstacle:G(0,54)=B(7,4)",32,0,66,0
- 479               		.stabs	"botmoving:G(0,13)",32,0,27,0
- 480               		.stabs	"",100,0,0,.Letext0
- 481               	.Letext0:
- 482               		.ident	"GCC: (GNU) 5.4.0"
- 483               	.global __do_clear_bss
+  94:source/drivers/motor_driver.c ****   botmoving = 1;
+ 350               		.stabn	68,0,94,.LM41-.LFBB5
+ 351               	.LM41:
+ 352 00b0 81E0      		ldi r24,lo8(1)
+ 353 00b2 8093 0000 		sts botmoving,r24
+ 354               	/* epilogue start */
+  95:source/drivers/motor_driver.c **** }
+ 355               		.stabn	68,0,95,.LM42-.LFBB5
+ 356               	.LM42:
+ 357 00b6 FF90      		pop r15
+ 358 00b8 EF90      		pop r14
+ 359 00ba DF90      		pop r13
+ 360 00bc CF90      		pop r12
+ 361 00be 0895      		ret
+ 362               		.size	drive, .-drive
+ 363               	.Lscope5:
+ 364               		.stabs	"",36,0,0,.Lscope5-.LFBB5
+ 365               		.stabd	78,0,0
+ 366               		.comm	botmoving,1,1
+ 367               		.comm	reading_under_progress,1,1
+ 368               		.comm	obstacle,3,1
+ 369               		.comm	tfmini,9,1
+ 370               		.comm	buffercount,2,1
+ 371               		.comm	USART_is_receiving,1,1
+ 372               		.comm	rxBuffer,1026,1
+ 373               		.stabs	"rxBuffer:G(0,50)=B(8,5)",32,0,37,0
+ 374               		.stabs	"USART_is_receiving:G(0,51)=B(0,13)",32,0,38,0
+ 375               		.stabs	"buffercount:G(0,52)=B(0,4)",32,0,39,0
+ 376               		.stabs	"tfmini:G(0,53)=B(7,2)",32,0,58,0
+ 377               		.stabs	"obstacle:G(0,54)=B(7,4)",32,0,66,0
+ 378               		.stabs	"reading_under_progress:G(0,13)",32,0,67,0
+ 379               		.stabs	"botmoving:G(0,13)",32,0,27,0
+ 380               		.stabs	"",100,0,0,.Letext0
+ 381               	.Letext0:
+ 382               		.ident	"GCC: (GNU) 5.4.0"
+ 383               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 motor_driver.c
-     /tmp/ccC2xlSp.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccC2xlSp.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccC2xlSp.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccC2xlSp.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccC2xlSp.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccC2xlSp.s:118    .text:0000000000000000 stop
+     /tmp/ccZAy4RY.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccZAy4RY.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccZAy4RY.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccZAy4RY.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccZAy4RY.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccZAy4RY.s:118    .text:0000000000000000 stop
                             *COM*:0000000000000001 botmoving
-     /tmp/ccC2xlSp.s:171    .text:0000000000000020 setspeed
-     /tmp/ccC2xlSp.s:208    .text:000000000000004a motorinit
-     /tmp/ccC2xlSp.s:242    .text:000000000000005e steer
-     /tmp/ccC2xlSp.s:391    .text:00000000000000d8 drive
+     /tmp/ccZAy4RY.s:154    .text:000000000000000e setspeed
+     /tmp/ccZAy4RY.s:189    .text:0000000000000038 motorinit
+     /tmp/ccZAy4RY.s:225    .text:0000000000000050 steer
+     /tmp/ccZAy4RY.s:290    .text:000000000000007c drive
+                            *COM*:0000000000000001 reading_under_progress
                             *COM*:0000000000000003 obstacle
                             *COM*:0000000000000009 tfmini
                             *COM*:0000000000000002 buffercount
@@ -797,5 +501,6 @@ __divsf3
 __mulsf3
 __fixunssfsi
 round
+propulsiontimer1setup
 pwmtimer2setup
 __do_clear_bss

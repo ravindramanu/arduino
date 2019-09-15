@@ -1,28 +1,3 @@
-################################################################################
-#                Makefile for working with an Arduino Board                    #
-#                ------------------------------------------                    #
-#                                                                              #
-# Author: Ravindra, Manu                                                       #
-# Date  : 13 April 2019                                                        #
-#                                                                              #
-# Dependencies: AVRDUDE is the software tool used to program the Arduino. All  #
-# its dependencies must be installed on your computer to run this makefile     #
-# succesfully.                                                                 #
-#                                                                              #
-# - gcc-avr                                                                    #
-# - binutils-avr                                                               #
-# - avr-libc                                                                   #
-# - gdb-avr                                                                    #
-# - avrdude                                                                    #
-#                                                                              #
-# Available commands: make, clean, saveboard                                   #
-#                                                                              #
-# DISCLAIMER: The author of this source code intends to make use of this for   #
-# educational or personal purposes. This code is free to be used and/or shared #
-# by anyone. In no way implictily or explicitly is the author responsible for  #
-# any loss or damage to property or life caused by the use of any part         #
-# (or whole) of this code.                                                     #
-################################################################################
 # Reference: https://www.instructables.com/id/How-to-get-started-with-Eclipse-and-AVR/
 
 # Naming convention for the entire project
@@ -178,7 +153,7 @@ editsource:
 	@atom .
 
 # Payload object needs drivers, os and main source file
-object: cpufunctions.o scheduler.o UART.o motor_driver.o LIDAR_driver.o
+object: cpufunctions.o USART.o motor_driver.o LIDAR_driver.o
 	@echo '                                                                      '
 	$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=$(sourcename).lst -c -o $(softwareobject) $(sourcecode) $(avrlibpath)
 	@mv $(sourcename).lst assembly/
@@ -188,15 +163,10 @@ cpufunctions.o:
 		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=cpufunctions.lst -c -o objects/cpufunctions.o source/os_rios/cpufunctions.c $(avrlibpath)
 		@mv cpufunctions.lst assembly/
 
-scheduler.o:
+USART.o:
 		@echo '                                                                      '
-		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=scheduler.lst -c -o objects/scheduler.o source/os_rios/scheduler.c $(avrlibpath)
-		@mv scheduler.lst assembly/
-
-UART.o:
-		@echo '                                                                      '
-		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=UART.lst -c -o objects/UART.o source/os_rios/UART.c $(avrlibpath)
-		@mv UART.lst assembly/
+		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=USART.lst -c -o objects/USART.o source/os_rios/USART.c $(avrlibpath)
+		@mv USART.lst assembly/
 
 motor_driver.o:
 	@echo '                                                                      '
@@ -210,7 +180,7 @@ LIDAR_driver.o:
 
 elf: object
 	@echo '                                                                      '
-	$(complilerused) $(gcccompilerflags) $(avrgcccompilerflags) -o $(softwareobjectelf) $(softwareobject) objects/cpufunctions.o objects/scheduler.o objects/UART.o objects/motor_driver.o objects/LIDAR_driver.o
+	$(complilerused) $(gcccompilerflags) $(avrgcccompilerflags) -o $(softwareobjectelf) $(softwareobject) objects/cpufunctions.o objects/USART.o objects/motor_driver.o objects/LIDAR_driver.o
 	@chmod a-x $(softwareobjectelf) 2>&1
 
 hex: elf

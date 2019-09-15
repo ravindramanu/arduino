@@ -1,5 +1,5 @@
-#ifndef UART_H_
-#define UART_H_
+#ifndef USART_H_
+#define USART_H_
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -51,6 +51,7 @@ volatile unsigned int buffercount;
  */
 
 enum bufferStatus rxBufferRead(unsigned char * byte);
+enum bufferStatus rxBufferWrite();
 void usartinit(void);
 void softwareserialTransmit(unsigned char byte);
 

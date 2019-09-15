@@ -100,7 +100,7 @@
  100               		.stabs	"__fuse_t:t(6,1)=(6,2)=s3low:(0,13),0,8;high:(0,13),8,8;extended:(0,13),16,8;;",128,0,244,0
  101               		.stabn	162,0,0,0
  102               		.stabn	162,0,0,0
- 103               		.stabs	"source/drivers/../os_rios/UART.h",130,0,0,0
+ 103               		.stabs	"source/drivers/../os_rios/USART.h",130,0,0,0
  104               		.stabs	"bufferStatus:T(7,1)=eBUFFER_OK:0,BUFFER_EMPTY:1,BUFFER_FULL:2,;",128,0,0,0
  105               		.stabs	"Buffer:T(7,2)=s1026data:(7,3)=ar(7,4)=r(7,4);0;0177777;;0;1023;(0,13),0,8192;readindex:(0,
  106               		.stabs	"Buffer:t(7,5)=(7,2)",128,0,34,0
@@ -307,56 +307,54 @@
  250 00a4 892B      		or r24,r25
  251 00a6 01F0      		breq .+2
  252 00a8 00C0      		rjmp .L6
- 253               	.LBB4:
- 254               	.LBB5:
   57:source/drivers/LIDAR_driver.c ****     return;
   58:source/drivers/LIDAR_driver.c ****   }
   59:source/drivers/LIDAR_driver.c **** 
   60:source/drivers/LIDAR_driver.c ****   switch(position){
- 255               		.stabn	68,0,60,.LM21-.LFBB3
- 256               	.LM21:
- 257 00aa E091 0000 		lds r30,position
- 258 00ae 8E2F      		mov r24,r30
- 259 00b0 90E0      		ldi r25,0
- 260 00b2 8930      		cpi r24,9
- 261 00b4 9105      		cpc r25,__zero_reg__
- 262 00b6 00F4      		brsh .L6
- 263 00b8 FC01      		movw r30,r24
- 264 00ba E050      		subi r30,lo8(-(gs(.L9)))
- 265 00bc F040      		sbci r31,hi8(-(gs(.L9)))
- 266 00be 8091 0000 		lds r24,transferByte
- 267 00c2 0C94 0000 		jmp __tablejump2__
- 268               		.section	.progmem.gcc_sw_table,"a",@progbits
- 269               		.p2align	1
- 270               	.L9:
- 271 0000 0000      		.word gs(.L8)
- 272 0002 0000      		.word gs(.L10)
- 273 0004 0000      		.word gs(.L11)
- 274 0006 0000      		.word gs(.L12)
- 275 0008 0000      		.word gs(.L13)
- 276 000a 0000      		.word gs(.L14)
- 277 000c 0000      		.word gs(.L15)
- 278 000e 0000      		.word gs(.L16)
- 279 0010 0000      		.word gs(.L17)
- 280               		.text
- 281               	.L8:
+ 253               		.stabn	68,0,60,.LM21-.LFBB3
+ 254               	.LM21:
+ 255 00aa E091 0000 		lds r30,position
+ 256 00ae 8E2F      		mov r24,r30
+ 257 00b0 90E0      		ldi r25,0
+ 258 00b2 8930      		cpi r24,9
+ 259 00b4 9105      		cpc r25,__zero_reg__
+ 260 00b6 00F4      		brsh .L6
+ 261 00b8 FC01      		movw r30,r24
+ 262 00ba E050      		subi r30,lo8(-(gs(.L9)))
+ 263 00bc F040      		sbci r31,hi8(-(gs(.L9)))
+ 264 00be 8091 0000 		lds r24,transferByte
+ 265 00c2 0C94 0000 		jmp __tablejump2__
+ 266               		.section	.progmem.gcc_sw_table,"a",@progbits
+ 267               		.p2align	1
+ 268               	.L9:
+ 269 0000 0000      		.word gs(.L8)
+ 270 0002 0000      		.word gs(.L10)
+ 271 0004 0000      		.word gs(.L11)
+ 272 0006 0000      		.word gs(.L12)
+ 273 0008 0000      		.word gs(.L13)
+ 274 000a 0000      		.word gs(.L14)
+ 275 000c 0000      		.word gs(.L15)
+ 276 000e 0000      		.word gs(.L16)
+ 277 0010 0000      		.word gs(.L17)
+ 278               		.text
+ 279               	.L8:
   61:source/drivers/LIDAR_driver.c ****     /* Check if the first byte is HEAD */
   62:source/drivers/LIDAR_driver.c ****     case 0: {
   63:source/drivers/LIDAR_driver.c ****       if(transferByte == HEAD){
- 282               		.stabn	68,0,63,.LM22-.LFBB3
- 283               	.LM22:
- 284 00c6 8935      		cpi r24,lo8(89)
- 285 00c8 01F4      		brne .L6
+ 280               		.stabn	68,0,63,.LM22-.LFBB3
+ 281               	.LM22:
+ 282 00c6 8935      		cpi r24,lo8(89)
+ 283 00c8 01F4      		brne .L6
   64:source/drivers/LIDAR_driver.c ****         tfmini.headbyte1=transferByte;
- 286               		.stabn	68,0,64,.LM23-.LFBB3
- 287               	.LM23:
- 288 00ca 8093 0000 		sts tfmini,r24
+ 284               		.stabn	68,0,64,.LM23-.LFBB3
+ 285               	.LM23:
+ 286 00ca 8093 0000 		sts tfmini,r24
   65:source/drivers/LIDAR_driver.c ****         position+=1;
- 289               		.stabn	68,0,65,.LM24-.LFBB3
- 290               	.LM24:
- 291 00ce 81E0      		ldi r24,lo8(1)
- 292 00d0 00C0      		rjmp .L19
- 293               	.L10:
+ 287               		.stabn	68,0,65,.LM24-.LFBB3
+ 288               	.LM24:
+ 289 00ce 81E0      		ldi r24,lo8(1)
+ 290 00d0 00C0      		rjmp .L19
+ 291               	.L10:
   66:source/drivers/LIDAR_driver.c ****       } else {
   67:source/drivers/LIDAR_driver.c ****         position=0;
   68:source/drivers/LIDAR_driver.c ****       }
@@ -366,27 +364,27 @@
   72:source/drivers/LIDAR_driver.c ****     /* Check if the second byte is also HEAD */
   73:source/drivers/LIDAR_driver.c ****     case 1: {
   74:source/drivers/LIDAR_driver.c ****       if(transferByte == HEAD){
- 294               		.stabn	68,0,74,.LM25-.LFBB3
- 295               	.LM25:
- 296 00d2 8935      		cpi r24,lo8(89)
- 297 00d4 01F4      		brne .L18
+ 292               		.stabn	68,0,74,.LM25-.LFBB3
+ 293               	.LM25:
+ 294 00d2 8935      		cpi r24,lo8(89)
+ 295 00d4 01F4      		brne .L18
   75:source/drivers/LIDAR_driver.c ****         tfmini.headbyte2=transferByte;
- 298               		.stabn	68,0,75,.LM26-.LFBB3
- 299               	.LM26:
- 300 00d6 8093 0000 		sts tfmini+1,r24
+ 296               		.stabn	68,0,75,.LM26-.LFBB3
+ 297               	.LM26:
+ 298 00d6 8093 0000 		sts tfmini+1,r24
   76:source/drivers/LIDAR_driver.c ****         position+=1;
- 301               		.stabn	68,0,76,.LM27-.LFBB3
- 302               	.LM27:
- 303 00da 82E0      		ldi r24,lo8(2)
- 304 00dc 00C0      		rjmp .L19
- 305               	.L18:
+ 299               		.stabn	68,0,76,.LM27-.LFBB3
+ 300               	.LM27:
+ 301 00da 82E0      		ldi r24,lo8(2)
+ 302 00dc 00C0      		rjmp .L19
+ 303               	.L18:
   77:source/drivers/LIDAR_driver.c ****       } else {
   78:source/drivers/LIDAR_driver.c ****         position=0;
- 306               		.stabn	68,0,78,.LM28-.LFBB3
- 307               	.LM28:
- 308 00de 1092 0000 		sts position,__zero_reg__
- 309 00e2 0895      		ret
- 310               	.L11:
+ 304               		.stabn	68,0,78,.LM28-.LFBB3
+ 305               	.LM28:
+ 306 00de 1092 0000 		sts position,__zero_reg__
+ 307 00e2 0895      		ret
+ 308               	.L11:
   79:source/drivers/LIDAR_driver.c ****       }
   80:source/drivers/LIDAR_driver.c ****       break;
   81:source/drivers/LIDAR_driver.c ****     }
@@ -394,257 +392,164 @@
   83:source/drivers/LIDAR_driver.c ****     /* Gather the next 6 bytes*/
   84:source/drivers/LIDAR_driver.c ****     case 2: {
   85:source/drivers/LIDAR_driver.c ****       tfmini.distanceLow=transferByte;
- 311               		.stabn	68,0,85,.LM29-.LFBB3
- 312               	.LM29:
- 313 00e4 8093 0000 		sts tfmini+2,r24
+ 309               		.stabn	68,0,85,.LM29-.LFBB3
+ 310               	.LM29:
+ 311 00e4 8093 0000 		sts tfmini+2,r24
   86:source/drivers/LIDAR_driver.c ****       position+=1;
- 314               		.stabn	68,0,86,.LM30-.LFBB3
- 315               	.LM30:
- 316 00e8 83E0      		ldi r24,lo8(3)
- 317 00ea 00C0      		rjmp .L19
- 318               	.L12:
+ 312               		.stabn	68,0,86,.LM30-.LFBB3
+ 313               	.LM30:
+ 314 00e8 83E0      		ldi r24,lo8(3)
+ 315 00ea 00C0      		rjmp .L19
+ 316               	.L12:
   87:source/drivers/LIDAR_driver.c ****       break;
   88:source/drivers/LIDAR_driver.c ****     }
   89:source/drivers/LIDAR_driver.c ****     case 3: {
   90:source/drivers/LIDAR_driver.c ****       tfmini.distanceHigh=transferByte;
- 319               		.stabn	68,0,90,.LM31-.LFBB3
- 320               	.LM31:
- 321 00ec 8093 0000 		sts tfmini+3,r24
+ 317               		.stabn	68,0,90,.LM31-.LFBB3
+ 318               	.LM31:
+ 319 00ec 8093 0000 		sts tfmini+3,r24
   91:source/drivers/LIDAR_driver.c ****       position+=1;
- 322               		.stabn	68,0,91,.LM32-.LFBB3
- 323               	.LM32:
- 324 00f0 84E0      		ldi r24,lo8(4)
- 325 00f2 00C0      		rjmp .L19
- 326               	.L13:
+ 320               		.stabn	68,0,91,.LM32-.LFBB3
+ 321               	.LM32:
+ 322 00f0 84E0      		ldi r24,lo8(4)
+ 323 00f2 00C0      		rjmp .L19
+ 324               	.L13:
   92:source/drivers/LIDAR_driver.c ****       break;
   93:source/drivers/LIDAR_driver.c ****     }
   94:source/drivers/LIDAR_driver.c ****     case 4: {
   95:source/drivers/LIDAR_driver.c ****       tfmini.strengthLow=transferByte;
- 327               		.stabn	68,0,95,.LM33-.LFBB3
- 328               	.LM33:
- 329 00f4 8093 0000 		sts tfmini+4,r24
+ 325               		.stabn	68,0,95,.LM33-.LFBB3
+ 326               	.LM33:
+ 327 00f4 8093 0000 		sts tfmini+4,r24
   96:source/drivers/LIDAR_driver.c ****       position+=1;
- 330               		.stabn	68,0,96,.LM34-.LFBB3
- 331               	.LM34:
- 332 00f8 85E0      		ldi r24,lo8(5)
- 333 00fa 00C0      		rjmp .L19
- 334               	.L14:
+ 328               		.stabn	68,0,96,.LM34-.LFBB3
+ 329               	.LM34:
+ 330 00f8 85E0      		ldi r24,lo8(5)
+ 331 00fa 00C0      		rjmp .L19
+ 332               	.L14:
   97:source/drivers/LIDAR_driver.c **** 
   98:source/drivers/LIDAR_driver.c ****       break;
   99:source/drivers/LIDAR_driver.c ****     }
  100:source/drivers/LIDAR_driver.c ****     case 5: {
  101:source/drivers/LIDAR_driver.c ****       tfmini.strengthHigh=transferByte;
- 335               		.stabn	68,0,101,.LM35-.LFBB3
- 336               	.LM35:
- 337 00fc 8093 0000 		sts tfmini+5,r24
+ 333               		.stabn	68,0,101,.LM35-.LFBB3
+ 334               	.LM35:
+ 335 00fc 8093 0000 		sts tfmini+5,r24
  102:source/drivers/LIDAR_driver.c ****       position+=1;
- 338               		.stabn	68,0,102,.LM36-.LFBB3
- 339               	.LM36:
- 340 0100 86E0      		ldi r24,lo8(6)
- 341 0102 00C0      		rjmp .L19
- 342               	.L15:
+ 336               		.stabn	68,0,102,.LM36-.LFBB3
+ 337               	.LM36:
+ 338 0100 86E0      		ldi r24,lo8(6)
+ 339 0102 00C0      		rjmp .L19
+ 340               	.L15:
  103:source/drivers/LIDAR_driver.c **** 
  104:source/drivers/LIDAR_driver.c ****       break;
  105:source/drivers/LIDAR_driver.c ****     }
  106:source/drivers/LIDAR_driver.c ****     case 6: {
  107:source/drivers/LIDAR_driver.c ****       tfmini.mode=transferByte;
- 343               		.stabn	68,0,107,.LM37-.LFBB3
- 344               	.LM37:
- 345 0104 8093 0000 		sts tfmini+6,r24
+ 341               		.stabn	68,0,107,.LM37-.LFBB3
+ 342               	.LM37:
+ 343 0104 8093 0000 		sts tfmini+6,r24
  108:source/drivers/LIDAR_driver.c ****       position+=1;
- 346               		.stabn	68,0,108,.LM38-.LFBB3
- 347               	.LM38:
- 348 0108 87E0      		ldi r24,lo8(7)
- 349 010a 00C0      		rjmp .L19
- 350               	.L16:
+ 344               		.stabn	68,0,108,.LM38-.LFBB3
+ 345               	.LM38:
+ 346 0108 87E0      		ldi r24,lo8(7)
+ 347 010a 00C0      		rjmp .L19
+ 348               	.L16:
  109:source/drivers/LIDAR_driver.c ****       break;
  110:source/drivers/LIDAR_driver.c ****     }
  111:source/drivers/LIDAR_driver.c ****     case 7: {
  112:source/drivers/LIDAR_driver.c ****       tfmini.spare=transferByte;
- 351               		.stabn	68,0,112,.LM39-.LFBB3
- 352               	.LM39:
- 353 010c 8093 0000 		sts tfmini+7,r24
+ 349               		.stabn	68,0,112,.LM39-.LFBB3
+ 350               	.LM39:
+ 351 010c 8093 0000 		sts tfmini+7,r24
  113:source/drivers/LIDAR_driver.c ****       position+=1;
- 354               		.stabn	68,0,113,.LM40-.LFBB3
- 355               	.LM40:
- 356 0110 88E0      		ldi r24,lo8(8)
- 357               	.L19:
- 358 0112 8093 0000 		sts position,r24
- 359 0116 0895      		ret
- 360               	.L17:
+ 352               		.stabn	68,0,113,.LM40-.LFBB3
+ 353               	.LM40:
+ 354 0110 88E0      		ldi r24,lo8(8)
+ 355               	.L19:
+ 356 0112 8093 0000 		sts position,r24
  114:source/drivers/LIDAR_driver.c **** 
  115:source/drivers/LIDAR_driver.c ****       break;
+ 357               		.stabn	68,0,115,.LM41-.LFBB3
+ 358               	.LM41:
+ 359 0116 0895      		ret
+ 360               	.L17:
  116:source/drivers/LIDAR_driver.c ****     }
  117:source/drivers/LIDAR_driver.c **** 
  118:source/drivers/LIDAR_driver.c ****     /* Once we get the checksum we can immediately parse the distance */
  119:source/drivers/LIDAR_driver.c ****     case 8: {
  120:source/drivers/LIDAR_driver.c ****       tfmini.checksum=transferByte;
- 361               		.stabn	68,0,120,.LM41-.LFBB3
- 362               	.LM41:
+ 361               		.stabn	68,0,120,.LM42-.LFBB3
+ 362               	.LM42:
  363 0118 8093 0000 		sts tfmini+8,r24
  121:source/drivers/LIDAR_driver.c ****       parse();
- 364               		.stabn	68,0,121,.LM42-.LFBB3
- 365               	.LM42:
+ 364               		.stabn	68,0,121,.LM43-.LFBB3
+ 365               	.LM43:
  366 011c 0E94 0000 		call parse
  122:source/drivers/LIDAR_driver.c **** 
  123:source/drivers/LIDAR_driver.c ****       /* Reset the position to first byte and repeat */
  124:source/drivers/LIDAR_driver.c ****       position=0;
- 367               		.stabn	68,0,124,.LM43-.LFBB3
- 368               	.LM43:
+ 367               		.stabn	68,0,124,.LM44-.LFBB3
+ 368               	.LM44:
  369 0120 1092 0000 		sts position,__zero_reg__
  125:source/drivers/LIDAR_driver.c **** 
  126:source/drivers/LIDAR_driver.c ****       /* Reset the checksum to invalidate parsed frame */
  127:source/drivers/LIDAR_driver.c ****       tfmini.checksum = 0;
- 370               		.stabn	68,0,127,.LM44-.LFBB3
- 371               	.LM44:
+ 370               		.stabn	68,0,127,.LM45-.LFBB3
+ 371               	.LM45:
  372 0124 1092 0000 		sts tfmini+8,__zero_reg__
  373               	.L6:
  374 0128 0895      		ret
- 375               	.LBE5:
- 376               	.LBE4:
- 377               		.size	readLIDAR, .-readLIDAR
- 378               	.Lscope3:
- 379               		.stabs	"",36,0,0,.Lscope3-.LFBB3
- 380               		.stabd	78,0,0
- 381               		.stabs	"__vector_14:F(0,49)",36,0,139,__vector_14
- 382               	.global	__vector_14
- 383               		.type	__vector_14, @function
- 384               	__vector_14:
- 385               		.stabd	46,0,0
- 128:source/drivers/LIDAR_driver.c **** 
- 129:source/drivers/LIDAR_driver.c ****       break;
- 130:source/drivers/LIDAR_driver.c ****     }
- 131:source/drivers/LIDAR_driver.c ****   }
- 132:source/drivers/LIDAR_driver.c **** }
- 133:source/drivers/LIDAR_driver.c **** 
- 134:source/drivers/LIDAR_driver.c **** /******************************************************************************/
- 135:source/drivers/LIDAR_driver.c **** /*                          INTERRUPT SERVICE ROUTINES                        */
- 136:source/drivers/LIDAR_driver.c **** /******************************************************************************/
- 137:source/drivers/LIDAR_driver.c **** 
- 138:source/drivers/LIDAR_driver.c **** /* TIMER 0 COMPARE MATCH ROUTINE TO READ FROM BUFFER */
- 139:source/drivers/LIDAR_driver.c **** ISR(TIMER0_COMPA_vect){
- 386               		.stabn	68,0,139,.LM45-.LFBB4
- 387               	.LM45:
- 388               	.LFBB4:
- 389 012a 1F92      		push r1
- 390 012c 0F92      		push r0
- 391 012e 0FB6      		in r0,__SREG__
- 392 0130 0F92      		push r0
- 393 0132 1124      		clr __zero_reg__
- 394 0134 2F93      		push r18
- 395 0136 3F93      		push r19
- 396 0138 4F93      		push r20
- 397 013a 5F93      		push r21
- 398 013c 6F93      		push r22
- 399 013e 7F93      		push r23
- 400 0140 8F93      		push r24
- 401 0142 9F93      		push r25
- 402 0144 AF93      		push r26
- 403 0146 BF93      		push r27
- 404 0148 EF93      		push r30
- 405 014a FF93      		push r31
- 406               	/* prologue: Signal */
- 407               	/* frame size = 0 */
- 408               	/* stack size = 15 */
- 409               	.L__stack_usage = 15
- 140:source/drivers/LIDAR_driver.c ****   /* We want our ISR to do nothing in the middle of a receive since this ISR
- 141:source/drivers/LIDAR_driver.c ****    * interrupts our receive USART ISR because of higher prioirty. Unfortunately
- 142:source/drivers/LIDAR_driver.c ****    * the Arduino does not allow NVIC or prioritizable interrupts since it is a
- 143:source/drivers/LIDAR_driver.c ****    * low spec board using the ATMega328p, so we have to work with what we have.
- 144:source/drivers/LIDAR_driver.c ****    * This means the use of flags and byte count can be one of the ways to tell
- 145:source/drivers/LIDAR_driver.c ****    * that the USART is in the middle of a receive operation and also when the
- 146:source/drivers/LIDAR_driver.c ****    * buffer is ready for a read. Here we wait until there are atleast 50 bytes
- 147:source/drivers/LIDAR_driver.c ****    * or close to 5 frames in the buffer to start reading. This method helps not
- 148:source/drivers/LIDAR_driver.c ****    * readin the buffer when there is no data and alos keeps the interrupt time
- 149:source/drivers/LIDAR_driver.c ****    * short.
- 150:source/drivers/LIDAR_driver.c ****    */
- 151:source/drivers/LIDAR_driver.c ****    if ((USART_is_receiving != 1) && (buffercount>50)) {
- 410               		.stabn	68,0,151,.LM46-.LFBB4
- 411               	.LM46:
- 412 014c 8091 0000 		lds r24,USART_is_receiving
- 413 0150 8130      		cpi r24,lo8(1)
- 414 0152 01F0      		breq .L20
- 415               		.stabn	68,0,151,.LM47-.LFBB4
- 416               	.LM47:
- 417 0154 8091 0000 		lds r24,buffercount
- 418 0158 9091 0000 		lds r25,buffercount+1
- 419 015c C397      		sbiw r24,51
- 420 015e 00F0      		brlo .L20
- 152:source/drivers/LIDAR_driver.c ****      readLIDAR();
- 421               		.stabn	68,0,152,.LM48-.LFBB4
- 422               	.LM48:
- 423 0160 0E94 0000 		call readLIDAR
- 424               	.L20:
- 425               	/* epilogue start */
- 153:source/drivers/LIDAR_driver.c ****   }
- 154:source/drivers/LIDAR_driver.c **** }
- 426               		.stabn	68,0,154,.LM49-.LFBB4
- 427               	.LM49:
- 428 0164 FF91      		pop r31
- 429 0166 EF91      		pop r30
- 430 0168 BF91      		pop r27
- 431 016a AF91      		pop r26
- 432 016c 9F91      		pop r25
- 433 016e 8F91      		pop r24
- 434 0170 7F91      		pop r23
- 435 0172 6F91      		pop r22
- 436 0174 5F91      		pop r21
- 437 0176 4F91      		pop r20
- 438 0178 3F91      		pop r19
- 439 017a 2F91      		pop r18
- 440 017c 0F90      		pop r0
- 441 017e 0FBE      		out __SREG__,r0
- 442 0180 0F90      		pop r0
- 443 0182 1F90      		pop r1
- 444 0184 1895      		reti
- 445               		.size	__vector_14, .-__vector_14
- 446               	.Lscope4:
- 447               		.stabs	"",36,0,0,.Lscope4-.LFBB4
- 448               		.stabd	78,0,0
- 449               		.comm	distance,2,1
- 450               		.comm	signalstrength,2,1
- 451               		.comm	position,1,1
- 452               		.comm	sum,1,1
- 453               		.comm	transferByte,1,1
- 454               		.comm	obstacle,3,1
- 455               		.comm	tfmini,9,1
- 456               		.comm	buffercount,2,1
- 457               		.comm	USART_is_receiving,1,1
- 458               		.comm	rxBuffer,1026,1
- 459               		.stabs	"rxBuffer:G(0,50)=B(7,5)",32,0,37,0
- 460               		.stabs	"USART_is_receiving:G(0,51)=B(0,13)",32,0,38,0
- 461               		.stabs	"buffercount:G(0,52)=B(0,4)",32,0,39,0
- 462               		.stabs	"tfmini:G(0,53)=B(1,2)",32,0,58,0
- 463               		.stabs	"obstacle:G(0,54)=B(1,4)",32,0,66,0
- 464               		.stabs	"transferByte:G(0,13)",32,0,13,0
- 465               		.stabs	"sum:G(0,13)",32,0,13,0
- 466               		.stabs	"position:G(0,13)",32,0,13,0
- 467               		.stabs	"signalstrength:G(0,4)",32,0,14,0
- 468               		.stabs	"distance:G(0,4)",32,0,14,0
- 469               		.stabs	"",100,0,0,.Letext0
- 470               	.Letext0:
- 471               		.ident	"GCC: (GNU) 5.4.0"
- 472               	.global __do_clear_bss
+ 375               		.size	readLIDAR, .-readLIDAR
+ 376               	.Lscope3:
+ 377               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 378               		.stabd	78,0,0
+ 379               		.comm	distance,2,1
+ 380               		.comm	signalstrength,2,1
+ 381               		.comm	position,1,1
+ 382               		.comm	sum,1,1
+ 383               		.comm	transferByte,1,1
+ 384               		.comm	reading_under_progress,1,1
+ 385               		.comm	obstacle,3,1
+ 386               		.comm	tfmini,9,1
+ 387               		.comm	buffercount,2,1
+ 388               		.comm	USART_is_receiving,1,1
+ 389               		.comm	rxBuffer,1026,1
+ 390               		.stabs	"rxBuffer:G(0,50)=B(7,5)",32,0,37,0
+ 391               		.stabs	"USART_is_receiving:G(0,51)=B(0,13)",32,0,38,0
+ 392               		.stabs	"buffercount:G(0,52)=B(0,4)",32,0,39,0
+ 393               		.stabs	"tfmini:G(0,53)=B(1,2)",32,0,58,0
+ 394               		.stabs	"obstacle:G(0,54)=B(1,4)",32,0,66,0
+ 395               		.stabs	"reading_under_progress:G(0,13)",32,0,67,0
+ 396               		.stabs	"transferByte:G(0,13)",32,0,13,0
+ 397               		.stabs	"sum:G(0,13)",32,0,13,0
+ 398               		.stabs	"position:G(0,13)",32,0,13,0
+ 399               		.stabs	"signalstrength:G(0,4)",32,0,14,0
+ 400               		.stabs	"distance:G(0,4)",32,0,14,0
+ 401               		.stabs	"",100,0,0,.Letext0
+ 402               	.Letext0:
+ 403               		.ident	"GCC: (GNU) 5.4.0"
+ 404               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 LIDAR_driver.c
-     /tmp/ccQjabXs.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccQjabXs.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccQjabXs.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccQjabXs.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccQjabXs.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccQjabXs.s:116    .text:0000000000000000 lidarinit
-     /tmp/ccQjabXs.s:138    .text:0000000000000008 parse
+     /tmp/ccQmYum4.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccQmYum4.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccQmYum4.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccQmYum4.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccQmYum4.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccQmYum4.s:116    .text:0000000000000000 lidarinit
+     /tmp/ccQmYum4.s:138    .text:0000000000000008 parse
                             *COM*:0000000000000009 tfmini
                             *COM*:0000000000000001 sum
                             *COM*:0000000000000002 signalstrength
                             *COM*:0000000000000002 distance
                             *COM*:0000000000000003 obstacle
-     /tmp/ccQjabXs.s:236    .text:000000000000009c readLIDAR
+     /tmp/ccQmYum4.s:236    .text:000000000000009c readLIDAR
                             *COM*:0000000000000001 transferByte
                             *COM*:0000000000000001 position
-     /tmp/ccQjabXs.s:384    .text:000000000000012a __vector_14
-                            *COM*:0000000000000001 USART_is_receiving
+                            *COM*:0000000000000001 reading_under_progress
                             *COM*:0000000000000002 buffercount
+                            *COM*:0000000000000001 USART_is_receiving
                             *COM*:0000000000000402 rxBuffer
 
 UNDEFINED SYMBOLS
