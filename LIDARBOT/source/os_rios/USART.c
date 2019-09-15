@@ -7,6 +7,7 @@ void usartinit(void){
 }
 
 void softwareserialTransmit(unsigned char byte){
+  /* Reference: https://www.avrfreaks.net/forum/software-serial-uart?page=all */
   /* The software serial transmit function is for debug only.
    * This function will send out any data that is passed into it on to a
    * software emulated UART on pin 12 of the Arduino.
