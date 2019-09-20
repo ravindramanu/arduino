@@ -6,7 +6,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "LIDAR_driver.h"
-#include "../os_rios/cpufunctions.h"
+#include "../os/cpufunctions.h"
 
 // Available directions
 #define LEFT    0

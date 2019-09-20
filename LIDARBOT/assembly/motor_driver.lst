@@ -101,15 +101,15 @@
  101               		.stabn	162,0,0,0
  102               		.stabn	162,0,0,0
  103               		.stabs	"source/drivers/LIDAR_driver.h",130,0,0,0
- 104               		.stabs	"source/drivers/../os_rios/USART.h",130,0,0,0
+ 104               		.stabs	"source/drivers/../os/USART.h",130,0,0,0
  105               		.stabs	"bufferStatus:T(8,1)=eBUFFER_OK:0,BUFFER_EMPTY:1,BUFFER_FULL:2,;",128,0,0,0
  106               		.stabs	"Buffer:T(8,2)=s1026data:(8,3)=ar(8,4)=r(8,4);0;0177777;;0;1023;(0,13),0,8192;readindex:(0,
  107               		.stabs	"Buffer:t(8,5)=(8,2)",128,0,34,0
  108               		.stabn	162,0,0,0
  109               		.stabs	"LIDARMODULESTRUCT:T(7,1)=s9headbyte1:(0,13),0,8;headbyte2:(0,13),8,8;distanceLow:(0,13),16
- 110               		.stabs	"LIDAR:t(7,2)=(7,1)",128,0,55,0
+ 110               		.stabs	"LIDAR:t(7,2)=(7,1)",128,0,25,0
  111               		.stabs	"OBJECTPROXIMITYSTRUCT:T(7,3)=s3proximity:(0,4),0,16;valid:(0,13),16,8;;",128,0,0,0
- 112               		.stabs	"OBJECT:t(7,4)=(7,3)",128,0,64,0
+ 112               		.stabs	"OBJECT:t(7,4)=(7,3)",128,0,34,0
  113               		.stabn	162,0,0,0
  114               		.stabn	162,0,0,0
  115               		.stabs	"stop:F(0,49)",36,0,3,stop
@@ -459,41 +459,35 @@
  364               		.stabs	"",36,0,0,.Lscope5-.LFBB5
  365               		.stabd	78,0,0
  366               		.comm	botmoving,1,1
- 367               		.comm	reading_under_progress,1,1
- 368               		.comm	obstacle,3,1
- 369               		.comm	tfmini,9,1
- 370               		.comm	buffercount,2,1
- 371               		.comm	USART_is_receiving,1,1
- 372               		.comm	rxBuffer,1026,1
- 373               		.stabs	"rxBuffer:G(0,50)=B(8,5)",32,0,37,0
- 374               		.stabs	"USART_is_receiving:G(0,51)=B(0,13)",32,0,38,0
- 375               		.stabs	"buffercount:G(0,52)=B(0,4)",32,0,39,0
- 376               		.stabs	"tfmini:G(0,53)=B(7,2)",32,0,58,0
- 377               		.stabs	"obstacle:G(0,54)=B(7,4)",32,0,66,0
- 378               		.stabs	"reading_under_progress:G(0,13)",32,0,67,0
- 379               		.stabs	"botmoving:G(0,13)",32,0,27,0
- 380               		.stabs	"",100,0,0,.Letext0
- 381               	.Letext0:
- 382               		.ident	"GCC: (GNU) 5.4.0"
- 383               	.global __do_clear_bss
+ 367               		.comm	obstacle,3,1
+ 368               		.comm	tfmini,9,1
+ 369               		.comm	buffercount,2,1
+ 370               		.comm	rxBuffer,1026,1
+ 371               		.stabs	"rxBuffer:G(0,50)=B(8,5)",32,0,37,0
+ 372               		.stabs	"buffercount:G(0,51)=B(0,4)",32,0,38,0
+ 373               		.stabs	"tfmini:G(0,52)=B(7,2)",32,0,28,0
+ 374               		.stabs	"obstacle:G(0,53)=B(7,4)",32,0,36,0
+ 375               		.stabs	"botmoving:G(0,13)",32,0,27,0
+ 376               		.stabs	"",100,0,0,.Letext0
+ 377               	.Letext0:
+ 378               		.ident	"GCC: (GNU) 5.4.0"
+ 379               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 motor_driver.c
-     /tmp/ccZAy4RY.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccZAy4RY.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccZAy4RY.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccZAy4RY.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccZAy4RY.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccZAy4RY.s:118    .text:0000000000000000 stop
+     /tmp/ccPIogCI.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccPIogCI.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccPIogCI.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccPIogCI.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccPIogCI.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccPIogCI.s:118    .text:0000000000000000 stop
                             *COM*:0000000000000001 botmoving
-     /tmp/ccZAy4RY.s:154    .text:000000000000000e setspeed
-     /tmp/ccZAy4RY.s:189    .text:0000000000000038 motorinit
-     /tmp/ccZAy4RY.s:225    .text:0000000000000050 steer
-     /tmp/ccZAy4RY.s:290    .text:000000000000007c drive
-                            *COM*:0000000000000001 reading_under_progress
+     /tmp/ccPIogCI.s:154    .text:000000000000000e setspeed
+     /tmp/ccPIogCI.s:189    .text:0000000000000038 motorinit
+     /tmp/ccPIogCI.s:225    .text:0000000000000050 steer
+     /tmp/ccPIogCI.s:290    .text:000000000000007c drive
                             *COM*:0000000000000003 obstacle
                             *COM*:0000000000000009 tfmini
                             *COM*:0000000000000002 buffercount
-                            *COM*:0000000000000001 USART_is_receiving
                             *COM*:0000000000000402 rxBuffer
 
 UNDEFINED SYMBOLS

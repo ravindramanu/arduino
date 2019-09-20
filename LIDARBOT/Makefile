@@ -160,12 +160,12 @@ object: cpufunctions.o USART.o motor_driver.o LIDAR_driver.o
 
 cpufunctions.o:
 		@echo '                                                                      '
-		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=cpufunctions.lst -c -o objects/cpufunctions.o source/os_rios/cpufunctions.c $(avrlibpath)
+		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=cpufunctions.lst -c -o objects/cpufunctions.o source/os/cpufunctions.c $(avrlibpath)
 		@mv cpufunctions.lst assembly/
 
 USART.o:
 		@echo '                                                                      '
-		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=USART.lst -c -o objects/USART.o source/os_rios/USART.c $(avrlibpath)
+		$(complilerused) $(gcccompilerflags)  $(avrgcccompilerflags) -Wa,-ahlmns=USART.lst -c -o objects/USART.o source/os/USART.c $(avrlibpath)
 		@mv USART.lst assembly/
 
 motor_driver.o:

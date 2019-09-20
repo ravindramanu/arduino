@@ -70,15 +70,11 @@ void LIDARreadtimer0setup(void){
    * the rate at which the USART fills up the buffer. This means we have a task
    * rate of 320 us for processing a buffer byte.
    */
-
-  /* Set compare output mode to clear OCR2A on compare match */
-  TCCR0A |=  (1<<COM0A1);
-
   /* Waveform Generation Mode: WGM02 = 0, WGM01 = 1, WGM00 = 0 -> CTC */
   TCCR0A |= (1<<WGM01);
 
   /* We will initialize OCR0A to  the value we have chosen */
-  OCR0A = 20;
+  OCR0A = 15;
 
   /* Let us choose the timer pre-scalar of 64 (will start the timer) */
   TCCR0B |= (1<<CS01) | (1<<CS00);
@@ -101,10 +97,6 @@ void propulsiontimer1setup(void) {
    * granularity of control was on of the reasons why timer1 was chosen for this
    * task.
    */
-
-  /* Set compare output mode to clear OCR1A on compare match */
-  TCCR1A |= (1<<COM1A1);
-
   /* Waveform Generation Mode: WGM12 = 0, WGM11 = 0, WGM10 = 0 -> CTC */
   TCCR1B |= (1<<WGM12);
 
@@ -125,22 +117,13 @@ void hardwareserialsetup(void){
    * Registers needed to be configured from the datasheet:
    *
    * UCSRnc - USART Control and Status Register C
-   *          -> UMSELn bit controls USART mode
    * UCSRnA - USART Control and Status Register A
-   *          -> U2Xn bit controls doublespeed
    * UBRRn  - USART Baud Rate Register
    *
-   * Recommended baud rate settings from the datasheet:
-   *
-   * 9600 kbps - U2Xn = 1, UBRRn = 12 with fosc = 1 Mhz. (0.2 % error)
+   * Recommended baud rate settings from the datasheet: 9600 kbps
    * Selection criterion: Minimal error in data receiving using available clock.
    *
-   * Our Baud caculation: UBRRn = (fosc/8*BAUD) - 1
-   *                            = (1000000/8*9600) - 1
-   *                            ~ 12
-   *
    * Required settings for the TFmini LIDAR Sensor:
-   *
    * Data bits - 8, Stop bits - 1, Parity Check - None
    */
 

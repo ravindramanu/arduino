@@ -3,8 +3,8 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include "../os_rios/cpufunctions.h"
-#include "../os_rios/USART.h"
+#include "../os/cpufunctions.h"
+#include "../os/USART.h"
 
 // Some defines for the LIDAR driver
 #define HEAD 0x59
@@ -34,7 +34,6 @@ typedef struct OBJECTPROXIMITYSTRUCT{
 } OBJECT;
 
 OBJECT volatile obstacle;
-unsigned char reading_under_progress;
 
 /* Public Funstions */
 void lidarinit(void);

@@ -3,8 +3,8 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "../os_rios/cpufunctions.h"
-#include "../os_rios/USART.h"
+#include "../os/cpufunctions.h"
+#include "../os/USART.h"
 #include "../drivers/motor_driver.h"
 #include "../drivers/LIDAR_driver.h"
 

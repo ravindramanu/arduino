@@ -4,10 +4,10 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
-#include "../os_rios/cpufunctions.h"
+#include "../os/cpufunctions.h"
 #include "../drivers/LIDAR_driver.h"
 
-#define BUFFERSIZE 1024
+#define BUFFERSIZE 1024 // Honestly this massive.
 
 /* The webpage shows a way to use enums along with functions thats worth
  * remembering along with a few ther quick hacks. Below is a enum definition.
@@ -35,7 +35,6 @@ typedef struct Buffer {
 
 // Below is an instance of the struct a.k.a object of Buffer struct
 volatile Buffer rxBuffer;
-volatile unsigned char USART_is_receiving;
 volatile unsigned int buffercount;
 
 /* Now we make instances of this enum however instead of just a variale we will
