@@ -521,17 +521,17 @@
  342               		.ident	"GCC: (GNU) 5.4.0"
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 cpufunctions.c
-     /tmp/ccpTJJTA.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccpTJJTA.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccpTJJTA.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccpTJJTA.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccpTJJTA.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccpTJJTA.s:107    .text:0000000000000000 clocksetup
-     /tmp/ccpTJJTA.s:134    .text:000000000000000e pwmtimer2setup
-     /tmp/ccpTJJTA.s:176    .text:0000000000000032 LIDARreadtimer0setup
-     /tmp/ccpTJJTA.s:214    .text:000000000000004e propulsiontimer1setup
-     /tmp/ccpTJJTA.s:262    .text:000000000000007e hardwareserialsetup
-     /tmp/ccpTJJTA.s:297    .text:000000000000009a softwareserialsetup
-     /tmp/ccpTJJTA.s:320    .text:00000000000000a0 faultledsetup
+     /tmp/ccD5n7FK.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccD5n7FK.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccD5n7FK.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccD5n7FK.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccD5n7FK.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccD5n7FK.s:107    .text:0000000000000000 clocksetup
+     /tmp/ccD5n7FK.s:134    .text:000000000000000e pwmtimer2setup
+     /tmp/ccD5n7FK.s:176    .text:0000000000000032 LIDARreadtimer0setup
+     /tmp/ccD5n7FK.s:214    .text:000000000000004e propulsiontimer1setup
+     /tmp/ccD5n7FK.s:262    .text:000000000000007e hardwareserialsetup
+     /tmp/ccD5n7FK.s:297    .text:000000000000009a softwareserialsetup
+     /tmp/ccD5n7FK.s:320    .text:00000000000000a0 faultledsetup
 
 NO UNDEFINED SYMBOLS

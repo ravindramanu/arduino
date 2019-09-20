@@ -3,6 +3,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "../drivers/motor_driver.h"
 #include "../os/cpufunctions.h"
 #include "../os/USART.h"
 
@@ -38,5 +39,6 @@ OBJECT volatile obstacle;
 /* Public Funstions */
 void lidarinit(void);
 void readLIDAR(void);
+void navigate(void);
 
 #endif

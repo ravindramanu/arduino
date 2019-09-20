@@ -1,33 +1,5 @@
 #include "LIDARBOT.h"
 
-void navigate(void){
-  // BasicBot: See if there is anything ahead and mindlessly turn right
-  if ((obstacle.valid == VALID) && (obstacle.proximity < 45) && (botmoving == 1)) {
-    /* An obstacle lies ahead. Turn right and hope the bot is cleared it. */
-    stop();
-  }
-  else if ((obstacle.valid == INVALID) && (botmoving == 1)) {
-    /* The bot is blind. Poor reflectivity or other such reasons mentioned in the datasheet has
-     * caused the lidar data to go bad whilst moving. Stop.
-     */
-    stop();
-  }
-  else if ((obstacle.valid == INVALID) && (botmoving == 0)) {
-    /* The bot is blind. Poor reflectivity or other such reasons mentioned in the datasheet has
-     * caused the lidar data to go bad. Turn right and see if the data becomes better.
-     */
-    steer(RIGHT);
-  }
-  else if ((obstacle.valid == VALID) && (obstacle.proximity < 45) && (botmoving == 0)) {
-    /* Data is good but obstacle is in colision distance. Steer clear. */
-    steer(RIGHT);
-  }
-  else if ((obstacle.valid == VALID) && (obstacle.proximity > 45) && (botmoving == 0)){
-    /* No obstacles ahead. Coast away.*/
-    drive(FORWARD, COAST);
-  }
-}
-
 void initbot(){
   /* Initialize all robot functions */
   clocksetup();  // Master clock setup
@@ -46,7 +18,10 @@ int main(){
   sei();
 
   while (1) {
-    /* Keep Running */
+    /* The bot uses an interrupt driven operating system to do its tasks
+     * which are to read LIDAR data over UART and decide if it needs to Turn
+     * turn right if need be. Hence, it will keep repeating this instruction.
+     */
   }
 }
 

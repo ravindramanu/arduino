@@ -106,9 +106,9 @@
  106               		.stabs	"Buffer:t(7,5)=(7,2)",128,0,34,0
  107               		.stabn	162,0,0,0
  108               		.stabs	"LIDARMODULESTRUCT:T(1,1)=s9headbyte1:(0,13),0,8;headbyte2:(0,13),8,8;distanceLow:(0,13),16
- 109               		.stabs	"LIDAR:t(1,2)=(1,1)",128,0,25,0
+ 109               		.stabs	"LIDAR:t(1,2)=(1,1)",128,0,26,0
  110               		.stabs	"OBJECTPROXIMITYSTRUCT:T(1,3)=s3proximity:(0,4),0,16;valid:(0,13),16,8;;",128,0,0,0
- 111               		.stabs	"OBJECT:t(1,4)=(1,3)",128,0,34,0
+ 111               		.stabs	"OBJECT:t(1,4)=(1,3)",128,0,35,0
  112               		.stabn	162,0,0,0
  113               		.stabs	"lidarinit:F(0,49)",36,0,7,lidarinit
  114               	.global	lidarinit
@@ -495,45 +495,187 @@
  376               	.Lscope3:
  377               		.stabs	"",36,0,0,.Lscope3-.LFBB3
  378               		.stabd	78,0,0
- 379               		.comm	distance,2,1
- 380               		.comm	signalstrength,2,1
- 381               		.comm	position,1,1
- 382               		.comm	sum,1,1
- 383               		.comm	transferByte,1,1
- 384               		.comm	obstacle,3,1
- 385               		.comm	tfmini,9,1
- 386               		.comm	buffercount,2,1
- 387               		.comm	rxBuffer,1026,1
- 388               		.stabs	"rxBuffer:G(0,50)=B(7,5)",32,0,37,0
- 389               		.stabs	"buffercount:G(0,51)=B(0,4)",32,0,38,0
- 390               		.stabs	"tfmini:G(0,52)=B(1,2)",32,0,28,0
- 391               		.stabs	"obstacle:G(0,53)=B(1,4)",32,0,36,0
- 392               		.stabs	"transferByte:G(0,13)",32,0,4,0
- 393               		.stabs	"sum:G(0,13)",32,0,4,0
- 394               		.stabs	"position:G(0,13)",32,0,4,0
- 395               		.stabs	"signalstrength:G(0,4)",32,0,5,0
- 396               		.stabs	"distance:G(0,4)",32,0,5,0
- 397               		.stabs	"",100,0,0,.Letext0
- 398               	.Letext0:
- 399               		.ident	"GCC: (GNU) 5.4.0"
- 400               	.global __do_clear_bss
+ 379               		.stabs	"navigate:F(0,49)",36,0,125,navigate
+ 380               	.global	navigate
+ 381               		.type	navigate, @function
+ 382               	navigate:
+ 383               		.stabd	46,0,0
+ 119:source/drivers/LIDAR_driver.c **** 
+ 120:source/drivers/LIDAR_driver.c ****       break;
+ 121:source/drivers/LIDAR_driver.c ****     }
+ 122:source/drivers/LIDAR_driver.c ****   }
+ 123:source/drivers/LIDAR_driver.c **** }
+ 124:source/drivers/LIDAR_driver.c **** 
+ 125:source/drivers/LIDAR_driver.c **** void navigate(void){
+ 384               		.stabn	68,0,125,.LM46-.LFBB4
+ 385               	.LM46:
+ 386               	.LFBB4:
+ 387               	/* prologue: function */
+ 388               	/* frame size = 0 */
+ 389               	/* stack size = 0 */
+ 390               	.L__stack_usage = 0
+ 126:source/drivers/LIDAR_driver.c ****   // BasicBot: See if there is anything ahead and mindlessly turn right
+ 127:source/drivers/LIDAR_driver.c ****   if ((obstacle.valid == VALID) && (obstacle.proximity < 45) && (botmoving == 1)) {
+ 391               		.stabn	68,0,127,.LM47-.LFBB4
+ 392               	.LM47:
+ 393 012a 8091 0000 		lds r24,obstacle+2
+ 394 012e 8032      		cpi r24,lo8(32)
+ 395 0130 01F4      		brne .L21
+ 396               		.stabn	68,0,127,.LM48-.LFBB4
+ 397               	.LM48:
+ 398 0132 8091 0000 		lds r24,obstacle
+ 399 0136 9091 0000 		lds r25,obstacle+1
+ 400 013a 8D97      		sbiw r24,45
+ 401 013c 00F4      		brsh .L21
+ 402               		.stabn	68,0,127,.LM49-.LFBB4
+ 403               	.LM49:
+ 404 013e 8091 0000 		lds r24,botmoving
+ 405 0142 8130      		cpi r24,lo8(1)
+ 406 0144 01F4      		brne .L21
+ 407               	.L23:
+ 128:source/drivers/LIDAR_driver.c ****     /* An obstacle lies ahead. Turn right and hope the bot is cleared it. */
+ 129:source/drivers/LIDAR_driver.c ****     stop();
+ 408               		.stabn	68,0,129,.LM50-.LFBB4
+ 409               	.LM50:
+ 410 0146 0C94 0000 		jmp stop
+ 411               	.L21:
+ 130:source/drivers/LIDAR_driver.c ****   }
+ 131:source/drivers/LIDAR_driver.c ****   else if ((obstacle.valid == INVALID) && (botmoving == 1)) {
+ 412               		.stabn	68,0,131,.LM51-.LFBB4
+ 413               	.LM51:
+ 414 014a 8091 0000 		lds r24,obstacle+2
+ 415 014e 8F3F      		cpi r24,lo8(-1)
+ 416 0150 01F4      		brne .L22
+ 417               		.stabn	68,0,131,.LM52-.LFBB4
+ 418               	.LM52:
+ 419 0152 8091 0000 		lds r24,botmoving
+ 420 0156 8130      		cpi r24,lo8(1)
+ 421 0158 01F0      		breq .L23
+ 422               	.L22:
+ 132:source/drivers/LIDAR_driver.c ****     /* The bot is blind. Poor reflectivity or other such reasons mentioned in the datasheet has
+ 133:source/drivers/LIDAR_driver.c ****      * caused the lidar data to go bad whilst moving. Stop.
+ 134:source/drivers/LIDAR_driver.c ****      */
+ 135:source/drivers/LIDAR_driver.c ****     stop();
+ 136:source/drivers/LIDAR_driver.c ****   }
+ 137:source/drivers/LIDAR_driver.c ****   else if ((obstacle.valid == INVALID) && (botmoving == 0)) {
+ 423               		.stabn	68,0,137,.LM53-.LFBB4
+ 424               	.LM53:
+ 425 015a 8091 0000 		lds r24,obstacle+2
+ 426 015e 8F3F      		cpi r24,lo8(-1)
+ 427 0160 01F4      		brne .L24
+ 428               		.stabn	68,0,137,.LM54-.LFBB4
+ 429               	.LM54:
+ 430 0162 8091 0000 		lds r24,botmoving
+ 431 0166 8111      		cpse r24,__zero_reg__
+ 432 0168 00C0      		rjmp .L24
+ 433               	.L26:
+ 138:source/drivers/LIDAR_driver.c ****     /* The bot is blind. Poor reflectivity or other such reasons mentioned in the datasheet has
+ 139:source/drivers/LIDAR_driver.c ****      * caused the lidar data to go bad. Turn right and see if the data becomes better.
+ 140:source/drivers/LIDAR_driver.c ****      */
+ 141:source/drivers/LIDAR_driver.c ****     steer(RIGHT);
+ 434               		.stabn	68,0,141,.LM55-.LFBB4
+ 435               	.LM55:
+ 436 016a 81E0      		ldi r24,lo8(1)
+ 437 016c 0C94 0000 		jmp steer
+ 438               	.L24:
+ 142:source/drivers/LIDAR_driver.c ****   }
+ 143:source/drivers/LIDAR_driver.c ****   else if ((obstacle.valid == VALID) && (obstacle.proximity < 45) && (botmoving == 0)) {
+ 439               		.stabn	68,0,143,.LM56-.LFBB4
+ 440               	.LM56:
+ 441 0170 8091 0000 		lds r24,obstacle+2
+ 442 0174 8032      		cpi r24,lo8(32)
+ 443 0176 01F4      		brne .L25
+ 444               		.stabn	68,0,143,.LM57-.LFBB4
+ 445               	.LM57:
+ 446 0178 8091 0000 		lds r24,obstacle
+ 447 017c 9091 0000 		lds r25,obstacle+1
+ 448 0180 8D97      		sbiw r24,45
+ 449 0182 00F4      		brsh .L25
+ 450               		.stabn	68,0,143,.LM58-.LFBB4
+ 451               	.LM58:
+ 452 0184 8091 0000 		lds r24,botmoving
+ 453 0188 8823      		tst r24
+ 454 018a 01F0      		breq .L26
+ 455               	.L25:
+ 144:source/drivers/LIDAR_driver.c ****     /* Data is good but obstacle is in colision distance. Steer clear. */
+ 145:source/drivers/LIDAR_driver.c ****     steer(RIGHT);
+ 146:source/drivers/LIDAR_driver.c ****   }
+ 147:source/drivers/LIDAR_driver.c ****   else if ((obstacle.valid == VALID) && (obstacle.proximity > 45) && (botmoving == 0)){
+ 456               		.stabn	68,0,147,.LM59-.LFBB4
+ 457               	.LM59:
+ 458 018c 8091 0000 		lds r24,obstacle+2
+ 459 0190 8032      		cpi r24,lo8(32)
+ 460 0192 01F4      		brne .L20
+ 461               		.stabn	68,0,147,.LM60-.LFBB4
+ 462               	.LM60:
+ 463 0194 8091 0000 		lds r24,obstacle
+ 464 0198 9091 0000 		lds r25,obstacle+1
+ 465 019c 8E97      		sbiw r24,46
+ 466 019e 00F0      		brlo .L20
+ 467               		.stabn	68,0,147,.LM61-.LFBB4
+ 468               	.LM61:
+ 469 01a0 8091 0000 		lds r24,botmoving
+ 470 01a4 8111      		cpse r24,__zero_reg__
+ 471 01a6 00C0      		rjmp .L20
+ 148:source/drivers/LIDAR_driver.c ****     /* No obstacles ahead. Coast away.*/
+ 149:source/drivers/LIDAR_driver.c ****     drive(FORWARD, COAST);
+ 472               		.stabn	68,0,149,.LM62-.LFBB4
+ 473               	.LM62:
+ 474 01a8 40E0      		ldi r20,0
+ 475 01aa 50E0      		ldi r21,0
+ 476 01ac 68E4      		ldi r22,lo8(72)
+ 477 01ae 72E4      		ldi r23,lo8(66)
+ 478 01b0 82E0      		ldi r24,lo8(2)
+ 479 01b2 0C94 0000 		jmp drive
+ 480               	.L20:
+ 481 01b6 0895      		ret
+ 482               		.size	navigate, .-navigate
+ 483               	.Lscope4:
+ 484               		.stabs	"",36,0,0,.Lscope4-.LFBB4
+ 485               		.stabd	78,0,0
+ 486               		.comm	distance,2,1
+ 487               		.comm	signalstrength,2,1
+ 488               		.comm	position,1,1
+ 489               		.comm	sum,1,1
+ 490               		.comm	transferByte,1,1
+ 491               		.comm	obstacle,3,1
+ 492               		.comm	tfmini,9,1
+ 493               		.comm	buffercount,2,1
+ 494               		.comm	rxBuffer,1026,1
+ 495               		.comm	botmoving,1,1
+ 496               		.stabs	"botmoving:G(0,13)",32,0,27,0
+ 497               		.stabs	"rxBuffer:G(0,50)=B(7,5)",32,0,37,0
+ 498               		.stabs	"buffercount:G(0,51)=B(0,4)",32,0,38,0
+ 499               		.stabs	"tfmini:G(0,52)=B(1,2)",32,0,29,0
+ 500               		.stabs	"obstacle:G(0,53)=B(1,4)",32,0,37,0
+ 501               		.stabs	"transferByte:G(0,13)",32,0,4,0
+ 502               		.stabs	"sum:G(0,13)",32,0,4,0
+ 503               		.stabs	"position:G(0,13)",32,0,4,0
+ 504               		.stabs	"signalstrength:G(0,4)",32,0,5,0
+ 505               		.stabs	"distance:G(0,4)",32,0,5,0
+ 506               		.stabs	"",100,0,0,.Letext0
+ 507               	.Letext0:
+ 508               		.ident	"GCC: (GNU) 5.4.0"
+ 509               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 LIDAR_driver.c
-     /tmp/ccqXHT2K.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccqXHT2K.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccqXHT2K.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccqXHT2K.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccqXHT2K.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccqXHT2K.s:116    .text:0000000000000000 lidarinit
-     /tmp/ccqXHT2K.s:138    .text:0000000000000008 parse
+     /tmp/ccT7VBTU.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/ccT7VBTU.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/ccT7VBTU.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/ccT7VBTU.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccT7VBTU.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccT7VBTU.s:116    .text:0000000000000000 lidarinit
+     /tmp/ccT7VBTU.s:138    .text:0000000000000008 parse
                             *COM*:0000000000000009 tfmini
                             *COM*:0000000000000001 sum
                             *COM*:0000000000000002 signalstrength
                             *COM*:0000000000000002 distance
                             *COM*:0000000000000003 obstacle
-     /tmp/ccqXHT2K.s:236    .text:000000000000009c readLIDAR
+     /tmp/ccT7VBTU.s:236    .text:000000000000009c readLIDAR
                             *COM*:0000000000000001 transferByte
                             *COM*:0000000000000001 position
+     /tmp/ccT7VBTU.s:382    .text:000000000000012a navigate
+                            *COM*:0000000000000001 botmoving
                             *COM*:0000000000000002 buffercount
                             *COM*:0000000000000402 rxBuffer
 
@@ -542,4 +684,7 @@ LIDARreadtimer0setup
 faultledsetup
 rxBufferRead
 __tablejump2__
+stop
+steer
+drive
 __do_clear_bss

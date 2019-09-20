@@ -102,9 +102,9 @@
  102               		.stabn	162,0,0,0
  103               		.stabs	"source/os/../drivers/LIDAR_driver.h",130,0,0,0
  104               		.stabs	"LIDARMODULESTRUCT:T(7,1)=s9headbyte1:(0,13),0,8;headbyte2:(0,13),8,8;distanceLow:(0,13),16
- 105               		.stabs	"LIDAR:t(7,2)=(7,1)",128,0,25,0
+ 105               		.stabs	"LIDAR:t(7,2)=(7,1)",128,0,26,0
  106               		.stabs	"OBJECTPROXIMITYSTRUCT:T(7,3)=s3proximity:(0,4),0,16;valid:(0,13),16,8;;",128,0,0,0
- 107               		.stabs	"OBJECT:t(7,4)=(7,3)",128,0,34,0
+ 107               		.stabs	"OBJECT:t(7,4)=(7,3)",128,0,35,0
  108               		.stabn	162,0,0,0
  109               		.stabs	"bufferStatus:T(1,1)=eBUFFER_OK:0,BUFFER_EMPTY:1,BUFFER_FULL:2,;",128,0,0,0
  110               		.stabs	"Buffer:T(1,2)=s1026data:(1,3)=ar(1,4)=r(1,4);0;0177777;;0;1023;(0,13),0,8192;readindex:(0,
@@ -717,29 +717,32 @@
  355               		.comm	rxBuffer,1026,1
  356               		.comm	obstacle,3,1
  357               		.comm	tfmini,9,1
- 358               		.stabs	"tfmini:G(0,51)=B(7,2)",32,0,28,0
- 359               		.stabs	"obstacle:G(0,52)=B(7,4)",32,0,36,0
- 360               		.stabs	"rxBuffer:G(0,53)=B(1,5)",32,0,37,0
- 361               		.stabs	"buffercount:G(0,54)=B(0,4)",32,0,38,0
- 362               		.stabs	"",100,0,0,.Letext0
- 363               	.Letext0:
- 364               		.ident	"GCC: (GNU) 5.4.0"
- 365               	.global __do_clear_bss
+ 358               		.comm	botmoving,1,1
+ 359               		.stabs	"botmoving:G(0,13)",32,0,27,0
+ 360               		.stabs	"tfmini:G(0,51)=B(7,2)",32,0,29,0
+ 361               		.stabs	"obstacle:G(0,52)=B(7,4)",32,0,37,0
+ 362               		.stabs	"rxBuffer:G(0,53)=B(1,5)",32,0,37,0
+ 363               		.stabs	"buffercount:G(0,54)=B(0,4)",32,0,38,0
+ 364               		.stabs	"",100,0,0,.Letext0
+ 365               	.Letext0:
+ 366               		.ident	"GCC: (GNU) 5.4.0"
+ 367               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 USART.c
-     /tmp/ccxhcFWC.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/ccxhcFWC.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/ccxhcFWC.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/ccxhcFWC.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/ccxhcFWC.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/ccxhcFWC.s:116    .text:0000000000000000 usartinit
-     /tmp/ccxhcFWC.s:139    .text:0000000000000008 softwareserialTransmit
-     /tmp/ccxhcFWC.s:231    .text:000000000000003a rxBufferRead
+     /tmp/cc39Jp6M.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cc39Jp6M.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cc39Jp6M.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cc39Jp6M.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc39Jp6M.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc39Jp6M.s:116    .text:0000000000000000 usartinit
+     /tmp/cc39Jp6M.s:139    .text:0000000000000008 softwareserialTransmit
+     /tmp/cc39Jp6M.s:231    .text:000000000000003a rxBufferRead
                             *COM*:0000000000000402 rxBuffer
                             *COM*:0000000000000002 buffercount
-     /tmp/ccxhcFWC.s:294    .text:0000000000000086 rxBufferWrite
+     /tmp/cc39Jp6M.s:294    .text:0000000000000086 rxBufferWrite
                             *COM*:0000000000000003 obstacle
                             *COM*:0000000000000009 tfmini
+                            *COM*:0000000000000001 botmoving
 
 UNDEFINED SYMBOLS
 hardwareserialsetup

@@ -103,23 +103,23 @@
  103               		.stabs	"source/application/../os/USART.h",130,0,0,0
  104               		.stabs	"source/application/../os/../drivers/LIDAR_driver.h",130,0,0,0
  105               		.stabs	"LIDARMODULESTRUCT:T(8,1)=s9headbyte1:(0,13),0,8;headbyte2:(0,13),8,8;distanceLow:(0,13),16
- 106               		.stabs	"LIDAR:t(8,2)=(8,1)",128,0,25,0
+ 106               		.stabs	"LIDAR:t(8,2)=(8,1)",128,0,26,0
  107               		.stabs	"OBJECTPROXIMITYSTRUCT:T(8,3)=s3proximity:(0,4),0,16;valid:(0,13),16,8;;",128,0,0,0
- 108               		.stabs	"OBJECT:t(8,4)=(8,3)",128,0,34,0
+ 108               		.stabs	"OBJECT:t(8,4)=(8,3)",128,0,35,0
  109               		.stabn	162,0,0,0
  110               		.stabs	"bufferStatus:T(7,1)=eBUFFER_OK:0,BUFFER_EMPTY:1,BUFFER_FULL:2,;",128,0,0,0
  111               		.stabs	"Buffer:T(7,2)=s1026data:(7,3)=ar(7,4)=r(7,4);0;0177777;;0;1023;(0,13),0,8192;readindex:(0,
  112               		.stabs	"Buffer:t(7,5)=(7,2)",128,0,34,0
  113               		.stabn	162,0,0,0
  114               		.stabn	162,0,0,0
- 115               		.stabs	"navigate:F(0,49)",36,0,3,navigate
- 116               	.global	navigate
- 117               		.type	navigate, @function
- 118               	navigate:
+ 115               		.stabs	"initbot:F(0,49)",36,0,3,initbot
+ 116               	.global	initbot
+ 117               		.type	initbot, @function
+ 118               	initbot:
  119               		.stabd	46,0,0
    1:source/application/LIDARBOT.c **** #include "LIDARBOT.h"
    2:source/application/LIDARBOT.c **** 
-   3:source/application/LIDARBOT.c **** void navigate(void){
+   3:source/application/LIDARBOT.c **** void initbot(){
  120               		.stabn	68,0,3,.LM0-.LFBB1
  121               	.LM0:
  122               	.LFBB1:
@@ -127,187 +127,52 @@
  124               	/* frame size = 0 */
  125               	/* stack size = 0 */
  126               	.L__stack_usage = 0
-   4:source/application/LIDARBOT.c ****   // BasicBot: See if there is anything ahead and mindlessly turn right
-   5:source/application/LIDARBOT.c ****   if ((obstacle.valid == VALID) && (obstacle.proximity < 45) && (botmoving == 1)) {
+   4:source/application/LIDARBOT.c ****   /* Initialize all robot functions */
+   5:source/application/LIDARBOT.c ****   clocksetup();  // Master clock setup
  127               		.stabn	68,0,5,.LM1-.LFBB1
  128               	.LM1:
- 129 0000 8091 0000 		lds r24,obstacle+2
- 130 0004 8032      		cpi r24,lo8(32)
- 131 0006 01F4      		brne .L2
- 132               		.stabn	68,0,5,.LM2-.LFBB1
- 133               	.LM2:
- 134 0008 8091 0000 		lds r24,obstacle
- 135 000c 9091 0000 		lds r25,obstacle+1
- 136 0010 8D97      		sbiw r24,45
- 137 0012 00F4      		brsh .L2
- 138               		.stabn	68,0,5,.LM3-.LFBB1
- 139               	.LM3:
- 140 0014 8091 0000 		lds r24,botmoving
- 141 0018 8130      		cpi r24,lo8(1)
- 142 001a 01F4      		brne .L2
- 143               	.L4:
-   6:source/application/LIDARBOT.c ****     /* An obstacle lies ahead. Turn right and hope the bot is cleared it. */
-   7:source/application/LIDARBOT.c ****     stop();
- 144               		.stabn	68,0,7,.LM4-.LFBB1
- 145               	.LM4:
- 146 001c 0C94 0000 		jmp stop
- 147               	.L2:
-   8:source/application/LIDARBOT.c ****   }
-   9:source/application/LIDARBOT.c ****   else if ((obstacle.valid == INVALID) && (botmoving == 1)) {
- 148               		.stabn	68,0,9,.LM5-.LFBB1
- 149               	.LM5:
- 150 0020 8091 0000 		lds r24,obstacle+2
- 151 0024 8F3F      		cpi r24,lo8(-1)
- 152 0026 01F4      		brne .L3
- 153               		.stabn	68,0,9,.LM6-.LFBB1
- 154               	.LM6:
- 155 0028 8091 0000 		lds r24,botmoving
- 156 002c 8130      		cpi r24,lo8(1)
- 157 002e 01F0      		breq .L4
- 158               	.L3:
-  10:source/application/LIDARBOT.c ****     /* The bot is blind. Poor reflectivity or other such reasons mentioned in the datasheet has
-  11:source/application/LIDARBOT.c ****      * caused the lidar data to go bad whilst moving. Stop.
-  12:source/application/LIDARBOT.c ****      */
-  13:source/application/LIDARBOT.c ****     stop();
-  14:source/application/LIDARBOT.c ****   }
-  15:source/application/LIDARBOT.c ****   else if ((obstacle.valid == INVALID) && (botmoving == 0)) {
- 159               		.stabn	68,0,15,.LM7-.LFBB1
- 160               	.LM7:
- 161 0030 8091 0000 		lds r24,obstacle+2
- 162 0034 8F3F      		cpi r24,lo8(-1)
- 163 0036 01F4      		brne .L5
- 164               		.stabn	68,0,15,.LM8-.LFBB1
- 165               	.LM8:
- 166 0038 8091 0000 		lds r24,botmoving
- 167 003c 8111      		cpse r24,__zero_reg__
- 168 003e 00C0      		rjmp .L5
- 169               	.L7:
-  16:source/application/LIDARBOT.c ****     /* The bot is blind. Poor reflectivity or other such reasons mentioned in the datasheet has
-  17:source/application/LIDARBOT.c ****      * caused the lidar data to go bad. Turn right and see if the data becomes better.
-  18:source/application/LIDARBOT.c ****      */
-  19:source/application/LIDARBOT.c ****     steer(RIGHT);
- 170               		.stabn	68,0,19,.LM9-.LFBB1
- 171               	.LM9:
- 172 0040 81E0      		ldi r24,lo8(1)
- 173 0042 0C94 0000 		jmp steer
- 174               	.L5:
-  20:source/application/LIDARBOT.c ****   }
-  21:source/application/LIDARBOT.c ****   else if ((obstacle.valid == VALID) && (obstacle.proximity < 45) && (botmoving == 0)) {
- 175               		.stabn	68,0,21,.LM10-.LFBB1
- 176               	.LM10:
- 177 0046 8091 0000 		lds r24,obstacle+2
- 178 004a 8032      		cpi r24,lo8(32)
- 179 004c 01F4      		brne .L6
- 180               		.stabn	68,0,21,.LM11-.LFBB1
- 181               	.LM11:
- 182 004e 8091 0000 		lds r24,obstacle
- 183 0052 9091 0000 		lds r25,obstacle+1
- 184 0056 8D97      		sbiw r24,45
- 185 0058 00F4      		brsh .L6
- 186               		.stabn	68,0,21,.LM12-.LFBB1
- 187               	.LM12:
- 188 005a 8091 0000 		lds r24,botmoving
- 189 005e 8823      		tst r24
- 190 0060 01F0      		breq .L7
- 191               	.L6:
-  22:source/application/LIDARBOT.c ****     /* Data is good but obstacle is in colision distance. Steer clear. */
-  23:source/application/LIDARBOT.c ****     steer(RIGHT);
-  24:source/application/LIDARBOT.c ****   }
-  25:source/application/LIDARBOT.c ****   else if ((obstacle.valid == VALID) && (obstacle.proximity > 45) && (botmoving == 0)){
- 192               		.stabn	68,0,25,.LM13-.LFBB1
- 193               	.LM13:
- 194 0062 8091 0000 		lds r24,obstacle+2
- 195 0066 8032      		cpi r24,lo8(32)
- 196 0068 01F4      		brne .L1
- 197               		.stabn	68,0,25,.LM14-.LFBB1
- 198               	.LM14:
- 199 006a 8091 0000 		lds r24,obstacle
- 200 006e 9091 0000 		lds r25,obstacle+1
- 201 0072 8E97      		sbiw r24,46
- 202 0074 00F0      		brlo .L1
- 203               		.stabn	68,0,25,.LM15-.LFBB1
- 204               	.LM15:
- 205 0076 8091 0000 		lds r24,botmoving
- 206 007a 8111      		cpse r24,__zero_reg__
- 207 007c 00C0      		rjmp .L1
-  26:source/application/LIDARBOT.c ****     /* No obstacles ahead. Coast away.*/
-  27:source/application/LIDARBOT.c ****     drive(FORWARD, COAST);
- 208               		.stabn	68,0,27,.LM16-.LFBB1
- 209               	.LM16:
- 210 007e 40E0      		ldi r20,0
- 211 0080 50E0      		ldi r21,0
- 212 0082 68E4      		ldi r22,lo8(72)
- 213 0084 72E4      		ldi r23,lo8(66)
- 214 0086 82E0      		ldi r24,lo8(2)
- 215 0088 0C94 0000 		jmp drive
- 216               	.L1:
- 217 008c 0895      		ret
- 218               		.size	navigate, .-navigate
- 219               	.Lscope1:
- 220               		.stabs	"",36,0,0,.Lscope1-.LFBB1
- 221               		.stabd	78,0,0
- 222               		.stabs	"initbot:F(0,49)",36,0,31,initbot
- 223               	.global	initbot
- 224               		.type	initbot, @function
- 225               	initbot:
- 226               		.stabd	46,0,0
-  28:source/application/LIDARBOT.c ****   }
-  29:source/application/LIDARBOT.c **** }
-  30:source/application/LIDARBOT.c **** 
-  31:source/application/LIDARBOT.c **** void initbot(){
- 227               		.stabn	68,0,31,.LM17-.LFBB2
- 228               	.LM17:
- 229               	.LFBB2:
- 230               	/* prologue: function */
- 231               	/* frame size = 0 */
- 232               	/* stack size = 0 */
- 233               	.L__stack_usage = 0
-  32:source/application/LIDARBOT.c ****   /* Initialize all robot functions */
-  33:source/application/LIDARBOT.c ****   clocksetup();  // Master clock setup
- 234               		.stabn	68,0,33,.LM18-.LFBB2
- 235               	.LM18:
- 236 008e 0E94 0000 		call clocksetup
-  34:source/application/LIDARBOT.c ****   usartinit();   // Communication setup
- 237               		.stabn	68,0,34,.LM19-.LFBB2
- 238               	.LM19:
- 239 0092 0E94 0000 		call usartinit
-  35:source/application/LIDARBOT.c ****   lidarinit();   // LIDAR read setup
- 240               		.stabn	68,0,35,.LM20-.LFBB2
- 241               	.LM20:
- 242 0096 0E94 0000 		call lidarinit
-  36:source/application/LIDARBOT.c ****   motorinit();   // Propulsion setup
- 243               		.stabn	68,0,36,.LM21-.LFBB2
- 244               	.LM21:
- 245 009a 0C94 0000 		jmp motorinit
- 246               		.size	initbot, .-initbot
- 247               	.Lscope2:
- 248               		.stabs	"",36,0,0,.Lscope2-.LFBB2
- 249               		.stabd	78,0,0
- 250               		.section	.text.startup,"ax",@progbits
- 251               		.stabs	"main:F(0,1)",36,0,39,main
- 252               	.global	main
- 253               		.type	main, @function
- 254               	main:
- 255               		.stabd	46,0,0
-  37:source/application/LIDARBOT.c **** }
-  38:source/application/LIDARBOT.c **** 
-  39:source/application/LIDARBOT.c **** int main(){
- 256               		.stabn	68,0,39,.LM22-.LFBB3
- 257               	.LM22:
- 258               	.LFBB3:
- 259               	/* prologue: function */
- 260               	/* frame size = 0 */
- 261               	/* stack size = 0 */
- 262               	.L__stack_usage = 0
-  40:source/application/LIDARBOT.c ****   // Initialize BOT
-  41:source/application/LIDARBOT.c ****   initbot();
- 263               		.stabn	68,0,41,.LM23-.LFBB3
- 264               	.LM23:
- 265 0000 0E94 0000 		call initbot
- 266               	.LBB4:
- 267               	.LBB5:
- 268               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext1
- 269               	.Ltext1:
+ 129 0000 0E94 0000 		call clocksetup
+   6:source/application/LIDARBOT.c ****   usartinit();   // Communication setup
+ 130               		.stabn	68,0,6,.LM2-.LFBB1
+ 131               	.LM2:
+ 132 0004 0E94 0000 		call usartinit
+   7:source/application/LIDARBOT.c ****   lidarinit();   // LIDAR read setup
+ 133               		.stabn	68,0,7,.LM3-.LFBB1
+ 134               	.LM3:
+ 135 0008 0E94 0000 		call lidarinit
+   8:source/application/LIDARBOT.c ****   motorinit();   // Propulsion setup
+ 136               		.stabn	68,0,8,.LM4-.LFBB1
+ 137               	.LM4:
+ 138 000c 0C94 0000 		jmp motorinit
+ 139               		.size	initbot, .-initbot
+ 140               	.Lscope1:
+ 141               		.stabs	"",36,0,0,.Lscope1-.LFBB1
+ 142               		.stabd	78,0,0
+ 143               		.section	.text.startup,"ax",@progbits
+ 144               		.stabs	"main:F(0,1)",36,0,11,main
+ 145               	.global	main
+ 146               		.type	main, @function
+ 147               	main:
+ 148               		.stabd	46,0,0
+   9:source/application/LIDARBOT.c **** }
+  10:source/application/LIDARBOT.c **** 
+  11:source/application/LIDARBOT.c **** int main(){
+ 149               		.stabn	68,0,11,.LM5-.LFBB2
+ 150               	.LM5:
+ 151               	.LFBB2:
+ 152               	/* prologue: function */
+ 153               	/* frame size = 0 */
+ 154               	/* stack size = 0 */
+ 155               	.L__stack_usage = 0
+  12:source/application/LIDARBOT.c ****   // Initialize BOT
+  13:source/application/LIDARBOT.c ****   initbot();
+ 156               		.stabn	68,0,13,.LM6-.LFBB2
+ 157               	.LM6:
+ 158 0000 0E94 0000 		call initbot
+ 159               	.LBB4:
+ 160               	.LBB5:
+ 161               		.stabs	"/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h",132,0,0,.Ltext1
+ 162               	.Ltext1:
    1:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
    2:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
    3:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
@@ -495,304 +360,304 @@
  185:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	#endif
  186:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 
  187:/home/manu/github/arduino/LIDARBOT/libraries/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
- 270               		.stabn	68,0,187,.LM24-.LFBB3
- 271               	.LM24:
- 272 0004 2FEF      		ldi r18,lo8(1599999)
- 273 0006 89E6      		ldi r24,hi8(1599999)
- 274 0008 98E1      		ldi r25,hlo8(1599999)
- 275 000a 2150      	1:	subi r18,1
- 276 000c 8040      		sbci r24,0
- 277 000e 9040      		sbci r25,0
- 278 0010 01F4      		brne 1b
- 279 0012 00C0      		rjmp .
- 280 0014 0000      		nop
- 281               	.LBE5:
- 282               	.LBE4:
- 283               		.stabs	"source/application/LIDARBOT.c",132,0,0,.Ltext2
- 284               	.Ltext2:
-  42:source/application/LIDARBOT.c ****   // A small delay to give the bot owner time to step away
-  43:source/application/LIDARBOT.c ****   _delay_ms(2000);
+ 163               		.stabn	68,0,187,.LM7-.LFBB2
+ 164               	.LM7:
+ 165 0004 2FEF      		ldi r18,lo8(1599999)
+ 166 0006 89E6      		ldi r24,hi8(1599999)
+ 167 0008 98E1      		ldi r25,hlo8(1599999)
+ 168 000a 2150      	1:	subi r18,1
+ 169 000c 8040      		sbci r24,0
+ 170 000e 9040      		sbci r25,0
+ 171 0010 01F4      		brne 1b
+ 172 0012 00C0      		rjmp .
+ 173 0014 0000      		nop
+ 174               	.LBE5:
+ 175               	.LBE4:
+ 176               		.stabs	"source/application/LIDARBOT.c",132,0,0,.Ltext2
+ 177               	.Ltext2:
+  14:source/application/LIDARBOT.c ****   // A small delay to give the bot owner time to step away
+  15:source/application/LIDARBOT.c ****   _delay_ms(2000);
+  16:source/application/LIDARBOT.c **** 
+  17:source/application/LIDARBOT.c ****   // Enable global interrupts - Bot Key ON
+  18:source/application/LIDARBOT.c ****   sei();
+ 178               		.stabn	68,0,18,.LM8-.LFBB2
+ 179               	.LM8:
+ 180               	/* #APP */
+ 181               	 ;  18 "source/application/LIDARBOT.c" 1
+ 182 0016 7894      		sei
+ 183               	 ;  0 "" 2
+ 184               	/* #NOAPP */
+ 185               	.L3:
+ 186 0018 00C0      		rjmp .L3
+ 187               		.size	main, .-main
+ 188               	.Lscope2:
+ 189               		.stabs	"",36,0,0,.Lscope2-.LFBB2
+ 190               		.stabd	78,0,0
+ 191               		.text
+ 192               		.stabs	"__vector_18:F(0,49)",36,0,32,__vector_18
+ 193               	.global	__vector_18
+ 194               		.type	__vector_18, @function
+ 195               	__vector_18:
+ 196               		.stabd	46,0,0
+  19:source/application/LIDARBOT.c **** 
+  20:source/application/LIDARBOT.c ****   while (1) {
+  21:source/application/LIDARBOT.c ****     /* The bot uses an interrupt driven operating system to do its tasks
+  22:source/application/LIDARBOT.c ****      * which are to read LIDAR data over UART and decide if it needs to Turn
+  23:source/application/LIDARBOT.c ****      * turn right if need be. Hence, it will keep repeating this instruction.
+  24:source/application/LIDARBOT.c ****      */
+  25:source/application/LIDARBOT.c ****   }
+  26:source/application/LIDARBOT.c **** }
+  27:source/application/LIDARBOT.c **** 
+  28:source/application/LIDARBOT.c **** /******************************************************************************/
+  29:source/application/LIDARBOT.c **** /*                     INTERRUPT SERVICE ROUTINES                             */
+  30:source/application/LIDARBOT.c **** /******************************************************************************/
+  31:source/application/LIDARBOT.c **** /* USART RECEIVE TASK */
+  32:source/application/LIDARBOT.c **** ISR(USART_RX_vect){ /* Asynchronous Hardware Interrupt */
+ 197               		.stabn	68,0,32,.LM9-.LFBB3
+ 198               	.LM9:
+ 199               	.LFBB3:
+ 200 0010 1F92      		push r1
+ 201 0012 0F92      		push r0
+ 202 0014 0FB6      		in r0,__SREG__
+ 203 0016 0F92      		push r0
+ 204 0018 1124      		clr __zero_reg__
+ 205 001a 2F93      		push r18
+ 206 001c 3F93      		push r19
+ 207 001e 4F93      		push r20
+ 208 0020 5F93      		push r21
+ 209 0022 6F93      		push r22
+ 210 0024 7F93      		push r23
+ 211 0026 8F93      		push r24
+ 212 0028 9F93      		push r25
+ 213 002a AF93      		push r26
+ 214 002c BF93      		push r27
+ 215 002e EF93      		push r30
+ 216 0030 FF93      		push r31
+ 217               	/* prologue: Signal */
+ 218               	/* frame size = 0 */
+ 219               	/* stack size = 15 */
+ 220               	.L__stack_usage = 15
+  33:source/application/LIDARBOT.c ****   /* We want our interrupt service routine to be quick as possible. Which is why
+  34:source/application/LIDARBOT.c ****    * all this routine will do is write to the ring buffer and get out. However,
+  35:source/application/LIDARBOT.c ****    * we need our cpu to be quicker so that elements from that buffer are emptied
+  36:source/application/LIDARBOT.c ****    * faster than this ISR can populate the buffer. This was one of the prime
+  37:source/application/LIDARBOT.c ****    * reasons why the chosen clock was 4 Mhz.
+  38:source/application/LIDARBOT.c ****    */
+  39:source/application/LIDARBOT.c ****   if((rxBufferWrite() != BUFFER_OK)){
+ 221               		.stabn	68,0,39,.LM10-.LFBB3
+ 222               	.LM10:
+ 223 0032 0E94 0000 		call rxBufferWrite
+ 224 0036 892B      		or r24,r25
+ 225 0038 01F0      		breq .L5
+  40:source/application/LIDARBOT.c ****     readLIDAR();
+ 226               		.stabn	68,0,40,.LM11-.LFBB3
+ 227               	.LM11:
+ 228 003a 0E94 0000 		call readLIDAR
+  41:source/application/LIDARBOT.c ****     rxBufferWrite();
+ 229               		.stabn	68,0,41,.LM12-.LFBB3
+ 230               	.LM12:
+ 231 003e 0E94 0000 		call rxBufferWrite
+ 232               	.L5:
+ 233               	/* epilogue start */
+  42:source/application/LIDARBOT.c ****   }
+  43:source/application/LIDARBOT.c **** }
+ 234               		.stabn	68,0,43,.LM13-.LFBB3
+ 235               	.LM13:
+ 236 0042 FF91      		pop r31
+ 237 0044 EF91      		pop r30
+ 238 0046 BF91      		pop r27
+ 239 0048 AF91      		pop r26
+ 240 004a 9F91      		pop r25
+ 241 004c 8F91      		pop r24
+ 242 004e 7F91      		pop r23
+ 243 0050 6F91      		pop r22
+ 244 0052 5F91      		pop r21
+ 245 0054 4F91      		pop r20
+ 246 0056 3F91      		pop r19
+ 247 0058 2F91      		pop r18
+ 248 005a 0F90      		pop r0
+ 249 005c 0FBE      		out __SREG__,r0
+ 250 005e 0F90      		pop r0
+ 251 0060 1F90      		pop r1
+ 252 0062 1895      		reti
+ 253               		.size	__vector_18, .-__vector_18
+ 254               	.Lscope3:
+ 255               		.stabs	"",36,0,0,.Lscope3-.LFBB3
+ 256               		.stabd	78,0,0
+ 257               		.stabs	"__vector_14:F(0,49)",36,0,46,__vector_14
+ 258               	.global	__vector_14
+ 259               		.type	__vector_14, @function
+ 260               	__vector_14:
+ 261               		.stabd	46,0,0
   44:source/application/LIDARBOT.c **** 
-  45:source/application/LIDARBOT.c ****   // Enable global interrupts - Bot Key ON
-  46:source/application/LIDARBOT.c ****   sei();
- 285               		.stabn	68,0,46,.LM25-.LFBB3
- 286               	.LM25:
- 287               	/* #APP */
- 288               	 ;  46 "source/application/LIDARBOT.c" 1
- 289 0016 7894      		sei
- 290               	 ;  0 "" 2
- 291               	/* #NOAPP */
- 292               	.L18:
- 293 0018 00C0      		rjmp .L18
- 294               		.size	main, .-main
- 295               	.Lscope3:
- 296               		.stabs	"",36,0,0,.Lscope3-.LFBB3
- 297               		.stabd	78,0,0
- 298               		.text
- 299               		.stabs	"__vector_18:F(0,49)",36,0,57,__vector_18
- 300               	.global	__vector_18
- 301               		.type	__vector_18, @function
- 302               	__vector_18:
- 303               		.stabd	46,0,0
-  47:source/application/LIDARBOT.c **** 
-  48:source/application/LIDARBOT.c ****   while (1) {
-  49:source/application/LIDARBOT.c ****     /* Keep Running */
-  50:source/application/LIDARBOT.c ****   }
-  51:source/application/LIDARBOT.c **** }
-  52:source/application/LIDARBOT.c **** 
-  53:source/application/LIDARBOT.c **** /******************************************************************************/
-  54:source/application/LIDARBOT.c **** /*                     INTERRUPT SERVICE ROUTINES                             */
-  55:source/application/LIDARBOT.c **** /******************************************************************************/
-  56:source/application/LIDARBOT.c **** /* USART RECEIVE TASK */
-  57:source/application/LIDARBOT.c **** ISR(USART_RX_vect){ /* Asynchronous Hardware Interrupt */
- 304               		.stabn	68,0,57,.LM26-.LFBB4
- 305               	.LM26:
- 306               	.LFBB4:
- 307 009e 1F92      		push r1
- 308 00a0 0F92      		push r0
- 309 00a2 0FB6      		in r0,__SREG__
- 310 00a4 0F92      		push r0
- 311 00a6 1124      		clr __zero_reg__
- 312 00a8 2F93      		push r18
- 313 00aa 3F93      		push r19
- 314 00ac 4F93      		push r20
- 315 00ae 5F93      		push r21
- 316 00b0 6F93      		push r22
- 317 00b2 7F93      		push r23
- 318 00b4 8F93      		push r24
- 319 00b6 9F93      		push r25
- 320 00b8 AF93      		push r26
- 321 00ba BF93      		push r27
- 322 00bc EF93      		push r30
- 323 00be FF93      		push r31
- 324               	/* prologue: Signal */
- 325               	/* frame size = 0 */
- 326               	/* stack size = 15 */
- 327               	.L__stack_usage = 15
-  58:source/application/LIDARBOT.c ****   /* We want our interrupt service routine to be quick as possible. Which is why
-  59:source/application/LIDARBOT.c ****    * all this routine will do is write to the ring buffer and get out. However,
-  60:source/application/LIDARBOT.c ****    * we need our cpu to be quicker so that elements from that buffer are emptied
-  61:source/application/LIDARBOT.c ****    * faster than this ISR can populate the buffer. This was one of the prime
-  62:source/application/LIDARBOT.c ****    * reasons why the chosen clock was 4 Mhz.
-  63:source/application/LIDARBOT.c ****    */
-  64:source/application/LIDARBOT.c ****   if((rxBufferWrite() != BUFFER_OK)){
- 328               		.stabn	68,0,64,.LM27-.LFBB4
- 329               	.LM27:
- 330 00c0 0E94 0000 		call rxBufferWrite
- 331 00c4 892B      		or r24,r25
- 332 00c6 01F0      		breq .L19
-  65:source/application/LIDARBOT.c ****     readLIDAR();
- 333               		.stabn	68,0,65,.LM28-.LFBB4
- 334               	.LM28:
- 335 00c8 0E94 0000 		call readLIDAR
-  66:source/application/LIDARBOT.c ****     rxBufferWrite();
- 336               		.stabn	68,0,66,.LM29-.LFBB4
- 337               	.LM29:
- 338 00cc 0E94 0000 		call rxBufferWrite
- 339               	.L19:
- 340               	/* epilogue start */
-  67:source/application/LIDARBOT.c ****   }
-  68:source/application/LIDARBOT.c **** }
- 341               		.stabn	68,0,68,.LM30-.LFBB4
- 342               	.LM30:
- 343 00d0 FF91      		pop r31
- 344 00d2 EF91      		pop r30
- 345 00d4 BF91      		pop r27
- 346 00d6 AF91      		pop r26
- 347 00d8 9F91      		pop r25
- 348 00da 8F91      		pop r24
- 349 00dc 7F91      		pop r23
- 350 00de 6F91      		pop r22
- 351 00e0 5F91      		pop r21
- 352 00e2 4F91      		pop r20
- 353 00e4 3F91      		pop r19
- 354 00e6 2F91      		pop r18
- 355 00e8 0F90      		pop r0
- 356 00ea 0FBE      		out __SREG__,r0
- 357 00ec 0F90      		pop r0
- 358 00ee 1F90      		pop r1
- 359 00f0 1895      		reti
- 360               		.size	__vector_18, .-__vector_18
- 361               	.Lscope4:
- 362               		.stabs	"",36,0,0,.Lscope4-.LFBB4
- 363               		.stabd	78,0,0
- 364               		.stabs	"__vector_14:F(0,49)",36,0,71,__vector_14
- 365               	.global	__vector_14
- 366               		.type	__vector_14, @function
- 367               	__vector_14:
- 368               		.stabd	46,0,0
-  69:source/application/LIDARBOT.c **** 
-  70:source/application/LIDARBOT.c **** /* USART BUFFER PROCESSING TASK */
-  71:source/application/LIDARBOT.c **** ISR(TIMER0_COMPA_vect){ /* 320 us SOFTWARE INTERRUPT TASK RATE */
- 369               		.stabn	68,0,71,.LM31-.LFBB5
- 370               	.LM31:
- 371               	.LFBB5:
- 372 00f2 1F92      		push r1
- 373 00f4 0F92      		push r0
- 374 00f6 0FB6      		in r0,__SREG__
- 375 00f8 0F92      		push r0
- 376 00fa 1124      		clr __zero_reg__
- 377 00fc 2F93      		push r18
- 378 00fe 3F93      		push r19
- 379 0100 4F93      		push r20
- 380 0102 5F93      		push r21
- 381 0104 6F93      		push r22
- 382 0106 7F93      		push r23
- 383 0108 8F93      		push r24
- 384 010a 9F93      		push r25
- 385 010c AF93      		push r26
- 386 010e BF93      		push r27
- 387 0110 EF93      		push r30
- 388 0112 FF93      		push r31
- 389               	/* prologue: Signal */
- 390               	/* frame size = 0 */
- 391               	/* stack size = 15 */
- 392               	.L__stack_usage = 15
-  72:source/application/LIDARBOT.c ****   /* Here we wait until there are atleast 50 bytes or close to 3 frames are in
-  73:source/application/LIDARBOT.c ****    * the buffer to start reading. This method helps not reading the buffer
-  74:source/application/LIDARBOT.c ****    * when there is no data and also keeps the interrupt time short.
-  75:source/application/LIDARBOT.c ****    */
-  76:source/application/LIDARBOT.c ****   if (buffercount>50) {
- 393               		.stabn	68,0,76,.LM32-.LFBB5
- 394               	.LM32:
- 395 0114 8091 0000 		lds r24,buffercount
- 396 0118 9091 0000 		lds r25,buffercount+1
- 397 011c C397      		sbiw r24,51
- 398 011e 00F0      		brlo .L24
-  77:source/application/LIDARBOT.c ****     readLIDAR();
- 399               		.stabn	68,0,77,.LM33-.LFBB5
- 400               	.LM33:
- 401 0120 0E94 0000 		call readLIDAR
- 402               	.L24:
- 403               	/* epilogue start */
-  78:source/application/LIDARBOT.c ****   }
-  79:source/application/LIDARBOT.c **** }
- 404               		.stabn	68,0,79,.LM34-.LFBB5
- 405               	.LM34:
- 406 0124 FF91      		pop r31
- 407 0126 EF91      		pop r30
- 408 0128 BF91      		pop r27
- 409 012a AF91      		pop r26
- 410 012c 9F91      		pop r25
- 411 012e 8F91      		pop r24
- 412 0130 7F91      		pop r23
- 413 0132 6F91      		pop r22
- 414 0134 5F91      		pop r21
- 415 0136 4F91      		pop r20
- 416 0138 3F91      		pop r19
- 417 013a 2F91      		pop r18
- 418 013c 0F90      		pop r0
- 419 013e 0FBE      		out __SREG__,r0
- 420 0140 0F90      		pop r0
- 421 0142 1F90      		pop r1
- 422 0144 1895      		reti
- 423               		.size	__vector_14, .-__vector_14
- 424               	.Lscope5:
- 425               		.stabs	"",36,0,0,.Lscope5-.LFBB5
- 426               		.stabd	78,0,0
- 427               		.stabs	"__vector_11:F(0,49)",36,0,82,__vector_11
- 428               	.global	__vector_11
- 429               		.type	__vector_11, @function
- 430               	__vector_11:
- 431               		.stabd	46,0,0
-  80:source/application/LIDARBOT.c **** 
-  81:source/application/LIDARBOT.c **** /* PROPULSION/NAVIGATION TASK */
-  82:source/application/LIDARBOT.c **** ISR(TIMER1_COMPA_vect){ /* ~ 500 ms SOFTWARE INTERRUPT TASK RATE */
- 432               		.stabn	68,0,82,.LM35-.LFBB6
- 433               	.LM35:
- 434               	.LFBB6:
- 435 0146 1F92      		push r1
- 436 0148 0F92      		push r0
- 437 014a 0FB6      		in r0,__SREG__
- 438 014c 0F92      		push r0
- 439 014e 1124      		clr __zero_reg__
- 440 0150 2F93      		push r18
- 441 0152 3F93      		push r19
- 442 0154 4F93      		push r20
- 443 0156 5F93      		push r21
- 444 0158 6F93      		push r22
- 445 015a 7F93      		push r23
- 446 015c 8F93      		push r24
- 447 015e 9F93      		push r25
- 448 0160 AF93      		push r26
- 449 0162 BF93      		push r27
- 450 0164 EF93      		push r30
- 451 0166 FF93      		push r31
- 452               	/* prologue: Signal */
- 453               	/* frame size = 0 */
- 454               	/* stack size = 15 */
- 455               	.L__stack_usage = 15
-  83:source/application/LIDARBOT.c ****   /* We will have this ISR drive and steer for us. */
-  84:source/application/LIDARBOT.c ****   navigate();
- 456               		.stabn	68,0,84,.LM36-.LFBB6
- 457               	.LM36:
- 458 0168 0E94 0000 		call navigate
- 459               	/* epilogue start */
-  85:source/application/LIDARBOT.c **** }
- 460               		.stabn	68,0,85,.LM37-.LFBB6
- 461               	.LM37:
- 462 016c FF91      		pop r31
- 463 016e EF91      		pop r30
- 464 0170 BF91      		pop r27
- 465 0172 AF91      		pop r26
- 466 0174 9F91      		pop r25
- 467 0176 8F91      		pop r24
- 468 0178 7F91      		pop r23
- 469 017a 6F91      		pop r22
- 470 017c 5F91      		pop r21
- 471 017e 4F91      		pop r20
- 472 0180 3F91      		pop r19
- 473 0182 2F91      		pop r18
- 474 0184 0F90      		pop r0
- 475 0186 0FBE      		out __SREG__,r0
- 476 0188 0F90      		pop r0
- 477 018a 1F90      		pop r1
- 478 018c 1895      		reti
- 479               		.size	__vector_11, .-__vector_11
- 480               	.Lscope6:
- 481               		.stabs	"",36,0,0,.Lscope6-.LFBB6
- 482               		.stabd	78,0,0
- 483               		.comm	botmoving,1,1
- 484               		.comm	buffercount,2,1
- 485               		.comm	rxBuffer,1026,1
- 486               		.comm	obstacle,3,1
- 487               		.comm	tfmini,9,1
- 488               		.stabs	"tfmini:G(0,50)=B(8,2)",32,0,28,0
- 489               		.stabs	"obstacle:G(0,51)=B(8,4)",32,0,36,0
- 490               		.stabs	"rxBuffer:G(0,52)=B(7,5)",32,0,37,0
- 491               		.stabs	"buffercount:G(0,53)=B(0,4)",32,0,38,0
- 492               		.stabs	"botmoving:G(0,13)",32,0,27,0
- 493               		.stabs	"",100,0,0,.Letext0
- 494               	.Letext0:
- 495               		.ident	"GCC: (GNU) 5.4.0"
- 496               	.global __do_clear_bss
+  45:source/application/LIDARBOT.c **** /* USART BUFFER PROCESSING TASK */
+  46:source/application/LIDARBOT.c **** ISR(TIMER0_COMPA_vect){ /* 320 us SOFTWARE INTERRUPT TASK RATE */
+ 262               		.stabn	68,0,46,.LM14-.LFBB4
+ 263               	.LM14:
+ 264               	.LFBB4:
+ 265 0064 1F92      		push r1
+ 266 0066 0F92      		push r0
+ 267 0068 0FB6      		in r0,__SREG__
+ 268 006a 0F92      		push r0
+ 269 006c 1124      		clr __zero_reg__
+ 270 006e 2F93      		push r18
+ 271 0070 3F93      		push r19
+ 272 0072 4F93      		push r20
+ 273 0074 5F93      		push r21
+ 274 0076 6F93      		push r22
+ 275 0078 7F93      		push r23
+ 276 007a 8F93      		push r24
+ 277 007c 9F93      		push r25
+ 278 007e AF93      		push r26
+ 279 0080 BF93      		push r27
+ 280 0082 EF93      		push r30
+ 281 0084 FF93      		push r31
+ 282               	/* prologue: Signal */
+ 283               	/* frame size = 0 */
+ 284               	/* stack size = 15 */
+ 285               	.L__stack_usage = 15
+  47:source/application/LIDARBOT.c ****   /* Here we wait until there are atleast 50 bytes or close to 3 frames are in
+  48:source/application/LIDARBOT.c ****    * the buffer to start reading. This method helps not reading the buffer
+  49:source/application/LIDARBOT.c ****    * when there is no data and also keeps the interrupt time short.
+  50:source/application/LIDARBOT.c ****    */
+  51:source/application/LIDARBOT.c ****   if (buffercount>50) {
+ 286               		.stabn	68,0,51,.LM15-.LFBB4
+ 287               	.LM15:
+ 288 0086 8091 0000 		lds r24,buffercount
+ 289 008a 9091 0000 		lds r25,buffercount+1
+ 290 008e C397      		sbiw r24,51
+ 291 0090 00F0      		brlo .L10
+  52:source/application/LIDARBOT.c ****     readLIDAR();
+ 292               		.stabn	68,0,52,.LM16-.LFBB4
+ 293               	.LM16:
+ 294 0092 0E94 0000 		call readLIDAR
+ 295               	.L10:
+ 296               	/* epilogue start */
+  53:source/application/LIDARBOT.c ****   }
+  54:source/application/LIDARBOT.c **** }
+ 297               		.stabn	68,0,54,.LM17-.LFBB4
+ 298               	.LM17:
+ 299 0096 FF91      		pop r31
+ 300 0098 EF91      		pop r30
+ 301 009a BF91      		pop r27
+ 302 009c AF91      		pop r26
+ 303 009e 9F91      		pop r25
+ 304 00a0 8F91      		pop r24
+ 305 00a2 7F91      		pop r23
+ 306 00a4 6F91      		pop r22
+ 307 00a6 5F91      		pop r21
+ 308 00a8 4F91      		pop r20
+ 309 00aa 3F91      		pop r19
+ 310 00ac 2F91      		pop r18
+ 311 00ae 0F90      		pop r0
+ 312 00b0 0FBE      		out __SREG__,r0
+ 313 00b2 0F90      		pop r0
+ 314 00b4 1F90      		pop r1
+ 315 00b6 1895      		reti
+ 316               		.size	__vector_14, .-__vector_14
+ 317               	.Lscope4:
+ 318               		.stabs	"",36,0,0,.Lscope4-.LFBB4
+ 319               		.stabd	78,0,0
+ 320               		.stabs	"__vector_11:F(0,49)",36,0,57,__vector_11
+ 321               	.global	__vector_11
+ 322               		.type	__vector_11, @function
+ 323               	__vector_11:
+ 324               		.stabd	46,0,0
+  55:source/application/LIDARBOT.c **** 
+  56:source/application/LIDARBOT.c **** /* PROPULSION/NAVIGATION TASK */
+  57:source/application/LIDARBOT.c **** ISR(TIMER1_COMPA_vect){ /* ~ 500 ms SOFTWARE INTERRUPT TASK RATE */
+ 325               		.stabn	68,0,57,.LM18-.LFBB5
+ 326               	.LM18:
+ 327               	.LFBB5:
+ 328 00b8 1F92      		push r1
+ 329 00ba 0F92      		push r0
+ 330 00bc 0FB6      		in r0,__SREG__
+ 331 00be 0F92      		push r0
+ 332 00c0 1124      		clr __zero_reg__
+ 333 00c2 2F93      		push r18
+ 334 00c4 3F93      		push r19
+ 335 00c6 4F93      		push r20
+ 336 00c8 5F93      		push r21
+ 337 00ca 6F93      		push r22
+ 338 00cc 7F93      		push r23
+ 339 00ce 8F93      		push r24
+ 340 00d0 9F93      		push r25
+ 341 00d2 AF93      		push r26
+ 342 00d4 BF93      		push r27
+ 343 00d6 EF93      		push r30
+ 344 00d8 FF93      		push r31
+ 345               	/* prologue: Signal */
+ 346               	/* frame size = 0 */
+ 347               	/* stack size = 15 */
+ 348               	.L__stack_usage = 15
+  58:source/application/LIDARBOT.c ****   /* We will have this ISR drive and steer for us. */
+  59:source/application/LIDARBOT.c ****   navigate();
+ 349               		.stabn	68,0,59,.LM19-.LFBB5
+ 350               	.LM19:
+ 351 00da 0E94 0000 		call navigate
+ 352               	/* epilogue start */
+  60:source/application/LIDARBOT.c **** }
+ 353               		.stabn	68,0,60,.LM20-.LFBB5
+ 354               	.LM20:
+ 355 00de FF91      		pop r31
+ 356 00e0 EF91      		pop r30
+ 357 00e2 BF91      		pop r27
+ 358 00e4 AF91      		pop r26
+ 359 00e6 9F91      		pop r25
+ 360 00e8 8F91      		pop r24
+ 361 00ea 7F91      		pop r23
+ 362 00ec 6F91      		pop r22
+ 363 00ee 5F91      		pop r21
+ 364 00f0 4F91      		pop r20
+ 365 00f2 3F91      		pop r19
+ 366 00f4 2F91      		pop r18
+ 367 00f6 0F90      		pop r0
+ 368 00f8 0FBE      		out __SREG__,r0
+ 369 00fa 0F90      		pop r0
+ 370 00fc 1F90      		pop r1
+ 371 00fe 1895      		reti
+ 372               		.size	__vector_11, .-__vector_11
+ 373               	.Lscope5:
+ 374               		.stabs	"",36,0,0,.Lscope5-.LFBB5
+ 375               		.stabd	78,0,0
+ 376               		.comm	buffercount,2,1
+ 377               		.comm	rxBuffer,1026,1
+ 378               		.comm	obstacle,3,1
+ 379               		.comm	tfmini,9,1
+ 380               		.comm	botmoving,1,1
+ 381               		.stabs	"botmoving:G(0,13)",32,0,27,0
+ 382               		.stabs	"tfmini:G(0,50)=B(8,2)",32,0,29,0
+ 383               		.stabs	"obstacle:G(0,51)=B(8,4)",32,0,37,0
+ 384               		.stabs	"rxBuffer:G(0,52)=B(7,5)",32,0,37,0
+ 385               		.stabs	"buffercount:G(0,53)=B(0,4)",32,0,38,0
+ 386               		.stabs	"",100,0,0,.Letext0
+ 387               	.Letext0:
+ 388               		.ident	"GCC: (GNU) 5.4.0"
+ 389               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 LIDARBOT.c
-     /tmp/cc5bskjN.s:2      *ABS*:000000000000003e __SP_H__
-     /tmp/cc5bskjN.s:3      *ABS*:000000000000003d __SP_L__
-     /tmp/cc5bskjN.s:4      *ABS*:000000000000003f __SREG__
-     /tmp/cc5bskjN.s:5      *ABS*:0000000000000000 __tmp_reg__
-     /tmp/cc5bskjN.s:6      *ABS*:0000000000000001 __zero_reg__
-     /tmp/cc5bskjN.s:118    .text:0000000000000000 navigate
-                            *COM*:0000000000000003 obstacle
-                            *COM*:0000000000000001 botmoving
-     /tmp/cc5bskjN.s:225    .text:000000000000008e initbot
-     /tmp/cc5bskjN.s:254    .text.startup:0000000000000000 main
-     /tmp/cc5bskjN.s:302    .text:000000000000009e __vector_18
-     /tmp/cc5bskjN.s:367    .text:00000000000000f2 __vector_14
+     /tmp/cceV4ChW.s:2      *ABS*:000000000000003e __SP_H__
+     /tmp/cceV4ChW.s:3      *ABS*:000000000000003d __SP_L__
+     /tmp/cceV4ChW.s:4      *ABS*:000000000000003f __SREG__
+     /tmp/cceV4ChW.s:5      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cceV4ChW.s:6      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cceV4ChW.s:118    .text:0000000000000000 initbot
+     /tmp/cceV4ChW.s:147    .text.startup:0000000000000000 main
+     /tmp/cceV4ChW.s:195    .text:0000000000000010 __vector_18
+     /tmp/cceV4ChW.s:260    .text:0000000000000064 __vector_14
                             *COM*:0000000000000002 buffercount
-     /tmp/cc5bskjN.s:430    .text:0000000000000146 __vector_11
+     /tmp/cceV4ChW.s:323    .text:00000000000000b8 __vector_11
                             *COM*:0000000000000402 rxBuffer
+                            *COM*:0000000000000003 obstacle
                             *COM*:0000000000000009 tfmini
+                            *COM*:0000000000000001 botmoving
 
 UNDEFINED SYMBOLS
-stop
-steer
-drive
 clocksetup
 usartinit
 lidarinit
 motorinit
 rxBufferWrite
 readLIDAR
+navigate
 __do_clear_bss
